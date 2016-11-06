@@ -1,0 +1,29 @@
+div(style='height: 100vh;display: table;width: 100vw;')
+  div(style='width: 400px;margin: 0 auto;display: table-cell;vertical-align: middle;background: #f47373;')
+    header(style='width: 400px;margin: 0 auto;')
+      acme-navbar
+    .background
+      .m-container.background(style='width: 400px;min-height: auto;')
+        .border-white(style='background-color: #f7f7f7;')
+          .m-auth(style='padding: 30px 25px;')
+            div.m-input-container(flex-gt-sm)
+              label ID компании
+              br
+              input(ng-class="{'deactiveDashed': vm.idToEnter}",
+              required='',
+              name='clientName',
+              type="text",
+              ng-model="vm.idToEnter")
+            div.m-input-container(flex-gt-sm)
+              label Пароль
+              br
+              input.password(ng-class="{'deactiveDashed': vm.password}",
+              required='',
+              type="password1"
+              ng-model="vm.password")
+
+            md-button.md-raised(ng-click='vm.auth()', style='background-color: #f47373;color: white;') Войти
+
+    m-footer
+
+

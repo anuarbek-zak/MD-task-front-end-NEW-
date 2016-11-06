@@ -1,0 +1,20 @@
+.main-container
+        .myTask
+            h3 {{vm.task.name}}
+            .description
+                h5 Суть задачи:
+                p {{vm.task.description}}
+
+            h5.performers Исполнитель(ли):
+                span.performer(ng-repeat="performer in vm.task.performer") {{" "+performer.name+" "}}
+
+            p.auditors Аудитор(ы):
+                span.auditor(ng-repeat="auditor in vm.task.auditor") {{" "+auditor.name+" "}}
+
+            p.responsibles Ответсвенный(ные):
+                span.responsible(ng-repeat="responsible in vm.task.responsible") {{" "+responsible.name+" "}}
+
+            p Дедлайн:
+                span.deadline{{vm.task.deadline}}
+
+            h5.creator Постановщик: {{vm.task.creator}}

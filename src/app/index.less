@@ -1,0 +1,485 @@
+/**
+ *  Do not remove the comments below. It's the markers used by wiredep to inject
+ *  less dependencies when defined in the bower.json of your dependencies
+ */
+// bower:less
+// endbower
+
+@import url(//fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700);
+
+//@import 'https://fonts.googleapis.com/css?family=Roboto';
+
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url(../../bower_components/material-design-iconfont/iconfont/MaterialIcons-Regular.eot); /* For IE6-8 */
+  src: local('Material Icons'),
+       local('MaterialIcons-Regular'),
+       url(../../bower_components/material-design-iconfont/iconfont/MaterialIcons-Regular.woff2) format('woff2'),
+       url(../../bower_components/material-design-iconfont/iconfont/MaterialIcons-Regular.woff) format('woff'),
+       url(../../bower_components/material-design-iconfont/iconfont/MaterialIcons-Regular.ttf) format('truetype');
+}
+
+/* Webfont: Lato-Regular */
+@font-face {
+  font-family: 'MicrogrammaD-BoldExte';
+  src: url('fonts/MicrogrammaD-BoldExte.woff') format('woff');
+}
+
+@red-style : rgb(171,45,45);
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;  /* Preferred icon size */
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}
+
+html {
+  font-family: 'Roboto Slab', serif;
+}
+
+[layout=row] {
+  flex-direction: row;
+}
+
+.browsehappy {
+  margin: 0.2em 0;
+  background: #ccc;
+  color: #000;
+  padding: 0.2em 0;
+}
+
+md-toolbar.md-default-theme {
+  background-color: black;
+}
+
+section.jumbotron {
+  margin-bottom: 30px;
+  padding: 1px 30px;
+  background-color: #5aadbb;
+  text-align: center;
+
+  color: white;
+
+  h1 {
+    font-size: 3em;
+  }
+}
+
+.techs {
+  display: flex;
+  flex-flow: row wrap;
+
+  md-card {
+    width: 30%;
+
+    img.pull-right {
+      float: right;
+      width: 100px;
+    }
+  }
+}
+
+/**
+ *  Do not remove the comments below. It's the markers used by gulp-inject to inject
+ *  all your less files automatically
+ */
+// injector
+// endinjector
+
+
+@selling : #f47373;
+
+
+@supply : #697689;
+
+
+@payments : #ba68c8;
+
+@staff : #2ccce4;
+
+@other : #555555;
+
+body{
+  background-color: @selling !important;
+  font-family: "Roboto Condensed";
+  font-weight: 300;
+  font-size: 13px;
+}
+
+.background {
+  background-color: @selling !important;
+}
+
+.background-f(@color: @selling){
+  background-color: @color !important;
+  .background{
+    background-color: @color !important;
+
+    .m-select {
+      .m-selected-span {
+        background-color: @color;
+      }
+      .caret {
+        color: @color;
+      }
+    }
+    ._720kb-datepicker-calendar-header {
+      background: @color !important;
+    }
+    .m-input-container {
+      input, textarea {
+        &:focus {
+          color: @color;
+        }
+      }
+    }
+  }
+
+  .dropdown {
+    button {
+      &:hover {
+        color: @color !important;
+      }
+    }
+    ul {
+      li {
+        a {
+          &:hover{
+            background: @color;
+          }
+        }
+      }
+    }
+  }
+
+
+}
+// body style
+.background-selling{
+  .background-f(@selling);
+}
+.background-supply{
+  .background-f(@supply);
+}
+
+.background-staff{
+  .background-f(@staff);
+}
+
+.background-payments{
+  .background-f(@payments);
+}
+
+.background-other{
+  .background-f(@other);
+}
+
+
+
+.m-container {
+  position: relative;
+  width: 760px;
+  margin: 0 auto;
+  background-color: #f2f2f2;
+  min-height: ~"calc(100vh - 190px)";
+}
+
+.md-datepicker-calendar-pane{
+  background: #fff !important;
+}
+
+
+.md-radio-button-inline{
+  display: inline-block !important;
+}
+
+
+.lf-ng-md-file-input .lf-ng-md-file-input-container .lf-ng-md-file-input-caption .lf-ng-md-file-input-caption-text {
+  max-height: 23px;
+  line-height: 26px;
+}
+
+
+.like-invoice-title{
+
+}
+.like-invoice-body{
+  background-color: #f7f7f7;
+  /* width: 100%; */
+  border: 1px solid #e6e7e8;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 15px 20px;
+}
+
+
+md-input-container {
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.m-padding-bottom{
+  padding-bottom: 10px !important;
+}
+
+md-radio-button {
+  margin-right: 10px;
+}
+
+.md-datepicker-input {
+  margin-right: 12px;
+  font-size: 13px;
+}
+
+
+.md-datepicker-triangle-button.md-button.md-icon-button {
+  margin-top: -4px;
+}
+
+
+.m-select{
+  outline: none;
+  border: none;
+  background: none;
+
+  .m-selected-span{
+    font-size: 15px;
+    background-color: @red-style;
+    color: #fff;
+    border-radius: 3px;
+    padding: 2px 7px;
+  }
+  .caret{
+    color: @red-style;
+  }
+}
+
+.m-row{
+  padding: 7px 0;
+}
+
+.md-button{
+  box-shadow: none !important;
+}
+
+.m-input-container{
+  font-weight: 300;
+  //padding: 5px 0;
+
+  label{
+    color: rgb(146, 146, 146);
+    line-height: 1.2;
+    font-weight: 300;
+  }
+
+
+
+  input,textarea {
+    overflow: hidden;
+    word-wrap: break-word;
+    resize: none;
+    height: 35px;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    border-bottom: 1px dashed #e6e7e8;
+    outline: none;
+    background: transparent;
+    width: ~"calc(100% - 10px)";
+    margin-right: 10px;
+    font-size: 20px;
+
+    &:focus {
+      //background-color: #e6e7e8;
+      color: @red-style;
+      border: 1px solid #e6e7e8;
+      border-radius: 5px;
+      padding-left: 5px;
+    }
+  }
+  .deactiveDashed{
+    border: none;
+  }
+}
+
+.m-point{
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 100%;
+  background-color: #777777;
+  margin: 5px 5px 5px 10px;
+  float: left;
+}
+.m-point-greendot {
+  background-color: #73db34!important;
+}
+
+.m-point-orangedot {
+  background-color: #dba634;
+}
+
+.m-point-reddot {
+  background-color: #db3434;
+}
+
+
+input:-webkit-autofill{
+  border: 0px !important;outline:none!important;
+  background: none!important;
+  background-color: transparent!important;
+}
+
+input:-webkit-autofill {
+  color: #2a2a2a !important;
+}
+
+
+._720kb-datepicker-calendar-header{
+  background: @red-style !important;
+}
+
+.text-header--input {
+  font-size: 30px;
+  color: #000000;
+  float: left;
+  margin: 0;
+  height: 35px;
+  padding: 0px 0px 0px 0px;
+  width: 150px;
+  background: transparent;
+  border: 0;
+  outline: none;
+}
+
+
+.m-table{
+  text-align: left;
+  .m-table-header{
+    color: rgb(146, 146, 146);
+  }
+  .m-table-row{
+
+  }
+  .m-col-format {
+    line-height: 34px !important;
+    font-size: 20px;
+    padding-top: 1px;
+  }
+  .m-col{
+    line-height: 23px;
+    //height: 23px;
+    //height: 23px;
+    input{
+      //width: 100%;
+    }
+    textarea{
+      //height: 10px;
+      //height: 19px;
+      box-sizing: content-box;
+      padding: 0;
+      height: 27px;
+      padding-top: 7px;
+    }
+    .m-input-container{
+      //height: 10px;
+    }
+    button {
+      padding: 0;
+    }
+  }
+  .m-plus-row{
+    font-size: 20px;
+    font-family: monospace;
+    transform-origin: center;
+    transform: rotate(0deg);
+    height: 23px;
+    cursor: pointer;
+    outline: none;
+  }
+  .m-remove-row{
+    transform: rotate(45deg);
+    position: relative;
+    left: -3px;
+  }
+}
+
+.radio, .checkbox{
+  margin: 10px !important;
+  margin-top: 0 !important;
+  label{
+    font-weight: inherit;
+    line-height: 20px;
+    color: #000;
+  }
+}
+
+.checkbox-coll{
+  input{
+    margin-top: -2px;
+    width: 14px;
+    height: 23px;
+  }
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+
+.password {
+  -webkit-text-security: disc;
+}
+
+
+
+.keyframes(@name; @arguments) {
+  @-moz-keyframes @name { @arguments(); }
+  @-webkit-keyframes @name { @arguments(); }
+  @keyframes @name { @arguments(); }
+}
+
+.animation(@arguments) {
+  -webkit-animation: @arguments;
+  -moz-animation: @arguments;
+  animation: @arguments;
+}
+
+
+.animation {
+
+  .keyframes(cssAnimation;{
+    0% {
+      background: transparent;
+    }
+    100% {
+      background: rgba(242, 242, 242, 0.49);
+    }
+  });
+
+  .animation(cssAnimation 1.4s 10 ease)
+
+}

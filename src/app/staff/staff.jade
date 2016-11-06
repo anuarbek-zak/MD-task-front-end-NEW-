@@ -1,0 +1,373 @@
+div.m-menu-documents
+  //(data-offset-top="100", bs-affix)
+  div.m-menu-documents-item(
+  ng-repeat = 'item in vm.taskTypes',
+  ng-click='vm.selectTypeTask(item.value); vm.getNumberDocument()',
+  ng-class='{"m-menu-document-item-active": vm.document.docType==item.value}')
+    img.disabled(ng-src='../assets/images/menu_icons/staff/{{item.img}}.svg')
+    img.active(ng-src='../assets/images/menu_icons/staff/{{item.imgReverse}}.svg')
+    md-tooltip(md-direction="bottom") {{item.value}}
+
+div.m-menu-documents.m-menu-documents-right(data-offset-top="100", bs-affix)
+  div.m-menu-documents-item(ng-click='vm.sendRequestSelling()', ng-class='{animation: vm.getClassValidationForSubmit()}')
+    img.disabled(ng-src='../assets/images/menu_icons/realisation7.svg')
+    img.active(ng-src='../assets/images/menu_icons/realisation7-reverse.svg')
+    md-tooltip(md-direction="bottom") Отправить
+  div.m-menu-documents-item(ui-sref='history')
+    img.disabled(ng-src='../assets/images/menu_icons/realisation5.svg')
+    img.active(ng-src='../assets/images/menu_icons/realisation5-reverse.svg')
+    md-tooltip(md-direction="bottom") История
+  div.m-menu-documents-item(ui-sref='settings')
+    img.disabled(ng-src='../assets/images/menu_icons/settings.svg')
+    img.active(ng-src='../assets/images/menu_icons/settings-reverse.svg')
+    md-tooltip(md-direction="bottom") Настройки
+  div.m-menu-documents-item(ng-click='vm.logout()')
+    img.disabled(ng-src='../assets/images/menu_icons/realisation6.svg')
+    img.active(ng-src='../assets/images/menu_icons/realisation6-reverse.svg')
+    md-tooltip(md-direction="bottom") Выйти
+
+
+div.m-row.m-document(layout='row')
+  div(flex="80")
+    h1.text-header {{vm.document.docType}} №&nbsp;
+    input.text-header--input(ng-disabled='true', type='text', ng-model='vm.document.number')
+
+  div(flex='20')
+    datepicker.m-datepicker(date-format="от dd MMMM yyyy г.")
+      input.m-input-picker( ng-model="vm.document.date", type="text")
+
+div.m-row(layout='row')
+  // справка
+  .m-input-container(flex='60', ng-if='vm.document.docType=="Справка"')
+    label Требуется справка
+    br
+    button.m-select(  type='button', ng-model='vm.document.helpType', placeholder='', data-html='1', data-toggle='true',
+    bs-options='item.value as item.label for item in vm.helpTypes1', bs-select='')
+      span.caret
+  .m-input-container(flex='50', ng-if='vm.document.docType=="Отпуск"')
+    label Виды отпуска
+    br
+    button.m-select(  type='button', ng-model='vm.document.helpType', placeholder='', data-html='1', data-toggle='true',
+    bs-options='item.value as item.label for item in vm.helpTypes2', bs-select='')
+      span.caret
+
+div(ng-mouseover='vm.document.invalid = false;')
+  //справка
+  div(ng-show='vm.document.docType=="Справка"')
+    div.like-invoice-title
+      div.m-point(ng-class='vm.getClassValidation()')
+      | Справка {{vm.document.helpType}}
+    div.like-invoice-body
+      div.m-row(layout='row')
+        div.m-input-container(flex='50')
+          label ФИО сотрудника
+          br
+          input(ng-class="{'deactiveDashed': vm.document.nameEmployer }",
+          required='',
+          name='companyName',
+          ng-model='vm.document.nameEmployer')
+
+      div.m-row(layout='row')
+        div.m-input-container(flex='50')
+          label Должность
+          br
+          input(ng-class="{'deactiveDashed': vm.document.position }",
+          required='',
+          name='companyName',
+          ng-model='vm.document.position')
+        div.m-input-container(flex='50')
+          label Место предоставления
+          br
+          input(ng-class="{'deactiveDashed': vm.document.requiredIn }",
+          required='',
+          name='companyName',
+          ng-model='vm.document.requiredIn')
+
+
+      div.m-row(layout='row')
+        div.m-input-container(flex='30',  style='margin-top: 14px;')
+          label Период с
+          br
+          datepicker.m-datepicker(date-format="dd MMMM yyyy")
+            input(ng-class="{'deactiveDashed': vm.document.dateStart }",
+            required='',
+            name='companyName',
+            ng-model='vm.document.dateStart')
+        div.m-input-container(flex='30',  style='margin-top: 14px;')
+          label По период
+          br
+          datepicker.m-datepicker(date-format="dd MMMM yyyy")
+            input(ng-class="{'deactiveDashed': vm.document.dateFinish }",
+            required='',
+            name='companyName',
+            ng-model='vm.document.dateFinish')
+        div.m-padding-bottom(flex='40', ng-if='vm.document.helpType=="о заработной плате"') Справка требуется
+          div(layout='row' layout-wrap flex)
+            .radio
+              label
+                input(type='radio', name='optradio', ng-model='vm.document.helpNeeded', value="с базы 1с")
+                | с базы 1с
+            br
+            .radio
+              label
+                input(type='radio', name='optradio', ng-model='vm.document.helpNeeded', value="в произвольной форме")
+                | в произвольной форме
+
+
+      div.m-row(layout='row' layout-wrap flex, ng-if='vm.document.helpNeeded=="с базы 1с"')
+        div.m-padding-bottom(flex='100') Период справки за последние
+        .checkbox
+          label
+            input(type="checkbox", ng-model='vm.document.reference3mounth', value="")
+            | 3 месяца
+
+        .checkbox
+          label
+            input(type="checkbox", ng-model='vm.document.reference6mounth', value="")
+            | 6 месяца
+        .checkbox
+          label
+            input(type="checkbox", ng-model='vm.document.reference12mounth', value="")
+            | 12 месяца
+
+
+  // примем на работу
+  div(ng-show='vm.document.docType=="Прием на работу"')
+    div.like-invoice-title
+      div.m-point(ng-class='vm.getClassValidation()')
+      | Прием на работу
+    div.like-invoice-body
+      div(layout='row')
+        div.m-input-container(flex='50')
+          label ФИО сотрудника
+          br
+          input(ng-class="{'deactiveDashed': vm.document.nameEmployer }",
+          required='',
+          name='companyName',
+          ng-model='vm.document.nameEmployer')
+
+      div.m-row(layout='row')
+        div.m-input-container(flex='50')
+          label Должность
+          br
+          input(ng-class="{'deactiveDashed': vm.document.position }",
+          required='',
+          name='companyName',
+          ng-model='vm.document.position')
+        div.m-input-container(flex='50')
+          label Место предоставления
+          br
+          input(ng-class="{'deactiveDashed': vm.document.requiredIn }",
+          required='',
+          name='companyName',
+          ng-model='vm.document.requiredIn')
+
+      div(layout='row')
+        div.m-input-container(flex='30',  style='margin-top: 14px;')
+          label Дата приема на работу
+          br
+          datepicker.m-datepicker(date-format="dd MMMM yyyy")
+            input(ng-class="{'deactiveDashed': vm.document.dateStart }",
+            required='',
+            name='companyName',
+            ng-model='vm.document.dateStart')
+
+      div.m-row(layout='row')
+        .m-input-container(flex=50)
+          label Удостоверение личности
+          br
+          input(type='file' ng-model='vm.document.udsLichnosti' base-sixty-four-input)
+        .m-input-container(flex=50)
+          label Пенсионный договор
+          br
+          input(type='file' ng-model='vm.document.pensDogovor' base-sixty-four-input)
+      div.m-row(layout='row')
+        .m-input-container(flex=50)
+          label Копия диплома
+          br
+          input(type='file' ng-model='vm.document.copyDiplom' base-sixty-four-input)
+        .m-input-container(flex=50)
+          label Заявления сотрудника
+          br
+          input(type='file' ng-model='vm.document.zayavlenieSotrudnika' base-sixty-four-input)
+
+       div.m-row(layout='row')
+          div.m-padding-bottom(flex='50') Статус работы
+            div(layout='row' layout-wrap flex)
+              .radio
+                label
+                  input(type='radio', name='optradio', ng-model='vm.document.statusWork', value="Основное")
+                  | Основное
+              br
+              .radio
+                label
+                  input(type='radio', name='optradio', ng-model='vm.document.statusWork', value="По совместительству")
+                  | По совместительству
+          .m-input-container(flex=50, ng-if='vm.document.statusWork=="По совместительству"')
+            label Справка с др. места работы
+            br
+            input(type='file' ng-model='vm.document.spravkaSDrraboti' base-sixty-four-input)
+
+
+  //отпуск
+  div(ng-show='vm.document.docType=="Отпуск"')
+    div.like-invoice-title
+      div.m-point(ng-class='vm.getClassValidation()')
+      | {{vm.document.helpType}}
+    div.like-invoice-body
+      div.m-row(layout='row')
+
+        div.m-input-container(flex='50')
+          label ФИО сотрудника
+          br
+          input(ng-class="{'deactiveDashed': vm.document.nameEmployer }",
+          required='',
+          name='companyName',
+          ng-model='vm.document.nameEmployer')
+
+      div.m-row(layout='row')
+        div.m-input-container(flex='50')
+          label Должность
+          br
+          input(ng-class="{'deactiveDashed': vm.document.position }",
+          required='',
+          name='companyName',
+          ng-model='vm.document.position')
+        .m-input-container(flex=50)
+          label Заявления сотрудника
+          br
+          input(type='file' ng-model='vm.document.zayavlenieSotrudnika' base-sixty-four-input)
+
+      div.m-row(layout='row')
+        div.m-input-container(flex='30',  style='margin-top: 14px;')
+          label Период с
+          br
+          datepicker.m-datepicker(date-format="dd MMMM yyyy")
+            input(ng-class="{'deactiveDashed': vm.document.dateStart }",
+            required='',
+            name='companyName',
+            ng-model='vm.document.dateStart')
+        div.m-input-container(flex='30',  style='margin-top: 14px;')
+          label По период
+          br
+          datepicker.m-datepicker(date-format="dd MMMM yyyy")
+            input(ng-class="{'deactiveDashed': vm.document.dateFinish }",
+            required='',
+            name='companyName',
+            ng-model='vm.document.dateFinish')
+
+      div.m-row(layout='row')
+        .m-input-container(flex=50, ng-if='vm.document.helpType=="Отпуск по беременности"')
+          label Свидетельство о рождении ребенка
+          br
+          input(type='file' ng-model='vm.document.svidetelstvoORogdeniiRebenka' base-sixty-four-input)
+        .m-input-container(flex=50, ng-if='vm.document.helpType=="Отпуск по уходу за ребенком"')
+          label Лист о временной нетрудоспособности
+          br
+          input(type='file' ng-model='vm.document.listVremennoiNetrudosposobnosti' base-sixty-four-input)
+
+
+  //увольнение
+  div(ng-show='vm.document.docType=="Увольнение с работы"')
+    div.like-invoice-title
+      div.m-point(ng-class='vm.getClassValidation()')
+      | Увольнение с работы
+    div.like-invoice-body
+      div.m-row(layout='row')
+
+        div.m-input-container(flex='50')
+          label ФИО сотрудника
+          br
+          input(ng-class="{'deactiveDashed': vm.document.nameEmployer }",
+          required='',
+          name='companyName',
+          ng-model='vm.document.nameEmployer')
+
+      div.m-row(layout='row')
+        div.m-input-container(flex='50')
+          label Должность
+          br
+          input(ng-class="{'deactiveDashed': vm.document.position }",
+          required='',
+          name='companyName',
+          ng-model='vm.document.position')
+
+        div.m-input-container(flex='30')
+          label Дата увольнения
+          br
+          datepicker.m-datepicker(date-format="dd MMMM yyyy")
+            input(ng-class="{'deactiveDashed': vm.document.dateFinish }",
+            required='',
+            name='companyName',
+            ng-model='vm.document.dateFinish')
+
+      div.m-row(layout='row')
+        div.m-padding-bottom(flex='50') Выдача расчета
+          div(layout='row' layout-wrap flex)
+            .radio
+              label
+                input(type='radio', ng-model='vm.document.typeOfCalculation', value="По банку")
+                | По банку
+            br
+            .radio
+              label
+                input(type='radio', ng-model='vm.document.typeOfCalculation', value="С кассы")
+                | С кассы
+        div.m-padding-bottom(flex='50') Причина увольнения
+          div(layout='row' layout-wrap flex)
+            .radio
+              label
+                input(type='radio', ng-model='vm.document.reasonForLeaving', value="По собственному желанию")
+                | По собственному желанию
+            br
+            .radio
+              label
+                input(type='radio', ng-model='vm.document.reasonForLeaving', value="По статье")
+                | По статье
+
+      div.m-row(layout='row', ng-if='vm.document.reasonForLeaving=="По статье"')
+        div.m-input-container(flex='50')
+          label Укажите статью
+          br
+          input(ng-class="{'deactiveDashed': vm.document.article }",
+          required='',
+          name='companyName',
+          ng-model='vm.document.article')
+
+      div.m-row(layout='row')
+        div.m-padding-bottom(flex='50') Компенсация
+          .checkbox
+            label
+              input(type="checkbox", ng-model='vm.document.calculateCompensation', value="")
+              | Посчитать компенсацию
+        .m-input-container(flex=50)
+          label Заявления сотрудника
+          br
+          input(type='file' ng-model='vm.document.zayavlenieSotrudnika' base-sixty-four-input)
+
+div.like-invoice-title
+  div.m-point
+  | Дополнительные требования
+div.like-invoice-body
+  div.m-row(layout='row')
+    div.m-input-container(flex='50')
+      label Дополнительная информация
+      br
+      textarea(ng-class="{'deactiveDashed': vm.document.description }",
+      required='',
+      name='description',
+      ng-model='vm.document.description',
+      dynamic-text-area,
+      msd-elastic)
+    div.m-input-container(flex='50')
+      .checkbox.checkbox-coll(flex='100')
+        label
+          input(type="checkbox", ng-model='vm.document.srochno', value="")
+          | Требуется — СРОЧНО!
+
+div(ng-if='vm.document.srochno')
+  div.like-invoice-title Условие срочных заявок
+  div.like-invoice-body
+    div(layout='row')
+      div Срочная заявка обрабатывается в течении 15 минут. Цена — 500 тенге за 1 заявку.
+

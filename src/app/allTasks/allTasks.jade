@@ -1,0 +1,23 @@
+.main-container
+    h3(ng-hide="vm.tasks.length") Пока нет задач
+    .myTasks
+        .myTask(ng-repeat="task in vm.tasks")
+            h3
+                a(style="color:#666" ui-sref="taskInfo({taskId:task._id})") {{task.name}}
+
+            h5.performers Исполнитель(ли):
+                span.performer(ng-repeat="performer in task.performer") {{" "+performer.name+" "}}
+
+            p.auditors Аудитор(ы):
+                span.auditor(ng-repeat="auditor in task.auditor") {{" "+auditor.name+" "}}
+
+            p.responsibles Ответсвенный(ные):
+                span.responsible(ng-repeat="responsible in task.responsible") {{" "+responsible.name+" "}}
+
+            p Дедлайн:
+                span.deadline{{task.deadline}}
+
+            h5.creator Постановщик: {{task.creator}}
+
+
+

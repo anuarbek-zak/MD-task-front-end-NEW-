@@ -1,0 +1,66 @@
+div(ng-mouseover='vm.mContragent.invalid = false;')
+  div
+    div.m-point(ng-class='vm.getClassValidation()')
+    | Реквизиты покупателя:
+  div.like-invoice-body
+    //{'content-orangedot': (vm.beneficiar!==''||vm.bin!==''||vm.iik!==''||vm.bank!==''||vm.bik!==''||vm.index!==''||vm.phone!==''||vm.city!==''||vm.address!=='' ), 'content-greendot': (vm.beneficiar!==''&&vm.bin!==''&&vm.iik!==''&&vm.bank!==''&&vm.bik!==''&&vm.index!==''&&vm.phone!==''&&vm.city!==''&&vm.address!=='' ), 'content-reddot': vm.red}
+    div
+      div.m-row(layout='row')
+        div.m-input-container(flex='50')
+          label Наименование компании бенефициара
+          br
+          input(ng-class="{'deactiveDashed': vm.mContragent.companyName }",
+          type="text",
+          ng-model="vm.mContragent.companyName",
+          bs-options="item.value as item.value for item in vm.contragents",
+          bs-on-select= 'vm.selectContragent'
+          bs-typeahead)
+
+
+        div.m-input-container(flex='50')
+          label Юридический адрес контрагента
+          br
+          input(ng-class="{'deactiveDashed': vm.mContragent.urAdress }",
+          required='',
+          name='companyName',
+          ng-model='vm.mContragent.urAdress')
+
+      div.m-row(layout='row')
+
+        div.m-input-container(flex='50')
+          label БИН
+          br
+          input(ng-class="{'deactiveDashed': vm.mContragent.bin }",
+          required='',
+          name='companyName',
+          ng-model='vm.mContragent.bin',
+          ui-mask='999 999 999 999', ui-mask-placeholder='', ui-mask-placeholder-char='-', ui-options='{{{clearOnBlur: true , clearOnBlurPlaceholder:false, addDefaultPlaceholder: false} | json}}')
+
+        div.m-input-container(flex='50')
+          label Наименование банка
+          br
+          input(ng-class="{'deactiveDashed': vm.mContragent.nameBank }",
+          type="text",
+          ng-model="vm.mContragent.nameBank",
+          bs-options="item.value as item.value for item in vm.bankTypes",
+          bs-typeahead)
+
+
+      div.m-row(layout='row')
+        div.m-input-container(flex='50')
+          label Номер расчетного счета
+          input(required='', name='clientName', ng-model='vm.mContragent.accountNumber',
+          ui-mask='KZ999999999999999999', ui-mask-placeholder=' ', ui-mask-placeholder-char='-', ui-options='{{{clearOnBlur: true , clearOnBlurPlaceholder:false, addDefaultPlaceholder: false} | json}}')
+
+        div.m-input-container(flex='25')
+          label Почтовый индекс
+          input(required='', name='clientName', ng-model='vm.mContragent.postIndex')
+
+        div.m-input-container(flex='25')
+          label Страна
+          br
+          input(ng-class="{'deactiveDashed': vm.mContragent.country }",
+          type="text",
+          ng-model="vm.mContragent.country",
+          bs-options="item.value as item.value for item in vm.countryTypes",
+          bs-typeahead)

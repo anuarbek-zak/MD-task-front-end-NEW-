@@ -1,0 +1,83 @@
+
+div.m-menu-documents.m-menu-documents-right(data-offset-top="100", bs-affix)
+  div.m-menu-documents-item(ui-sref='history')
+    img.disabled(ng-src='../assets/images/menu_icons/realisation5.svg')
+    img.active(ng-src='../assets/images/menu_icons/realisation5-reverse.svg')
+    md-tooltip(md-direction="bottom") История
+  div.m-menu-documents-item(ng-click='vm.logout()')
+    img.disabled(ng-src='../assets/images/menu_icons/realisation6.svg')
+    img.active(ng-src='../assets/images/menu_icons/realisation6-reverse.svg')
+    md-tooltip(md-direction="bottom") Выйти
+
+div.m-row.m-document(layout='row')
+  div(flex="80")
+    h1.text-header Настройки
+
+div.like-invoice-body
+  div(layout='row')
+  div(layout='row' layout-wrap flex)
+    .checkbox
+      label
+        input(type="checkbox", ng-model='vm.settings.copyToEmail', value="", ng-click='vm.saveSettings()')
+        | Выслать копию заявки мне на почту
+    .checkbox
+      label
+        input(type="checkbox", ng-model='vm.settings.sendSMSAfterFihish', value="" , ng-click='vm.saveSettings()')
+        | Отправить смс после завершения
+
+div.like-invoice-title
+  div.m-point
+  | Данные аккаунта
+div.like-invoice-body
+  div.m-row(layout='row')
+    div.m-input-container(flex='50')
+      label  Никнейм
+      input(
+      ng-class="{'deactiveDashed': vm.nickname}",
+      type="text",
+      ng-model="vm.user.representative", name='clientName')
+  div.m-row(layout='row')
+    div.m-input-container(flex='50')
+      label  Почта
+      input(
+      ng-class="{'deactiveDashed': vm.email}",
+      type="email",
+      ng-model="vm.user.email", name='clientName')
+    div.m-input-container(flex='50')
+      label Телефон
+      input(
+      ng-class="{'deactiveDashed': vm.telephone}",
+      type="password1",
+      ng-model="vm.user.telephone",
+      ng-pattern='/^+7 [(][0-9]{3}[)] [0-9]{3}-[0-9]{4}$/',
+      ui-mask='+7 (999) 999-9999',
+      placeholder='',
+      ui-mask-placeholder='',
+      ui-mask-placeholder-char='_')
+  div.m-row(layout='row')
+    md-button(md-no-ink, class="md-primary", ng-click='vm.saveUser()') Сохранить
+
+
+div.like-invoice-title
+  div.m-point
+  | Изменить пароль
+div.like-invoice-body
+  div.m-row(layout='row')
+    div.m-input-container(flex='50')
+      label  Текущий пароль
+      input.password(
+      type="password1",
+      ng-model="vm.password", name='clientName')
+  div.m-row(layout='row')
+    div.m-input-container(flex='50')
+      label  Новый пароль
+      input.password(
+      type="password1",
+      ng-model="vm.newPassword", name='clientName')
+    div.m-input-container(flex='50')
+      label Повторить пароль
+      input.password(
+      type="password1",
+      ng-model="vm.repeatNewPassword", name='clientName')
+  div.m-row(layout='row')
+    md-button(md-no-ink, class="md-primary", ng-click='vm.changePassword()') Изменить пароль

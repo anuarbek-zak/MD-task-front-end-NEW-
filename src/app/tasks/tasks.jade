@@ -1,0 +1,8 @@
+.main-container
+    nav.tabs
+        a.tab(ui-sref-active="active" ui-sref="myTasks") Мои задачи
+        a.tab(ui-sref-active="active" ui-sref="commonTasks") Общие задачи
+        a.tab(ui-sref-active="active" ui-sref="allTasks") Все задачи
+    .tasks-container
+        a.newTask(ui-sref='newTask') + Добавить задачу
+        div(ui-view)

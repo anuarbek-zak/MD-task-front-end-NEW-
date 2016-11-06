@@ -1,0 +1,285 @@
+div.m-menu-documents
+  // (data-offset-top="100", bs-affix)
+  div.m-menu-documents-item(
+  ng-repeat = 'item in vm.docTypes',
+  ng-click='vm.document.docType = item.value; vm.getNumberDocument()',
+  ng-class='{"m-menu-document-item-active": vm.document.docType==item.value}')
+
+    img.disabled(ng-src='../assets/images/menu_icons/realisation/{{item.img}}.svg')
+    img.active(ng-src='../assets/images/menu_icons/realisation/{{item.imgReverse}}.svg')
+    md-tooltip(md-direction="bottom") {{item.value}}
+
+div.m-menu-documents.m-menu-documents-right(data-offset-top="100", bs-affix)
+  div.m-menu-documents-item(ng-click='vm.sendRequestSelling()', ng-class='{animation: vm.getClassValidationForSubmit()}')
+    img.disabled(ng-src='../assets/images/menu_icons/realisation7.svg')
+    img.active(ng-src='../assets/images/menu_icons/realisation7-reverse.svg')
+    md-tooltip(md-direction="bottom") Отправить
+  div.m-menu-documents-item(ui-sref='history')
+    img.disabled(ng-src='../assets/images/menu_icons/realisation5.svg')
+    img.active(ng-src='../assets/images/menu_icons/realisation5-reverse.svg')
+    md-tooltip(md-direction="bottom") История
+  div.m-menu-documents-item(ui-sref='settings')
+    img.disabled(ng-src='../assets/images/menu_icons/settings.svg')
+    img.active(ng-src='../assets/images/menu_icons/settings-reverse.svg')
+    md-tooltip(md-direction="bottom") Настройки
+  div.m-menu-documents-item(ng-click='vm.logout()')
+    img.disabled(ng-src='../assets/images/menu_icons/realisation6.svg')
+    img.active(ng-src='../assets/images/menu_icons/realisation6-reverse.svg')
+    md-tooltip(md-direction="bottom") Выйти
+
+div.m-row.m-document(layout='row')
+  div(flex="80")
+    h1.text-header {{vm.document.docType}} №&nbsp;
+    input.text-header--input( ng-disabled='true', type='text', ng-model='vm.document.number')
+
+  div(flex='20')
+    datepicker.m-datepicker(date-format="от dd MMMM yyyy г.")
+      input.m-input-picker( ng-model="vm.document.date", type="text")
+
+
+m-type-client(ng-if="vm.document.docType" m-contragent="vm.document.contragent" )
+
+
+div(ng-if="vm.document.docType", ng-mouseover='vm.document.invalid = false;')
+  div.like-invoice-title
+    div.m-point(ng-class='vm.getClassValidation()')
+    | {{ vm.document.docType }}
+
+  .like-invoice-body.m-table
+    .m-row.m-table-header(layout='row', ng-if='vm.document.docType=="Счет-фактура"||vm.document.docType=="Счет на оплату"')
+      .m-col(flex=5) №
+      .m-col(flex=5) Код
+      .m-col(flex=30) Наименование
+      .m-col(flex=10) Кол-во
+      .m-col(flex=15) Единица
+      .m-col(flex=10) Цена
+      .m-col(flex=15) Валюта
+      .m-col(flex=15) Сумма
+      .m-col(flex=5)
+        // empty col
+    .m-row.m-table-row(layout='row', , ng-if='vm.document.docType=="Счет-фактура"||vm.document.docType=="Счет на оплату"',
+      ng-repeat="item in vm.document.items track by $index")
+      .m-col.m-col-format(flex=5) {{item.index}}
+      .m-col(flex=5)
+        .m-input-container
+          input(ng-class="{'deactiveDashed': item.code}", required='', name='clientName', ng-model='item.code')
+
+      .m-col(flex=30)
+        .m-input-container
+          textarea(ng-model='item.name',
+          ng-class="{'deactiveDashed': item.name }",
+          required='',
+          name='companyName',
+          dynamic-text-area,
+          msd-elastic)
+
+      // количество
+      .m-col(flex=10)
+        .m-input-container
+          input(ng-class="{'deactiveDashed': item.count}",
+          required='',
+          type='number'
+          name='clientName',
+          ng-model='item.count',
+          ng-blur= 'vm.calculateItem(item)')
+
+      // еденица
+      .m-col(flex=15)
+        .m-input-container(style='padding-top: 5px;')
+          button.m-select(  type='button', ng-model='item.unit', placeholder='', data-html='1', data-toggle='true', bs-options='item.value as item.label for item in vm.units', bs-select='')
+            span.caret
+      // Цена
+      .m-col(flex=10)
+        .m-input-container
+          input(ng-class="{'deactiveDashed': item.price}",
+          required='',
+          type='number'
+          name='clientName',
+          ng-model='item.price',
+          ng-blur= 'vm.calculateItem(item)')
+      // Валюта
+      .m-col(flex=15)
+        .m-input-container(style='padding-top: 5px;')
+          button.m-select(type='button', ng-model='item.currency', placeholder='', data-html='1', data-toggle='true', bs-options='item.value as item.label for item in vm.currencys', bs-select='')
+            span.caret
+      // Сумма
+      .m-col(flex=15)
+        .m-input-container
+          input(ng-class="{'deactiveDashed': item.summ}",
+          required='',
+          type='number'
+          name='clientName',
+          ng-model='item.summ',
+          ng-disabled='true')
+      .m-col.m-plus-row(style='text-align: right;' ,flex=5, ng-class='{"m-remove-row": $index>0}', ng-click='vm.clickToCross($index)') +
+
+
+
+    div(ng-if="vm.document.docType=='Счет на оплату'")
+      div.m-padding-bottom Cделать счет на оплату
+
+      div(layout='row' layout-wrap flex)
+        .checkbox
+          label
+            input(type="checkbox", ng-model='vm.document.naOsnovaniiDogovora', value="")
+            | На основании договора
+
+        .checkbox
+          label
+            input(type="checkbox", ng-model='vm.document.sdelatShetFacturu', value="")
+            | Cделать Cчет-фактуру
+        .checkbox
+          label
+            input(type="checkbox", ng-model='vm.document.sdelatNakladnuy', value="")
+            | Cделать Накладную / Акт
+
+
+    div(ng-if='vm.document.docType=="Счет-фактура"||vm.document.docType=="Накладная"||vm.document.docType=="Акт выполненных работ"')
+      div.m-padding-bottom На основании
+      div(layout='row' layout-wrap flex)
+
+        .radio(ng-if='vm.document.docType=="Счет-фактура"')
+          label
+            input(type='radio', name='optradio', ng-model='vm.document.naOsnovanii', value="Договора")
+            | Договора
+        .radio
+          label
+            input(type='radio', name='optradio', ng-model='vm.document.naOsnovanii', value="Счет на оплату")
+            | Счет на оплату
+        .radio(ng-if='vm.document.docType=="Счет-фактура"')
+          label
+            input(type='radio', name='optradio', ng-model='vm.document.naOsnovanii', value="Доверенности")
+            | Доверенности
+        .radio(ng-if='vm.document.docType=="Счет-фактура"')
+          label
+            input(type='radio', name='optradio', ng-model='vm.document.naOsnovanii', value="Без договора")
+            | Без договора
+        .radio(ng-if='vm.document.docType=="Накладная"||vm.document.docType=="Акт выполненных работ"')
+          label
+            input(type='radio', name='optradio', ng-model='vm.document.naOsnovanii', value="Счет-фактура")
+            | Счет-фактура
+
+      div.m-row(layout='row')
+        .m-input-container(flex=50, ng-if='vm.document.naOsnovanii=="Счет на оплату"')
+          label Счет на оплату
+          br
+          input(type='file' ng-model='vm.document.schetNaOplatu' base-sixty-four-input)
+        .m-input-container(flex=50, ng-if='vm.document.naOsnovanii=="Доверенности"')
+          label Доверенности
+          br
+          input(type='file' ng-model='vm.document.doverennost' base-sixty-four-input)
+        .m-input-container(flex=50, ng-if='vm.document.naOsnovanii=="Счет-фактура"')
+          label Счет-фактура
+          br
+          input(type='file' ng-model='vm.document.shetFactura' base-sixty-four-input)
+
+    div(ng-if='vm.document.naOsnovaniiDogovora||vm.document.naOsnovanii=="Договора" && vm.document.docType!="Накладная" && vm.document.docType!="Акт выполненных работ"')
+      //div.like-invoice-title На основании договора
+
+      div.m-row(layout='row')
+        div.m-input-container(flex='50')
+          label Номер договора
+          input(required='', name='clientName', ng-model='vm.document.osnovanie.nomerDogovora')
+        div.m-input-container(flex='50')
+          label Дата договора
+          datepicker.m-datepicker(date-format="dd MMMM yyyy")
+            input.m-input-picker( ng-model="vm.document.osnovanie.date", type="text")
+
+
+div.like-invoice-title
+  div.m-point
+  | Дополнительные требования:
+
+div.like-invoice-body
+
+
+  div.m-row(layout='row')
+    div.m-input-container(flex='50')
+      label Дополнительная информация
+      br
+      textarea(ng-class="{'deactiveDashed': vm.document.description }",
+      required='',
+      name='description',
+      ng-model='vm.document.description',
+      dynamic-text-area,
+      msd-elastic)
+
+    div.m-input-container(flex='50')
+
+      .checkbox.checkbox-coll(flex='100', ng-if='vm.document.docType=="Счет-фактура"')
+        label
+          input(type="checkbox", ng-model='vm.document.dopSformirovat.nakladnaya', value="")
+          | Сформировать накладную
+      .checkbox.checkbox-coll(flex='100', ng-if='vm.document.docType=="Счет-фактура"')
+        label
+          input(type="checkbox", ng-model='vm.document.dopSformirovat.prihodnik', value="")
+          | Сформировать приходник
+
+
+      .checkbox.checkbox-coll(flex='100')
+        label
+          input(type="checkbox", ng-model='vm.document.sendCopyToContragent', value="")
+          | Копию отправить контрагенту
+
+      .checkbox.checkbox-coll(flex='100')
+        label
+          input(type="checkbox", ng-model='vm.document.sendOriginalTOContragent', value="")
+          | Отправить оригинал по почте контрагенту
+
+      .checkbox.checkbox-coll(flex='100')
+        label
+          input(type="checkbox", ng-model='vm.document.srochno', value="")
+          | Требуется — СРОЧНО!
+
+  div(ng-if="vm.document.sendCopyToContragent")
+    div.m-row(layout='row')
+      div.m-input-container(flex='50')
+        label  Почта контрагента
+        input(required, type="email", name='clientName', ng-model='vm.document.emailContragent', ng-pattern="/^.+@.+\..+$/")
+
+      div.m-input-container(flex='50')
+        label Контактное лицо
+        input(required, type="text", name='clientName', ng-model='vm.document.nameContragent')
+
+
+
+
+div(ng-if="vm.document.sendOriginalTOContragent")
+  div.like-invoice-title
+    div.m-point
+    | Доставка документов
+
+  div.like-invoice-body
+    div(layout='row')
+      div.m-padding-bottom Доставка документов от двери до двери. Цена — 600 тенге за 1 доставку по городу Алматы. Направление Астана / Караганда — 1600 тенге в одну сторону. Другие направления по РК — 1800 тенге в одну сторону.
+
+    //Доставить контрагенту   Забрать у контрагента   Поручить контроль MD
+    div(layout='row' layout-wrap flex)
+      .checkbox
+        label
+          input(type="checkbox", ng-model='vm.document.sendContragent', value="")
+          | Доставить контрагенту
+      .checkbox
+        label
+          input(type="checkbox", ng-model='vm.document.reciveToContragent', value="")
+          | Забрать у контрагента
+      .checkbox
+        label
+          input(type="checkbox", ng-model='vm.document.entrustToMD', value="")
+          | Поручить контроль MD
+
+    div.m-row(layout='row')
+      div.m-input-container(flex='40')
+        label Ответственное лицо
+        input(required='', name='email', ng-model='vm.document.clientName')
+      div.m-input-container(flex='30')
+        label Контактный телефон
+        input(required='', name='phone', ng-model='vm.document.contactPhone', ng-pattern='/^+7 [(][0-9]{3}[)] [0-9]{3}-[0-9]{4}$/', ui-mask='+7 (999) 999-9999',  ui-mask-placeholder='', ui-mask-placeholder-char='_')
+
+
+div(ng-if='vm.document.srochno')
+  div.like-invoice-title Условие срочных заявок
+
+  div.like-invoice-body
+    div(layout='row')
+      div Срочная заявка обрабатывается в течении 15 минут. Цена — 500 тенге за 1 заявку.

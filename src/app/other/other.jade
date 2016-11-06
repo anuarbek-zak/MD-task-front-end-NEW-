@@ -1,0 +1,156 @@
+div.m-menu-documents
+  //(data-offset-top="100", bs-affix)
+  //data-offset-top="-80", bs-affix
+  div.m-menu-documents-item(
+  ng-repeat = 'item in vm.docTypes',
+  ng-click='vm.document.docType = item.value; vm.getNumberDocument()',
+  ng-class='{"m-menu-document-item-active": vm.document.docType==item.value}')
+    img.disabled(ng-src='../assets/images/menu_icons/other/{{item.img}}.svg')
+    img.active(ng-src='../assets/images/menu_icons/other/{{item.imgReverse}}.svg')
+    md-tooltip(md-direction="bottom") {{item.value}}
+
+div.m-menu-documents.m-menu-documents-right(data-offset-top="100", bs-affix)
+  div.m-menu-documents-item(ng-click='vm.sendRequestSelling()', ng-class='{animation: vm.getClassValidationForSubmit()}')
+    img.disabled(ng-src='../assets/images/menu_icons/realisation7.svg')
+    img.active(ng-src='../assets/images/menu_icons/realisation7-reverse.svg')
+    md-tooltip(md-direction="bottom") Отправить
+  div.m-menu-documents-item(ui-sref='history')
+    img.disabled(ng-src='../assets/images/menu_icons/realisation5.svg')
+    img.active(ng-src='../assets/images/menu_icons/realisation5-reverse.svg')
+    md-tooltip(md-direction="bottom") История
+  div.m-menu-documents-item(ui-sref='settings')
+    img.disabled(ng-src='../assets/images/menu_icons/settings.svg')
+    img.active(ng-src='../assets/images/menu_icons/settings-reverse.svg')
+    md-tooltip(md-direction="bottom") Настройки
+  div.m-menu-documents-item(ng-click='vm.logout()')
+    img.disabled(ng-src='../assets/images/menu_icons/realisation6.svg')
+    img.active(ng-src='../assets/images/menu_icons/realisation6-reverse.svg')
+    md-tooltip(md-direction="bottom") Выйти
+
+
+div.m-row.m-document(layout='row')
+  div(flex="80")
+    h1.text-header {{vm.document.docType}} №&nbsp;
+    input.text-header--input(ng-disabled='true', type='text', ng-model='vm.document.number')
+
+  div(flex='20')
+    datepicker.m-datepicker(date-format="от dd MMMM yyyy г.")
+      input.m-input-picker( ng-model="vm.document.date", type="text")
+
+m-type-client(ng-if="vm.document.docType" m-contragent="vm.document.contragent" )
+
+div(ng-mouseover='vm.document.invalid = false;')
+  //Акт сверки
+  div(ng-show='vm.document.docType=="Акт сверки"')
+    div.like-invoice-title
+      div.m-point(ng-class='vm.getClassValidation()')
+      | Акт сверки
+    div.like-invoice-body
+
+      div.m-row(layout='row')
+        div.m-input-container(flex='50',  style='margin-top: 14px;')
+          label Период с
+          br
+          datepicker.m-datepicker(date-format="dd MMMM yyyy")
+            input(ng-class="{'deactiveDashed': vm.document.dateStart }",
+            required='',
+            name='companyName',
+            ng-model='vm.document.dateStart')
+        div.m-input-container(flex='50',  style='margin-top: 14px;')
+          label По период
+          br
+          datepicker.m-datepicker(date-format="dd MMMM yyyy")
+            input(ng-class="{'deactiveDashed': vm.document.dateFinish }",
+            required='',
+            name='companyName',
+            ng-model='vm.document.dateFinish')
+
+  // Справка об отсутствии задолженности
+  div(ng-show='vm.document.docType=="Справка об отсутствии задолженности"')
+    div.like-invoice-title
+      div.m-point(ng-class='vm.getClassValidation()')
+      | Справка об отсутствии задолженности
+    div.like-invoice-body
+      div.m-row(layout='row' layout-wrap flex)
+        div.m-padding-bottom(flex='100') Запросить справку
+        .checkbox
+          label
+            input(type="checkbox", ng-model='vm.document.referenceToBank', value="")
+            | c Банка
+
+        .checkbox
+          label
+            input(type="checkbox", ng-model='vm.document.referenceToHK', value="")
+            | c НК
+
+      div.m-row(layout='row')
+        div.m-input-container(flex='50')
+          label Период с
+          br
+          datepicker.m-datepicker(date-format="dd MMMM yyyy")
+            input(ng-class="{'deactiveDashed': vm.document.dateStart }",
+            required='',
+            name='companyName',
+            ng-model='vm.document.dateStart')
+        div.m-input-container(flex='50')
+          label По период
+          br
+          datepicker.m-datepicker(date-format="dd MMMM yyyy")
+            input(ng-class="{'deactiveDashed': vm.document.dateFinish }",
+            required='',
+            name='companyName',
+            ng-model='vm.document.dateFinish')
+
+  //дверенность
+  div(ng-show='vm.document.docType=="Доверенность"')
+    div.like-invoice-title
+      div.m-point(ng-class='vm.getClassValidation()')
+      | Доверенность
+    div.like-invoice-body
+
+      div.m-row(layout='row')
+        div.m-input-container(flex='50')
+          label Доверенное лицо
+          br
+          input(ng-class="{'deactiveDashed': vm.document.confidant }",
+          required='',
+          name='companyName',
+          ng-model='vm.document.confidant')
+        div.m-input-container(flex='50')
+          label Должность
+          br
+          input(ng-class="{'deactiveDashed': vm.document.position }",
+          required='',
+          name='companyName',
+          ng-model='vm.document.position')
+
+      div.m-row(layout='row')
+        .m-input-container(flex=50)
+          label На основании
+          br
+          input(type='file' ng-model='vm.document.osnovanie' base-sixty-four-input)
+
+div.like-invoice-title
+  div.m-point
+  | Дополнительные требования
+div.like-invoice-body
+  div.m-row(layout='row')
+    div.m-input-container(flex='50')
+      label Дополнительная информация
+      br
+      textarea(ng-class="{'deactiveDashed': vm.document.description }",
+      required='',
+      name='description',
+      ng-model='vm.document.description',
+      dynamic-text-area,
+      msd-elastic)
+    div.m-input-container(flex='50')
+      .checkbox.checkbox-coll(flex='100')
+        label
+          input(type="checkbox", ng-model='vm.document.srochno', value="")
+          | Требуется — СРОЧНО!
+div(ng-if='vm.document.srochno')
+  div.like-invoice-title Условие срочных заявок
+  div.like-invoice-body
+    div(layout='row')
+      div Срочная заявка обрабатывается в течении 15 минут. Цена — 500 тенге за 1 заявку.

@@ -1,0 +1,16 @@
+footer.footer(ng-class='{"footer-auth": vvm.$state.current.name=="auth"}')
+  span.footer-text
+    | © 2008 — 2016 MADE WITH&nbsp;
+    img.heart-gif(src='assets/images/love.gif')
+    | &nbsp;&nbsp;
+    a(href='http://express.mirusdesk.kz/')   BY MIRUSDESK | RELEASE 2.0
+    br(ng-if='vvm.$state.current.name=="auth"')
+    |  POWERED BY&nbsp;&nbsp;
+    img(src='assets/images/automato.png')
+    | &nbsp;
+    a(href='http://pro.automato.me/')  AUTOMATO
+    | &nbsp;
+    br(ng-if='vvm.$state.current.name=="auth"')
+    |  &nbsp;ОБРАБОТАНО&nbsp;
+    span.ng-binding(style='color: #000;', ng-bind='vvm.counter')
+    |  ЗАЯВОК
