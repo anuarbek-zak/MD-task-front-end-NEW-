@@ -1,5 +1,5 @@
 export class NewTaskController{
-    constructor($http, $localStorage, CheckAuthService, envService){
+    constructor($http, $localStorage, $window, CheckAuthService, envService){
         'ngInject';
 
         var vm = this;
@@ -42,6 +42,13 @@ export class NewTaskController{
             });
         };
 
+        vm.hideMembers = function () {
+            vm.users = vm.users.concat(vm.auditors.concat(vm.performers));
+            vm.auditors=[];
+            vm.performers=[];
+            vm.members = !vm.members;
+        }
+
 
         vm.createTask = function (task) {
             if(task){
@@ -65,7 +72,9 @@ export class NewTaskController{
                 //     .error(function(err){
                 //         console.log(err);
                 //     });
+
                 alert("Задача успешно поставлена!");
+                $window.location.href = "#/tasks/myTasks";
                 }else{
                     console.log("OTMENA");
                 }
