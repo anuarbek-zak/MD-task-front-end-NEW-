@@ -1,19 +1,18 @@
 export class AllTasksController{
     constructor($http, $localStorage, CheckAuthService, envService){
         'ngInject';
-        var vm = this;
-        this.$http = $http;
-        this.$localStorage = $localStorage;
-        let userId = $localStorage.user._id;
-        console.log("Pawet my tasks sd");
 
-        $http.get('apiwka')
-            .success(function(response){
-                vm.tasks = response;
-            })
-            .error(function(err){
-                console.log(err);
-            });
+        var vm = this;
+        let userId = $localStorage.user._id;
+
+        // $http.get('apiwka')
+        //     .success(function(response){
+        //         vm.tasks = response;
+        //     })
+        //     .error(function(err){
+        //         console.log(err);
+        //     });
+
         vm.tasks = [
             {"performer":
                 [{"name":"Петя","position":"Прогер","_id":2},

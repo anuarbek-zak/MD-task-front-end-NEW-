@@ -1,14 +1,30 @@
-.myTask{
+.tasks{
+  margin: 20px auto;
+  width: 700px;
+}
+.task{
   border-top:1px solid #888;
-  margin-bottom:15px;
+  padding:15px;
+  cursor: pointer;
+  &:first-child{
+    border-top: none;
+  }
+  &:hover{
+    background: darken(#f2f2f2,2%);
+  }
+  &__star{
+    font-size: 18px;
+    &:hover{
+      color: @selling;
+
+    }
+  }
 }
 
-.myTask:first-child{
-  border-top: none;
-}
-
-.creator,.performer{
-  text-decoration: underline;
+.task__th,.task__td{
+  padding: 5px 15px;
+  color: #929292;
+  font-weight: normal;
 }
 
 .deadline{

@@ -2,18 +2,16 @@ export class MyTasksController{
     constructor($http, $localStorage, CheckAuthService, envService){
         'ngInject';
         var vm = this;
-        this.$http = $http;
-        this.$localStorage = $localStorage;
         let userId = $localStorage.user._id;
-        console.log("Pawet my tasks sd");
 
-        $http.post('apiwka',userId)
-            .success(function(response){
-                vm.tasks = response;
-            })
-            .error(function(err){
-                console.log(err);
-            });
+        // $http.post('apiwka',userId)
+        //     .success(function(response){
+        //         vm.tasks = response;
+        //     })
+        //     .error(function(err){
+        //         console.log(err);
+        //     });
+
         vm.tasks = [{"performer":
                         [{"name":"Петя","position":"Прогер","_id":2},
                         {"name":"Надя","position":"Прогер","_id":4},
@@ -43,6 +41,16 @@ export class MyTasksController{
                     "required":false,
                     "creator":"Елнур",
                      _id:2}];
+
+        vm.addToFavorites = function (id) {
+            $http.post("apiwka",id)
+                .success(function (res) {
+                    console.log(res);
+                })
+                .error(function (res) {
+                    console.log(res);
+                });
+        };
         this.logout = CheckAuthService.logout;
     }
 }

@@ -2,7 +2,7 @@
     form.main-container__form(name="newTaskForm" ng-submit="vm.createTask(task)")
         .m-input-container
             label(for="name") Название задачи
-            input.m-input-container(required class="md-input-container"  name="name" id="name" ng-model="task.name")
+            input.m-input-container(novalidate required class="md-input-container"  name="name" id="name" ng-model="task.name")
             br
 
         .m-input-container
