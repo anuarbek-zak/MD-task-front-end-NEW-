@@ -1,26 +1,26 @@
 export class NewTaskController{
     constructor($http, $localStorage, CheckAuthService, envService){
         'ngInject';
+
         var vm = this;
-        this.$http = $http;
-        this.$localStorage = $localStorage;
+        vm.members = false;
+        vm.performers=[];
+        vm.auditors = [];
+        vm.responsibles = [];
         let userId = $localStorage.user._id;
+
         console.log("User id is " +userId);
-        console.log("Pomenial");
 
 
         $http.get("https://md-tasks.herokuapp.com/api/users/all")
             .success(function(response){
                 vm.users = response;
-                console.log("REsponse "+response);
+                console.log(response);
             })
             .error(function(err){
                 console.log(err);
             });
 
-        vm.performers=[];
-        vm.auditors = [];
-        vm.responsibles = [];
 
         vm.removeFromUsers = function (id,arr) {
             vm.users.forEach(function (user,i,users) {
@@ -53,7 +53,7 @@ export class NewTaskController{
                 vm.idToArr(vm.auditors,task.auditor);
                 vm.idToArr(vm.responsibles,task.responsible);
 
-                console.log((task));
+                console.log(task);
 
 
 
