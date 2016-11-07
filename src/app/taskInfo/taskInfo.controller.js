@@ -2,18 +2,28 @@ export class TaskInfoController{
     constructor($http, $localStorage,$stateParams, CheckAuthService, envService){
         'ngInject';
         var vm = this;
-        this.$http = $http;
-        this.$localStorage = $localStorage;
         let userId = $localStorage.user._id;
 
         vm.taskId = $stateParams.taskId;
-        $http.post('apiwkaTesta',vm.taskId)
-            .success(function(response){
-                vm.task = response;
-            })
-            .error(function(err){
-                console.log(err);
-            });
+
+        // $http.post('apiwkaTesta',vm.taskId)
+        //     .success(function(response){
+        //         vm.task = response;
+        //     })
+        //     .error(function(err){
+        //         console.log(err);
+        //     });
+
+        // vm.closeTask = function(){
+        //     $http.delete("apiwka",vm.taskId)
+        //         .success(function (res) {
+        //
+        //         })
+        //         .error(function (res) {
+        //             console.log(res);
+        //         })
+        // }
+
         vm.task = {"performer":
             [{"name":"Петя","position":"Прогер","_id":2},
                 {"name":"Надя","position":"Прогер","_id":4},

@@ -6,17 +6,32 @@
   border-top:1px solid #888;
   padding:15px;
   cursor: pointer;
+  &__td{
+    &__favorite{
+      text-align: center;
+      width: 80px;
+      background: rgba(0,0,0,.35);
+      color: #ffffff;
+      font-size: 12px;
+      border-radius:3px;
+      display: none;
+      position: absolute;
+    }
+  }
   &:first-child{
     border-top: none;
   }
   &:hover{
-    background: darken(#f2f2f2,2%);
+    background: darken(#f2f2f2,5%);
   }
   &__star{
     font-size: 18px;
     &:hover{
       color: @selling;
 
+    }
+    &:hover .task__td__favorite{
+      display: block;
     }
   }
 }
@@ -29,4 +44,9 @@
 
 .deadline{
   color: #f95959;
+}
+
+.main-star{
+  color: @selling;
+  font-size: 20px;
 }

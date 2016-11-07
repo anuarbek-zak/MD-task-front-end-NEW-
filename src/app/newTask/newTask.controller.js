@@ -3,24 +3,41 @@ export class NewTaskController{
         'ngInject';
 
         var vm = this;
+        this.$http = $http;
+        this.$localStorage = $localStorage;
         vm.members = false;
         vm.performers=[];
         vm.auditors = [];
         vm.responsibles = [];
+
         let userId = $localStorage.user._id;
 
-        console.log("User id is " +userId);
+        console.log("User id is " +userId); 
 
 
-        $http.get("https://md-tasks.herokuapp.com/api/users/all")
+        $http.get("https://md-tasks.herokuapp.com/api/contragents/all")
             .success(function(response){
-                vm.users = response;
+                vm.customers = response;
                 console.log(response);
             })
             .error(function(err){
                 console.log(err);
             });
 
+        $http.get("https://md-tasks.herokuapp.com/api/users/all")
+            .success(function(response){
+                vm.users = response;
+            })
+            .error(function(err){
+                console.log(err);
+            });
+
+        vm.hideMembers = function () {
+            vm.users = vm.users.concat(vm.auditors.concat(vm.performers));
+            vm.performers=[];
+            vm.auditors=[];
+            vm.members = !vm.members;
+        };
 
         vm.removeFromUsers = function (id,arr) {
             vm.users.forEach(function (user,i,users) {
@@ -30,6 +47,14 @@ export class NewTaskController{
                 }
             });
         };
+
+        // vm.removeFromUsers = function (index,arr) {
+        //     console.log(index);
+        //     arr.push(vm.users[index]);
+        //     vm.users.splice(index,1);
+        //     console.log(vm.users);
+        //     console.log(arr);
+        // };
 
         vm.addToUsers = function (user,arr) {
           vm.users.push(user);
@@ -42,13 +67,6 @@ export class NewTaskController{
             });
         };
 
-        vm.hideMembers = function () {
-            vm.users = vm.users.concat(vm.auditors.concat(vm.performers));
-            vm.auditors=[];
-            vm.performers=[];
-            vm.members = !vm.members;
-        }
-
 
         vm.createTask = function (task) {
             if(task){
@@ -59,7 +77,6 @@ export class NewTaskController{
                 vm.idToArr(vm.performers,task.performer);
                 vm.idToArr(vm.auditors,task.auditor);
                 vm.idToArr(vm.responsibles,task.responsible);
-
                 console.log(task);
 
 
@@ -79,10 +96,5 @@ export class NewTaskController{
                     console.log("OTMENA");
                 }
         };
-
-
-
-
-        this.logout = CheckAuthService.logout;
     }
 }

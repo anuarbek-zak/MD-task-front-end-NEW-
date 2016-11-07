@@ -1,6 +1,9 @@
 .main-container
         .myTask
             h3 {{vm.task.name}}
+            button.close-task.md-btn(ng-click="vm.closeTask()") Закрыть задачу
+            button.close-task.md-btn(ng-click="vm.pauseTask()") Поставить на паузу
+            button.close-task.md-btn(ng-click="vm.addSubTask()") Добавить подзадачу
             .description
                 h5 Суть задачи:
                 p {{vm.task.description}}
@@ -18,3 +21,15 @@
                 span.deadline{{vm.task.deadline}}
 
             h5.creator Постановщик: {{vm.task.creator}}
+            form.main-container__form(name="newTaskForm" ng-submit="vm.func(form)")
+                .m-input-container.comment
+                    label Коментарийй
+                    input(type="text" ng-model="form.comment")
+                .m-input-container.comment
+                    label Потрачено времени
+                    input(type="text" placeholder="Пример: 2 недели 3 дня 4 часа 30 минут" ng-model="form.time")
+                .m-input-container.comment
+                    label Процент завершения
+                    input(type="text" ng-model="form." +
+                    "progress" placeholder="Укажите процент завершениязадачи на данный момент")
+                input.md-btn.myTask__write-btn(type="submit" value="Написать")

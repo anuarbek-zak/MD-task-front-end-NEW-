@@ -12,19 +12,20 @@
 
         .m-input-container
             label(for="responsible") Ответственные
-            select(required name="responsible" ng-change="vm.removeFromUsers(task.responsible,vm.responsibles)" id="responsible" ng-model="task.responsible")
-                option(ng-repeat="user in vm.users" value="{{user._id}}").
-                    {{user.name+"("+user.position+")"}}
+            select(id="responsible" ng-change="vm.removeFromUsers(task.responsible,vm.responsibles)" ng-model="task.responsible")
+                option(ng-repeat="user in vm.users" value="{{user._id}}") {{user.name+"("+user.position+")"}}
             br
         .user(ng-repeat="responsible in vm.responsibles")
             p(style="display:inline-block") {{responsible.name+" "+responsible.position}}
-            button.user__btn-remove(ng-click="vm.addToUsers(responsible,vm.responsibles)") Х
-        br
+            button.user__btn-remove(ng-click="vm.addToUsers(responsible,vm.responsibles)") &times;
+            br
 
         .m-input-container
             label(for="deadline") Дедлайн
-            input(name="deadline" id="deadline" ng-model="task.deadline")
+            input.deadline(name="deadline" id="deadline" ng-model="task.deadline")
             br
+            span.burn(ng-click="task.urgent=!task.urgent" ng-init="task.urgent=false") Горит
+
 
         .requred
             label(for='required') Сделать задачу объязательной
@@ -32,9 +33,9 @@
             br
 
         .members.extra-section(ng-show="vm.members")
-            button.md-btn.extra-section__delete(ng-click="vm.hideMembers()") Удалить участников
+            span.md-btn.extra-section__delete(ng-click="vm.hideMembers();task.customer=''") Удалить участников
             .m-input-container
-                label(for="performer") Исполнители
+                label(for="performer") Соисполнители
                 select(id="performer" ng-change="vm.removeFromUsers(task.performer,vm.performers)" ng-model="task.performer")
                     option(ng-repeat="user in vm.users" value="{{user._id}}")
                         .performer {{user.name+"("+user.position+")"}}
@@ -52,10 +53,15 @@
                 p(style="display:inline-block") {{auditor.name+" "+auditor.position}}
                 button.user__btn-remove(ng-click="vm.addToUsers(auditor,vm.auditors)") &times;
             br
-
+            .m-input-container
+                label(for="customer") Заказчик
+                select(id="customer" ng-model="task.customer")
+                    option(ng-repeat="customer in vm.customers" value="{{customer._id}}") {{customer.companyName}}
+                br
         .hidden-sections
             a.hidden-sections__link(ng-click="vm.members=true" ng-show="!vm.members") + Добавить участников
 
         .submit-btns
         input.md-btn.submit(type="submit" value="Поставить задачу" ng-disabled="newTaskForm.$invalid")
         a.close-task(ui-sref="myTasks") Закрыть без сохранения
+        .task {{task}}
