@@ -1,26 +1,29 @@
 .main-container
-            h3 {{vm.taskId}} {{vm.task.name}}
-            .project-actions
-                a.project-actions__action(ng-click="vm.closeTask()") Закрыть задачу
-                a.project-actions__action(ng-click="vm.pauseTask()") Поставить на паузу
-                a.project-actions__action(ng-click="vm.addSubTask()") Добавить подзадачу
+            h3 {{vm.task.name}}
+            ul.project-actions
+                li
+                    a.project-actions__action(ng-click="vm.closeTask()") Закрыть задачу
+                li
+                    a.project-actions__action(ng-click="vm.pauseTask()") Поставить на паузу
+                li
+                    a.project-actions__action(ng-click="vm.addSubTask()") Добавить подзадачу
             .description
                 h5 Суть задачи:
                 p {{vm.task.description}}
 
-            h5.performers Исполнитель(ли):
-                span.performer(ng-repeat="performer in vm.task.performer") {{" "+performer.name+" "}}
+            h5.performers Соисполнитель(ли):
+                span.performer(ng-repeat="performer in vm.task.performers") {{" "+performer.name+" "}}
 
             p.auditors Аудитор(ы):
-                span.auditor(ng-repeat="auditor in vm.task.auditor") {{" "+auditor.name+" "}}
+                span.auditor(ng-repeat="auditor in vm.task.auditors") {{" "+auditor.name+" "}}
 
-            p.responsibles Ответсвенный(ные):
-                span.responsible(ng-repeat="responsible in vm.task.responsible") {{" "+responsible.name+" "}}
+            p.responsibles Ответсвенный:
+                span.responsible {{" "+responsible+" "}}
 
             p Дедлайн:
                 span.deadline{{vm.task.deadline}}
 
-            h5.creator Постановщик: {{vm.task.creator}}
+            h5.creator Постановщик: {{vm.task.creator.name}}
             form.main-container__form(name="newTaskForm" ng-submit="vm.func(form)")
                 .m-input-container.comment
                     label Коментарийй

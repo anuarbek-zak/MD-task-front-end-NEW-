@@ -9,8 +9,22 @@
 }
 
 .project-actions{
-  margin-bottom: 20px;
+  position: absolute;
+  top: 0;
+  left: 94%;
+  list-style: none;
   &__action{
-    margin-right: 15px;
+    background: #f2f2f2;
+    display: inline-block;
+    padding: 7px 4px 7px 15px;
+    border-radius:0 3px 3px 0;
+    cursor: pointer;
+    color: @selling;
+    margin-bottom: 5px;
+    &:hover{
+      transition:.7s;
+      color: darken(@selling, 10%);
+      text-decoration: none;
+    }
   }
 }

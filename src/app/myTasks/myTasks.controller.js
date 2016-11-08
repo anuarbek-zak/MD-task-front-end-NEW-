@@ -4,13 +4,13 @@ export class MyTasksController{
         var vm = this;
         let userId = $localStorage.user._id;
         userId = "581c4bf33afb2fcb15258c5b";
-
         vm.getTasks = function (responsible=true,creator=true,favourite=false,urgent=false) {
             console.log("HWllo");
             $http.post('https://md-tasks.herokuapp.com/api/tasks/filterBy',
                 {_id:userId,responsible:responsible,creator:creator,favourite:favourite,urgent:urgent})
                 .success(function(response){
                     vm.tasks = response;
+                    console.log(vm.tasks[0].visited);
                 })
                 .error(function(err){
                     console.log(err);

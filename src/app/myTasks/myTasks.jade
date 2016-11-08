@@ -1,6 +1,7 @@
 .main-container
     h3(syle="display:none" ng-show="!vm.tasks.length") Пока нет задач
     .main-container__filters
+        a.main-container__filters__filter(ng-click="vm.getTasks()") Все
         a.main-container__filters__filter(ng-click="vm.getTasks(true,false,false,false)") Входящие
         a.main-container__filters__filter(ng-click="vm.getTasks(false,true,false,false)") Исходящие
         a.main-container__filters__filter(ng-click="vm.getTasks(true,true,true,false)") Избранные
@@ -14,16 +15,17 @@
         th.task__th Постановщик
         th.task__th  Избранные
             tr.task(ng-repeat="task in vm.tasks")
-                td.task__td(ui-sref="taskInfo({taskId:task._id})")
-                    h4.task__td__name  {{task.name}}
+                td.task__td(ui-sref="taskInfo({taskId:task._id})" ng-class="{'not-visited':!task.visited}")
+                    span.task__td__circle(ng-class="{'circle-active':!task.visited}")
+                    h4.task__td__name(ng-class="{'not-visited':!task.visited}")  {{task.name}}
                 td.task__td
-                    span.deadline{{task.deadline}}
+                    span.deadline(ng-class="{'not-visited':!task.visited}"){{task.deadline}}{{vm.hello}}
 
                 td.task__td
-                    span.responsible{{task.responsible.name}}
+                    span.responsible(ng-class="{'not-visited':!task.visited}"){{task.responsible.name}}
 
                 td.task__td
-                    span.creator{{task.creator.name}}
+                    span.creator(ng-class="{'not-visited':!task.visited}"){{task.creator.name}}
 
 
                 td.task__td.task__star(ng-class="{'star-active':task.favourite}" ng-click="vm.addToFavourites(task)")  &#9733;

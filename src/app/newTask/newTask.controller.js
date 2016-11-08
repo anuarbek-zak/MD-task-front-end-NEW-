@@ -80,13 +80,14 @@ export class NewTaskController{
                 $http.post("https://md-tasks.herokuapp.com/api/tasks/create",task)
                     .success(function(response){
                         console.log(response);
+                        alert("Задача успешно поставлена!");
+                        $window.location.href = "#/tasks/myTasks";
                     })
                     .error(function(err){
+                        alert("Задача не созадана. Попробуйте еще раз");
                         console.log(err);
                     });
 
-                alert("Задача успешно поставлена!");
-                $window.location.href = "#/tasks/myTasks";
                 }else{
                     console.log("OTMENA");
                 }
