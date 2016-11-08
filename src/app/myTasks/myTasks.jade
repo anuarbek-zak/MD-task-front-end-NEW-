@@ -1,22 +1,31 @@
 .main-container
     h3(syle="display:none" ng-show="!vm.tasks.length") Пока нет задач
-    .outcome-income
-        a(ng-click="vm.income()") Входящие
-        a(ng-click="vm.outcome()") Исходящие
+    .main-container__filters
+        a.main-container__filters__filter(ng-click="vm.getTasks(true,false,false,false)") Входящие
+        a.main-container__filters__filter(ng-click="vm.getTasks(false,true,false,false)") Исходящие
+        a.main-container__filters__filter(ng-click="vm.getTasks(true,true,true,false)") Избранные
+        a.main-container__filters__filter(ng-click="vm.getTasks(true,true,false,true)") Горящие
+        a.main-container__filters__filter(ng-click="vm.getTasks(true,true,false,true)") Завершнные
+        a.main-container__filters__filter(ng-click="vm.getTasks(true,true,false,true)") На паузе
     table.tasks(ng-show="vm.tasks.length")
         th.task__th Задача
         th.task__th Дедлайн
         th.task__th Ответственный
+        th.task__th Постановщик
         th.task__th  Избранные
-            tr.task(ng-repeat="task in vm.tasks" ui-sref="taskInfo({taskId:task._id})")
-                td.task__td
-                    h4  {{task.name}}
+            tr.task(ng-repeat="task in vm.tasks")
+                td.task__td(ui-sref="taskInfo({taskId:task._id})")
+                    h4.task__td__name  {{task.name}}
                 td.task__td
                     span.deadline{{task.deadline}}
 
                 td.task__td
                     span.responsible{{task.responsible.name}}
 
-                td.task__td.task__star(ng-click="vm.addToFavorites(task._id)")  &#9733;
+                td.task__td
+                    span.creator{{task.creator.name}}
+
+
+                td.task__td.task__star(ng-class="{'star-active':task.favourite}" ng-click="vm.addToFavourites(task)")  &#9733;
                     span.task__td__favorite Добавить в избранные
 

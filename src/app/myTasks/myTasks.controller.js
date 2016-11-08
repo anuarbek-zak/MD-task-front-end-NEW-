@@ -3,46 +3,29 @@ export class MyTasksController{
         'ngInject';
         var vm = this;
         let userId = $localStorage.user._id;
-        userId = "58188d91acb42a09bd838d25";
+        userId = "581c4bf33afb2fcb15258c5b";
 
-        $http.post('https://md-tasks.herokuapp.com/api/tasks/my',{userId:userId})
-            .success(function(response){
-                vm.tasks = response;
-            })
-            .error(function(err){
-                console.log(err);
-            });
+        vm.getTasks = function (responsible=true,creator=true,favourite=false,urgent=false) {
+            console.log("HWllo");
+            $http.post('https://md-tasks.herokuapp.com/api/tasks/filterBy',
+                {_id:userId,responsible:responsible,creator:creator,favourite:favourite,urgent:urgent})
+                .success(function(response){
+                    vm.tasks = response;
+                })
+                .error(function(err){
+                    console.log(err);
+                });
+        };
 
-        vm.outcome = function () {
-            // $http.post('https://md-tasks.herokuapp.com/api/tasks/my/outcome',{userId:userId})
-            //     .success(function(response){
-            //         vm.tasks = response;
-            //     })
-            //     .error(function(err){
-            //         console.log(err);
-            //     });
-
-        }
-
-       vm.income = function () {
-           // $http.post('https://md-tasks.herokuapp.com/api/tasks/my/income',{userId:userId})
-           //     .success(function(response){
-           //         vm.tasks = response;
-           //     })
-           //     .error(function(err){
-           //         console.log(err);
-           //     });
-       }
-
-        vm.addToFavorites = function (id) {
-            // $http.post("apiwka",id)
-            //     .success(function (res) {
-            //         console.log(res);
-            //     })
-            //     .error(function (res) {
-            //         console.log(res);
-            //     });
-
+        vm.getTasks();
+        vm.addToFavourites = function (task) {
+            $http.post("https://md-tasks.herokuapp.com/api/tasks/addToFavourites",{_id:task._id})
+                .success(function (res) {
+                    task.favourite = res;
+                })
+                .error(function (res) {
+                    console.log(res);
+                });
 
         };
         this.logout = CheckAuthService.logout;

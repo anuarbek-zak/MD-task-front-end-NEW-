@@ -11,10 +11,10 @@ export class NewTaskController{
         vm.responsible="";
         let userId = $localStorage.user._id;
 
-        userId = "58188d91acb42a09bd838d25";
+        userId = "581c4bf33afb2fcb15258c5b";
         console.log("User id is " +userId);
 
-        $http.get("https://md-tasks.herokuapp.com/api/contragents/all")
+        $http.get("https://md-tasks.herokuapp.com/api/clients/all")
             .success(function(response){
                 vm.customers = response;
                 console.log(response);
@@ -32,15 +32,7 @@ export class NewTaskController{
             });
 
         vm.chooseResponsible = function (id) {
-            if(vm.responsible==""){
-                vm.users.forEach(function (user,i,users) {
-                    if(user._id==id){
-                        vm.responsible = user;
-                        users.splice(i,1)
-                    }
-                });
-            }else{
-                vm.users.push(vm.responsible);
+                if(vm.responsible!="") vm.users.push(vm.responsible);
                 vm.users.forEach(function (user,i,users) {
                     if(user._id==id){
                         vm.responsible = user;
@@ -48,7 +40,7 @@ export class NewTaskController{
                     }
                 });
             }
-        }
+
 
         vm.hideMembers = function () {
             vm.users = vm.users.concat(vm.auditors.concat(vm.performers));
@@ -94,7 +86,7 @@ export class NewTaskController{
                     });
 
                 alert("Задача успешно поставлена!");
-                // $window.location.href = "#/tasks/myTasks";
+                $window.location.href = "#/tasks/myTasks";
                 }else{
                     console.log("OTMENA");
                 }

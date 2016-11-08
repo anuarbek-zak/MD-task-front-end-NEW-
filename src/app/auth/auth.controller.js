@@ -47,6 +47,8 @@ export class AuthController {
         console.log(response);
 
         $localStorage.user = response.data;
+        // $localStorage.user._id ="581c4bf33afb2fcb15258c5b";
+
         $state.go('selling');
       }, function errorCallback(response) {
         console.log(response);

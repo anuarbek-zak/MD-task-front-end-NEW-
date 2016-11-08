@@ -1,3 +1,19 @@
+.main-container{
+  &__filters{
+    margin:20px auto;
+    background: #e8e8e8;
+    padding: 15px;
+    &__filter{
+      display: inline-block;
+      text-decoration: underline;
+      cursor: pointer;
+      width: 10%;
+      margin-left: 5%;
+      text-align: center;
+    }
+  }
+}
+
 .tasks{
   margin: 20px auto;
   width: 700px;
@@ -5,8 +21,14 @@
 .task{
   border-top:1px solid #888;
   padding:15px;
-  cursor: pointer;
+
   &__td{
+    &__name{
+      &:hover{
+        cursor: pointer;
+        text-decoration: underline;
+      }
+    }
     &__favorite{
       text-align: center;
       width: 80px;
@@ -49,4 +71,8 @@
 .main-star{
   color: @selling;
   font-size: 20px;
+}
+
+.star-active{
+  color: @selling !important;
 }

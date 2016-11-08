@@ -1,9 +1,9 @@
 .main-container
-        .myTask
             h3 {{vm.taskId}} {{vm.task.name}}
-            button.close-task.md-btn(ng-click="vm.closeTask()") Закрыть задачу
-            button.close-task.md-btn(ng-click="vm.pauseTask()") Поставить на паузу
-            button.close-task.md-btn(ng-click="vm.addSubTask()") Добавить подзадачу
+            .project-actions
+                a.project-actions__action(ng-click="vm.closeTask()") Закрыть задачу
+                a.project-actions__action(ng-click="vm.pauseTask()") Поставить на паузу
+                a.project-actions__action(ng-click="vm.addSubTask()") Добавить подзадачу
             .description
                 h5 Суть задачи:
                 p {{vm.task.description}}
