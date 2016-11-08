@@ -8,12 +8,11 @@ export class NewTaskController{
         vm.members = false;
         vm.performers=[];
         vm.auditors = [];
-        vm.responsibles = [];
-
+        vm.responsible="";
         let userId = $localStorage.user._id;
 
-        console.log("User id is " +userId); 
-
+        userId = "58188d91acb42a09bd838d25";
+        console.log("User id is " +userId);
 
         $http.get("https://md-tasks.herokuapp.com/api/contragents/all")
             .success(function(response){
@@ -32,6 +31,25 @@ export class NewTaskController{
                 console.log(err);
             });
 
+        vm.chooseResponsible = function (id) {
+            if(vm.responsible==""){
+                vm.users.forEach(function (user,i,users) {
+                    if(user._id==id){
+                        vm.responsible = user;
+                        users.splice(i,1)
+                    }
+                });
+            }else{
+                vm.users.push(vm.responsible);
+                vm.users.forEach(function (user,i,users) {
+                    if(user._id==id){
+                        vm.responsible = user;
+                        users.splice(i,1)
+                    }
+                });
+            }
+        }
+
         vm.hideMembers = function () {
             vm.users = vm.users.concat(vm.auditors.concat(vm.performers));
             vm.performers=[];
@@ -48,14 +66,6 @@ export class NewTaskController{
             });
         };
 
-        // vm.removeFromUsers = function (index,arr) {
-        //     console.log(index);
-        //     arr.push(vm.users[index]);
-        //     vm.users.splice(index,1);
-        //     console.log(vm.users);
-        //     console.log(arr);
-        // };
-
         vm.addToUsers = function (user,arr) {
           vm.users.push(user);
           arr.splice(arr.indexOf(user),1);
@@ -67,31 +77,24 @@ export class NewTaskController{
             });
         };
 
-
         vm.createTask = function (task) {
             if(task){
-                task.creator = userId;
-                task.performer=[];
+                task.performer = [];
                 task.auditor = [];
-                task.responsible = [];
+                task.creator = userId;
                 vm.idToArr(vm.performers,task.performer);
                 vm.idToArr(vm.auditors,task.auditor);
-                vm.idToArr(vm.responsibles,task.responsible);
                 console.log(task);
-
-
-
-                //
-                // $http.post("apiwka",id)
-                //     .success(function(resposne){
-                //
-                //     })
-                //     .error(function(err){
-                //         console.log(err);
-                //     });
+                $http.post("https://md-tasks.herokuapp.com/api/tasks/create",task)
+                    .success(function(response){
+                        console.log(response);
+                    })
+                    .error(function(err){
+                        console.log(err);
+                    });
 
                 alert("Задача успешно поставлена!");
-                $window.location.href = "#/tasks/myTasks";
+                // $window.location.href = "#/tasks/myTasks";
                 }else{
                     console.log("OTMENA");
                 }

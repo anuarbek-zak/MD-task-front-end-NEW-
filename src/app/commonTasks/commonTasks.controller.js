@@ -3,6 +3,8 @@ export class CommonTasksController{
         'ngInject';
         var vm = this;
         let userId = $localStorage.user._id;
+        userId = "58188d91acb42a09bd838d25";
+
         // $http.post('apiwka',userId)
         //     .success(function(response){
         //         vm.tasks = response;
@@ -10,7 +12,8 @@ export class CommonTasksController{
         //     .error(function(err){
         //         console.log(err);
         //     });
-        vm.tasks = [];
+
+
         this.logout = CheckAuthService.logout;
     }
 }

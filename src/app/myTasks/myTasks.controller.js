@@ -3,53 +3,47 @@ export class MyTasksController{
         'ngInject';
         var vm = this;
         let userId = $localStorage.user._id;
+        userId = "58188d91acb42a09bd838d25";
 
-        // $http.post('apiwka',userId)
-        //     .success(function(response){
-        //         vm.tasks = response;
-        //     })
-        //     .error(function(err){
-        //         console.log(err);
-        //     });
+        $http.post('https://md-tasks.herokuapp.com/api/tasks/my',{userId:userId})
+            .success(function(response){
+                vm.tasks = response;
+            })
+            .error(function(err){
+                console.log(err);
+            });
 
-        vm.tasks = [{"performer":
-                        [{"name":"Петя","position":"Прогер","_id":2},
-                        {"name":"Надя","position":"Прогер","_id":4},
-                        {"name":"Ваня","position":"Прогер","_id":6}],
-                    "auditor":
-                        [{"name":"Вася","position":"Бухгалтер","_id":1},
-                         {"name":"Даша","position":"Бухгалтер","_id":5}],
-                    "responsible":[{"name":"Оля","position":"Бухгалтер","_id":3}],
-                    "deadline":"13.12",
-                    "name":"Сделать фронтэнд",
-                    "description":"авыфвыа",
-                    "required":true,
-                    "creator":"Рустам",
-                    _id:1},
+        vm.outcome = function () {
+            // $http.post('https://md-tasks.herokuapp.com/api/tasks/my/outcome',{userId:userId})
+            //     .success(function(response){
+            //         vm.tasks = response;
+            //     })
+            //     .error(function(err){
+            //         console.log(err);
+            //     });
 
-                     {"performer":
-                        [{"name":"Петя","position":"Прогер","_id":2},
-                        {"name":"Надя","position":"Прогер","_id":4},
-                        {"name":"Ваня","position":"Прогер","_id":6}],
-                    "auditor":
-                        [{"name":"Вася","position":"Бухгалтер","_id":1},
-                         {"name":"Даша","position":"Бухгалтер","_id":5}],
-                    "responsible":[{"name":"Оля","position":"Бухгалтер","_id":3}],
-                    "deadline":"05.12",
-                    "name":"Сделать бэкенд",
-                    "description":"ляля",
-                    "required":false,
-                    "creator":"Елнур",
-                     _id:2}];
+        }
+
+       vm.income = function () {
+           // $http.post('https://md-tasks.herokuapp.com/api/tasks/my/income',{userId:userId})
+           //     .success(function(response){
+           //         vm.tasks = response;
+           //     })
+           //     .error(function(err){
+           //         console.log(err);
+           //     });
+       }
 
         vm.addToFavorites = function (id) {
-            $http.post("apiwka",id)
-                .success(function (res) {
-                    console.log(res);
-                })
-                .error(function (res) {
-                    console.log(res);
-                });
+            // $http.post("apiwka",id)
+            //     .success(function (res) {
+            //         console.log(res);
+            //     })
+            //     .error(function (res) {
+            //         console.log(res);
+            //     });
+
+
         };
         this.logout = CheckAuthService.logout;
     }

@@ -1,22 +1,23 @@
 .main-container
     h3(ng-show="!vm.tasks.length") Пока нет задач
     table.tasks(ng-show="vm.tasks.length")
-        th.task__th Задачи
+        th.task__th Задача
         th.task__th Дедлайн
         th.task__th Ответственный
         th.task__th Постановщик
-        th.task__th Zvezda
+        th.task__th Избранные
             tr.task(ng-repeat="task in vm.tasks" ui-sref="taskInfo({taskId:task._id})")
                 td.task__td
                     h4  {{task.name}}
                 td.task__td
-                    span.responsible(ng-repeat="responsible in task.responsible") {{" "+responsible.name+" "}}
-
-                td.task__td
                     span.deadline{{task.deadline}}
 
                 td.task__td
-                    h5.creator Постановщик: {{task.creator}}
-                td.task__td  Zvezda
+                    span.responsible{{task.responsible.name}}
 
+
+                td.task__td
+                    h5.creator  {{task.creator.name}}
+                td.task__td.task__star(ng-click="vm.addToFavorites(task._id)")  &#9733;
+                    span.task__td__favorite Добавить в избранные
 
