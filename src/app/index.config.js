@@ -3,6 +3,7 @@ export function config ($logProvider, toastrConfig, $mdThemingProvider, tmhDynam
   // Enable log
   $logProvider.debugEnabled(true);
 
+
   $httpProvider.defaults.timeout = 90000000000;
 
   // Set options third-party lib
@@ -16,7 +17,6 @@ export function config ($logProvider, toastrConfig, $mdThemingProvider, tmhDynam
   tmhDynamicLocaleProvider.localeLocationPattern('https://cdnjs.cloudflare.com/ajax/libs/angular-i18n/1.5.8/angular-locale_ru-ru.js');
   $mdThemingProvider.theme('default')
     .primaryPalette('blue')
-
 
   // set the domains and variables for each environment
   envServiceProvider.config({

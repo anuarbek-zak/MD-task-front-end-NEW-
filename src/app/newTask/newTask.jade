@@ -59,8 +59,8 @@
                     br
             .hidden-sections
                 a.hidden-sections__link(ng-click="vm.members=true" ng-show="!vm.members") + Добавить участников
-
+            //Кнопка отправка disabled пока не заполнены поля имя и ответственный
             .submit-btns
             input.md-btn.submit(type="submit" value="Поставить задачу" ng-disabled="form.$invalid")
             a.close-task(ui-sref="myTasks") Закрыть без сохранения
-            .task {{task}}
+

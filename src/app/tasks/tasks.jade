@@ -1,9 +1,8 @@
 .main-container
-    a.newTaskui-sref='newTask') + Поставить задачу
+    a.newTask(ui-sref='newTask') +
     nav.tabs
         a.tab(ui-sref-active="active" ui-sref="myTasks") Мои задачи
         a.tab(ui-sref-active="active" ui-sref="commonTasks") Общие задачи
         a.tab(ui-sref-active="active" ui-sref="allTasks") Все задачи
     .tasks-container
-
         div(ui-view)

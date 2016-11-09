@@ -1,4 +1,5 @@
 .main-container
+    //Если нет задач вывожу эту строку
     h3(syle="display:none" ng-show="!vm.tasks.length") Пока нет задач
     table.tasks(ng-show="vm.tasks.length")
         th.task__th Задача

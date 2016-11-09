@@ -1,6 +1,9 @@
 .main-container
+    //Если нет задач то вывожу эту строку
     h3(syle="display:none" ng-show="!vm.tasks.length") Пока нет задач
     .main-container__filters
+        //При нажатии на филтер посылается запрос через метод vm.getTasks(responsible,creator,favourite,urgent)
+            и судя по значениям(true,false) выдает массив tasks по которому прохожусь ng-repeatom
         a.main-container__filters__filter(ng-click="vm.getTasks()") Все
         a.main-container__filters__filter(ng-click="vm.getTasks(true,false,false,false)") Входящие
         a.main-container__filters__filter(ng-click="vm.getTasks(false,true,false,false)") Исходящие
@@ -14,10 +17,11 @@
         th.task__th Ответственный
         th.task__th Постановщик
         th.task__th  Избранные
+            //Если не посещен таск, то добавляется класс not-visited и span.circle будет розового цвета
             tr.task(ng-repeat="task in vm.tasks")
-                td.task__td(ui-sref="taskInfo({taskId:task._id})" ng-class="{'not-visited':!task.visited}")
-                    span.task__td__circle(ng-class="{'circle-active':!task.visited}")
+                td.task__td(style="width:20%" ui-sref="taskInfo({taskId:task._id})" ng-class="{'not-visited':!task.visited}")
                     h4.task__td__name(ng-class="{'not-visited':!task.visited}")  {{task.name}}
+                    span.task__td__circle(ng-class="{'circle-active':!task.visited}")
                 td.task__td
                     span.deadline(ng-class="{'not-visited':!task.visited}"){{task.deadline}}{{vm.hello}}
 
@@ -27,7 +31,7 @@
                 td.task__td
                     span.creator(ng-class="{'not-visited':!task.visited}"){{task.creator.name}}
 
-
+                //при нажатии на звезду вызывается метод addtoFavourites
                 td.task__td.task__star(ng-class="{'star-active':task.favourite}" ng-click="vm.addToFavourites(task)")  &#9733;
                     span.task__td__favorite Добавить в избранные
 

@@ -1,3 +1,4 @@
+
 .main-container{
   &__filters{
     margin:20px auto;
@@ -17,6 +18,7 @@
 }
 
 .tasks{
+  word-wrap: break-word;
   margin: 20px auto;
   width: 700px;
 }
@@ -24,16 +26,23 @@
   border-top:1px solid #888;
   padding:15px;
   &__td{
+    position: relative;
+    &:first-child{
+      width: 40%;
+    }
     &__circle{
       width: 4px;
       height: 4px;
       border-radius:50px;
       display: inline-block;
-      margin-right: 5px;
-      margin-bottom:3px;
+      position: absolute;
+      top: 48%;
+      left: 6px;
     }
     &__name{
+      width: 200px;
       display: inline-block;
+      vertical-align: middle;
       &:hover{
         cursor: pointer;
         text-decoration: underline;
@@ -89,6 +98,7 @@
 
 .not-visited{
   font-weight: bold;
+  color: #666666;
 }
 
 .circle-active{
