@@ -23,7 +23,7 @@ export class MyTasksController{
         //метод для добавления в избранные(при нажатии на звездочку)
         // и получаю boolean - таск в избранных или нет
         vm.addToFavourites = function (task) {
-            $http.post($localStorage.apiwka+"/api/tasks/addToFavourites",{_id:task._id})
+            $http.post("https://md-tasks.herokuapp.com/api/tasks/addToFavourites",{_id:task._id})
                 .success(function (res) {
                     task.favourite = res;
                 })

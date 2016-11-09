@@ -6,7 +6,7 @@ export class CommonTasksController{
         // Имитирую юзера John Silver
         userId = "58188d91acb42a09bd838d25";
         //Получаю массив со всеми тасками где текущий юзер является либо аудитором(auditor) либо соисполнителем(performer)
-        $http.post('https://md-tasks.herokuapp.com/api/tasks/',{_id:userId})
+        $http.post('https://md-tasks.herokuapp.com/api/tasks/general',{_id:userId})
             .success(function(response){
                 vm.tasks = response;
             })
