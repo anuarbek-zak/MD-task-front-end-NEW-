@@ -23,7 +23,7 @@ export class MyTasksController{
         // и получаю boolean - таск в избранных или нет
         vm.addToFavourites = function (task) {
             $http.post(envService.read('apiUrl')+"/api/tasks/addToFavourites",{_id:task._id,userId:userId})
-                .success(function (res) {
+                .success(function (res) {   
                     console.log("RES "+res);
                     if(res) task.favourite.push(userId);
                     else {
