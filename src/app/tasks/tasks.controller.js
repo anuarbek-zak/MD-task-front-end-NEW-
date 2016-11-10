@@ -4,7 +4,6 @@ export class TasksController{
         var vm = this;
         this.$localStorage = $localStorage;
         let userId = $localStorage.user._id;
-
-        this.logout = CheckAuthService.logout;
+        // vm.logout = CheckAuthService.logout;
     }
 }

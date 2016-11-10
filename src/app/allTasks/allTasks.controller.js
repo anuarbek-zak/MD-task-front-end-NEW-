@@ -5,7 +5,7 @@ export class AllTasksController{
         var vm = this;
         let userId = $localStorage.user._id;
         //Запрос на все таски
-        $http.get("https://md-tasks.herokuapp.com/api/tasks/all")
+        $http.get(envService.read('apiUrl')+"/api/tasks/all")
             .success(function(response){
                 vm.tasks = response;
             })

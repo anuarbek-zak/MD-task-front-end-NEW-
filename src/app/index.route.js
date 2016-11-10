@@ -2,20 +2,20 @@ export function routerConfig ($stateProvider, $urlRouterProvider) {
   'ngInject';
   $stateProvider
     .state('home', {
-      //url: '',
-      templateUrl: 'app/main/main.html'//,
-      //controller: 'MainController',
-      //controllerAs: 'vm'
+    //   url: '',
+      templateUrl: 'app/main/main.html'
+    //   controller: 'MainController',
+    //   controllerAs: 'vm'
     })
     .state('auth', {
       url: '/',
       templateUrl: 'app/auth/auth.html',
       controller: 'AuthController',
-      controllerAs: 'vm',
-      // parent : 'home',
-      data: {
-        'noLogin': true
-      }
+      controllerAs: 'vm'
+      // // parent : 'home',
+      // data: {
+      //   'noLogin': true
+      // }
     })
     .state('register', {
       url: '/register',
@@ -123,5 +123,5 @@ export function routerConfig ($stateProvider, $urlRouterProvider) {
       parent : 'documents'
     });
 
-  $urlRouterProvider.otherwise('/documents/tasks/myTasks');
+  $urlRouterProvider.otherwise('/');
 }

@@ -1,5 +1,5 @@
 export class NewTaskController{
-    constructor($http, $localStorage, $window, CheckAuthService, envService){
+    constructor($http, $localStorage,$state, CheckAuthService, envService){
         'ngInject';
 
         var vm = this;
@@ -7,11 +7,10 @@ export class NewTaskController{
         vm.performers=[];
         vm.auditors = [];
         vm.responsible="";
-        // Имитирую юзера John Silver
         let userId = $localStorage.user._id;
-        userId = "581c4bf33afb2fcb15258c5b";
+        console.log(userId);
         //Запрос на всех клиентов(Заказчиков)
-        $http.get("https://md-tasks.herokuapp.com/api/clients/all")
+        $http.get(envService.read('apiUrl')+"/api/clients/all")
             .success(function(response){
                 vm.customers = response;
                 console.log(response);
@@ -20,7 +19,7 @@ export class NewTaskController{
                 console.log(err);
             });
         //Запрос на всех юзеров
-        $http.get("https://md-tasks.herokuapp.com/api/users/all")
+        $http.get(envService.read('apiUrl')+"/api/users/all")
             .success(function(response){
                 vm.users = response;
             })
@@ -80,11 +79,11 @@ export class NewTaskController{
                 vm.idToArr(vm.performers,task.performer);
                 vm.idToArr(vm.auditors,task.auditor);
                 console.log(task);
-                $http.post("https://md-tasks.herokuapp.com/api/tasks/create",task)
+                $http.post(envService.read('apiUrl')+"/api/tasks/create",task)
                     .success(function(response){
                         console.log(response);
                         alert("Задача успешно поставлена!");
-                        $window.location.href = "#/tasks/myTasks";
+                        $state.go('myTasks');
                     })
                     .error(function(err){
                         alert("Задача не созадана. Попробуйте еще раз");

@@ -6,9 +6,10 @@ export class TaskInfoController{
         vm.taskId = $stateParams.taskId;
 
         //беру инфу о таске
-        $http.post('https://md-tasks.herokuapp.com/api/tasks/task',{_id:vm.taskId})
+        $http.post(envService.read('apiUrl')+"/api/tasks/task",{_id:vm.taskId,userId:userId})
             .success(function(response){
                 vm.task = response;
+                console.log(res);
             })
             .error(function(err){
                 console.log(err);

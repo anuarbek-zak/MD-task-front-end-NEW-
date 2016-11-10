@@ -7,6 +7,7 @@ export class AuthController {
     self.backGroundStyle = ()=>{
       return {
         'background-selling':$state.includes('selling'),
+        'background-selling':$state.includes('myTasks'),
         'background-supply':$state.includes('supply'),
         'background-staff':$state.includes('staff'),
         'background-payments':$state.includes('payments'),
@@ -15,29 +16,29 @@ export class AuthController {
     };
     console.log('auth controller');
 
-    $http({
-      url : "http://localhost:8080/api/signup",
-      method : "POST",
-      data : {
-        email : 'aleckseypro@mail.ru',
-        name : 'Alex Petrov',
-        password : '123456'
-      }
-    }).then(function successCallback(response) {
-      console.log(response);
-    }, function errorCallback(response) {
-      console.log(response);
-    });
+
+    // $http({
+    //   url : "http://localhost:8080/api/signup",
+    //   method : "POST",
+    //   data : {
+    //     email : 'aleckseypro@mail.ru',
+    //     name : 'Alex Petrov',
+    //     password : '123456'
+    //   }
+    // }).then(function successCallback(response) {
+    //   console.log(response);
+    // }, function errorCallback(response) {
+    //   console.log(response);
+    // });
 
 
     console.log(envService.read('apiUrl'));
-
 
     self.auth = ()=>{
 
       // login
       $http({
-        url : envService.read('apiUrl')+"api/login",
+        url : envService.read('apiUrl')+"/auth/api/login",
         method : "POST",
         data : {
           idToEnter : self.idToEnter,
@@ -47,9 +48,10 @@ export class AuthController {
         console.log(response);
 
         $localStorage.user = response.data;
-        // $localStorage.user._id ="581c4bf33afb2fcb15258c5b";
+        console.log(response.data);
+        console.log("DATA");
 
-        $state.go('selling');
+        $state.go('myTasks');
       }, function errorCallback(response) {
         console.log(response);
         console.log('open toastr');

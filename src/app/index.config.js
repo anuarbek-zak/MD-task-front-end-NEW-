@@ -26,7 +26,7 @@ export function config ($logProvider, toastrConfig, $mdThemingProvider, tmhDynam
     },
     vars: {
       development: {
-        apiUrl: 'http://localhost:8080/'
+        apiUrl: 'https://md-tasks.herokuapp.com'
       },
       production: {
         apiUrl: 'http://159.203.234.82:8080/'

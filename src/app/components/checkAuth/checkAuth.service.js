@@ -9,7 +9,7 @@ export  class CheckAuthService{
       //  $sessionStorage = $injector.get('$sessionStorage');
 
       console.log($localStorage);
-	$localStorage.user = {_id:'11'};
+
 
       if (toState.data !== undefined) {
         if (toState.data.noLogin !== undefined && toState.data.noLogin) {
