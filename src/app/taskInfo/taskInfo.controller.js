@@ -9,7 +9,6 @@ export class TaskInfoController{
         $http.post(envService.read('apiUrl')+"/api/tasks/task",{_id:vm.taskId,userId:userId})
             .success(function(response){
                 vm.task = response;
-                console.log(res);
             })
             .error(function(err){
                 console.log(err);
@@ -25,6 +24,5 @@ export class TaskInfoController{
         //         })
         // }
 
-        this.logout = CheckAuthService.logout;
     }
 }

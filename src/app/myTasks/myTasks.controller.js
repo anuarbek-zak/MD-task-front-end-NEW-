@@ -36,6 +36,6 @@ export class MyTasksController{
                 });
 
         };
-        this.logout = CheckAuthService.logout;
+        // this.logout = CheckAuthService.logout;
     }
 }

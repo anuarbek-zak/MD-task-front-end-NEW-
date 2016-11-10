@@ -8,7 +8,7 @@ export  class CheckAuthService{
       //var $scope = $injector.get('$rootScope'),
       //  $sessionStorage = $injector.get('$sessionStorage');
 
-      console.log($localStorage);
+      // console.log($localStorage);
 
 
       if (toState.data !== undefined) {
@@ -34,7 +34,7 @@ export  class CheckAuthService{
         } else {
           // если пользователь не авторизован - отправляем на страницу авторизации
           event.preventDefault();
-          $state.go('auth');
+          // $state.go('auth');
         }
       }
     };

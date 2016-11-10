@@ -13,7 +13,6 @@ export class NewTaskController{
         $http.get(envService.read('apiUrl')+"/api/clients/all")
             .success(function(response){
                 vm.customers = response;
-                console.log(response);
             })
             .error(function(err){
                 console.log(err);
@@ -37,7 +36,7 @@ export class NewTaskController{
                 });
             }
 
-        //При нажатии на "удалить участников" добавляет их в массив всех юзеров
+        //При нажатии на "удалить участников" возвращает их в массив всех юзеров
         // и очищает массивы аудиторов и перформеров а так же
         // скрывает поле "удалить участников"
         vm.hideMembers = function () {

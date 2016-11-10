@@ -48,12 +48,10 @@ export class AuthController {
         console.log(response);
 
         $localStorage.user = response.data;
-        console.log(response.data);
-        console.log("DATA");
 
         $state.go('myTasks');
       }, function errorCallback(response) {
-        console.log(response);
+        // console.log(response);
         console.log('open toastr');
         toastr.error('Ошибка авторизации', 'Ошибка!');
       });
