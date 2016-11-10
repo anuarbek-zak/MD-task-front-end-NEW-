@@ -19,7 +19,7 @@ export  class CheckAuthService{
           if ($localStorage.user!=undefined) {
             if (toState.name == 'auth') {
               event.preventDefault();
-              $state.go('selling');
+              // $state.go('selling');
             }
           }
 

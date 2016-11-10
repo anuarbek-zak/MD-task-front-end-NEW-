@@ -77,7 +77,6 @@ export class NewTaskController{
                 task.creator = userId;
                 vm.idToArr(vm.performers,task.performer);
                 vm.idToArr(vm.auditors,task.auditor);
-                console.log(task);
                 $http.post(envService.read('apiUrl')+"/api/tasks/create",task)
                     .success(function(response){
                         console.log(response);
