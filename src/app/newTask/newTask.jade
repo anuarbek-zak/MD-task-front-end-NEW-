@@ -26,9 +26,9 @@
                 span.burn(ng-click="task.urgent=!task.urgent" ng-class="{'active-burn':task.urgent}" ng-init="task.urgent=false") Горит
 
 
-            .requred
-                label(for='required') Сделать задачу объязательной
-                input(type="checkbox" name="required" id="required" ng-model="task.required")
+            .required
+                label.required__text(for='required') Сделать задачу объязательной
+                input.required__input(type="checkbox" name="required" id="required" ng-model="task.required")
                 br
 
             .members.extra-section(ng-show="vm.members")
@@ -58,9 +58,9 @@
                         option(ng-repeat="customer in vm.customers" value="{{customer._id}}") {{customer.nameCompany}}
                     br
             .hidden-sections
-                a.hidden-sections__link(ng-click="vm.members=true" ng-show="!vm.members") + Добавить участников
+                a.newTask__link.hidden-sections__link(ng-click="vm.members=true" ng-show="!vm.members") + Добавить участников
             //Кнопка отправка disabled пока не заполнены поля имя и ответственный
             .submit-btns
             input.md-btn.submit(type="submit" value="Поставить задачу" ng-disabled="form.$invalid")
-            a.close-task(ui-sref="myTasks") Закрыть без сохранения
+            a.newTask__link.close-task(ui-sref="myTasks") Закрыть без сохранения
 

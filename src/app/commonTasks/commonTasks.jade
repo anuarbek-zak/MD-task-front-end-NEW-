@@ -1,20 +1,21 @@
 .main-container
-    //Если нет задач вывожу эту строку
-    h3(syle="display:none" ng-show="!vm.tasks.length") Пока нет задач
     table.tasks(ng-show="vm.tasks.length")
         th.task__th Задача
         th.task__th Дедлайн
         th.task__th Ответственный
         th.task__th Постановщик
+            //Если не посещен таск, то добавляется класс not-visited и span.circle будет розового цвета
             tr.task(ng-repeat="task in vm.tasks")
-                td.task__td(ui-sref="taskInfo({taskId:task._id})")
-                    h4.task__td__name  {{task.name}}
+                td.task__td(style="width:20%" ui-sref="taskInfo({taskId:task._id})" ng-class="{'not-visited':!task.visited}")
+                    h4.task__td__name(ng-class="{'not-visited':!(task.visited.indexOf(vm._id)>-1)}")  {{task.name}}
+                    span.task__td__circle(ng-class="{'circle-active':!(task.visited.indexOf(vm._id)>-1)}")
                 td.task__td
-                    span.deadline{{task.deadline}}
+                    span.deadline(ng-class="{'not-visited':!(task.visited.indexOf(vm._id)>-1)}"){{task.deadline}}{{vm.hello}}
 
                 td.task__td
-                    span.responsible{{task.responsible.name}}
+                    span.responsible(ng-class="{'not-visited':!(task.visited.indexOf(vm._id)>-1)}"){{task.responsible.name}}
 
                 td.task__td
-                    span.creator{{task.creator.name}}
+                    span.creator(ng-class="{'not-visited':!(task.visited.indexOf(vm._id)>-1)}"){{task.creator.name}}
+
 

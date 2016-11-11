@@ -33,7 +33,7 @@ import {  TaskInfoController } from './taskInfo/taskInfo.controller';
 
 
 
-angular.module('ticketMirusDesk', ['ngAnimate', 'ngCookies', 'ngSanitize', 'ngMessages', 'ngAria', 'ngResource',
+angular.module('taskMirusDesk', ['ngAnimate', 'ngCookies', 'ngSanitize', 'ngMessages', 'ngAria', 'ngResource',
   'ui.router', 'ngMaterial', 'toastr', 'lfNgMdFileInput', 'ui.mask','mgcrea.ngStrap','monospaced.elastic',
   '720kb.datepicker', 'tmh.dynamicLocale', 'ngStorage', 'naif.base64', 'environment'])
   .constant('malarkey', malarkey)

@@ -11,11 +11,11 @@ export function routerConfig ($stateProvider, $urlRouterProvider) {
       url: '/',
       templateUrl: 'app/auth/auth.html',
       controller: 'AuthController',
-      controllerAs: 'vm'
+      controllerAs: 'vm',
       // // parent : 'home',
-      // data: {
-      //   'noLogin': true
-      // }
+      data: {
+        'noLogin': true
+      }
     })
     .state('register', {
       url: '/register',

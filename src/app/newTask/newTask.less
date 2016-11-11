@@ -69,23 +69,16 @@ label{
   padding: 20px;
   border: 1px dotted #ccc;
   &__delete{
-
     margin-top: 20px;
     float: right;
   }
 }
 
-.requred{
-  label{
+.required{
+  &__text{
     font-weight: lighter;
     color: #929292;
     margin-right: 15px;
-  }
-}
-
-.submit{
-  &:disabled{
-    background: lighten(@selling,5%);
   }
 }
 
@@ -101,6 +94,7 @@ label{
   padding-top: 2px;
   display: inline-block;
   cursor: pointer;
+  outline:none;
     &:hover{
       filter: grayscale(0%);
     }
@@ -112,5 +106,19 @@ label{
 .m-datepicker{
   ._720kb-datepicker-calendar-header{
     background: @selling !important;
+  }
+}
+
+.submit{
+  &:disabled{
+    background: lighten(@selling,10%);
+    cursor: not-allowed !important;
+  }
+}
+
+.newTask__link{
+  &:hover,&:visited,&:active,&:focus{
+    color: darken(@selling,15%);
+    text-decoration: none;
   }
 }

@@ -1,5 +1,5 @@
 export class NewTaskController{
-    constructor($http, $localStorage,$state, CheckAuthService, envService){
+    constructor($http, toastr, $localStorage,$state, CheckAuthService, envService){
         'ngInject';
 
         var vm = this;
@@ -9,6 +9,7 @@ export class NewTaskController{
         vm.responsible="";
         let userId = $localStorage.user._id;
         console.log(userId);
+
         //Запрос на всех клиентов(Заказчиков)
         $http.get(envService.read('apiUrl')+"/api/clients/all")
             .success(function(response){
@@ -17,6 +18,7 @@ export class NewTaskController{
             .error(function(err){
                 console.log(err);
             });
+
         //Запрос на всех юзеров
         $http.get(envService.read('apiUrl')+"/api/users/all")
             .success(function(response){
@@ -25,6 +27,7 @@ export class NewTaskController{
             .error(function(err){
                 console.log(err);
             });
+
         //Записываю ответсвенного в vm.responsible и удаляю его из массива всех юзеров
         vm.chooseResponsible = function (id) {
                 if(vm.responsible!="") vm.users.push(vm.responsible);
@@ -55,6 +58,7 @@ export class NewTaskController{
                 }
             });
         };
+
         //добавляет в массив юзеров выбраного юзера
         vm.addToUsers = function (user,arr) {
           vm.users.push(user);
@@ -80,7 +84,7 @@ export class NewTaskController{
                 $http.post(envService.read('apiUrl')+"/api/tasks/create",task)
                     .success(function(response){
                         console.log(response);
-                        alert("Задача успешно поставлена!");
+                        toastr.success("","Задачи успешно поставлена !");
                         $state.go('myTasks');
                     })
                     .error(function(err){

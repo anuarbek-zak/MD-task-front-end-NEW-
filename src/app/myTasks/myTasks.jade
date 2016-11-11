@@ -1,16 +1,13 @@
 .main-container
-    //Если нет задач то вывожу эту строку
-    h3(syle="display:none" ng-show="!vm.tasks.length") Пока нет задач
+    .text(ng-show="vm.asd") text
     .main-container__filters
         //При нажатии на филтер посылается запрос через метод vm.getTasks(responsible,creator,favourite,urgent)
             и судя по значениям(true,false) выдает массив tasks по которому прохожусь ng-repeatom
-        a.main-container__filters__filter(ng-click="vm.getTasks()") Все
-        a.main-container__filters__filter(ng-click="vm.getTasks(true,false,false,false)") Входящие
-        a.main-container__filters__filter(ng-click="vm.getTasks(false,true,false,false)") Исходящие
-        a.main-container__filters__filter(ng-click="vm.getTasks(true,true,true,false)") Избранные
-        a.main-container__filters__filter(ng-click="vm.getTasks(true,true,false,true)") Горящие
-        a.main-container__filters__filter(ng-click="vm.getTasks(true,true,false,true)") Завершнные
-        a.main-container__filters__filter(ng-click="vm.getTasks(true,true,false,true)") На паузе
+        a.main-container__filters__filter(ng-class=("{'active_filter':vm.active_filter==0}") ng-click="vm.getTasks()") Все
+        a.main-container__filters__filter(ng-class=("{'active_filter':vm.active_filter==1}") ng-click="vm.getTasks(1,true,false,false,false)") Входящие
+        a.main-container__filters__filter(ng-class=("{'active_filter':vm.active_filter==2}") ng-click="vm.getTasks(2,false,true,false,false)") Исходящие
+        a.main-container__filters__filter(ng-class=("{'active_filter':vm.active_filter==3}") ng-click="vm.getTasks(3,true,true,true,false)") Избранные
+        a.main-container__filters__filter(ng-class=("{'active_filter':vm.active_filter==4}") ng-click="vm.getTasks(4,true,true,false,true)") Горящие
     table.tasks(ng-show="vm.tasks.length")
         th.task__th Задача
         th.task__th Дедлайн
@@ -33,5 +30,5 @@
 
                 //при нажатии на звезду вызывается метод addtoFavourites
                 td.task__td.task__star(ng-class="{'star-active':(task.favourite.indexOf(vm._id)>-1)}" ng-click="vm.addToFavourites(task)")  &#9733;
-                    span.task__td__favorite Добавить в избранные
+                    md-tooltip.task__td__hint(md-direction="bottom") Добавить в избранные
 

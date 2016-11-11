@@ -1,20 +1,30 @@
 
 .main-container{
   &__filters{
-    margin:20px auto;
+    margin:30px auto;
     background: #e8e8e8;
     padding: 15px;
     &__filter{
       display: inline-block;
       cursor: pointer;
-      width: 10%;
+      width: 15%;
       margin-left: 5%;
       text-align: center;
+      color: #666666;
+      font-weight: normal;
+      &:hover{
+        color: #333333;
+        text-decoration: none;
+      }
       &:first-child{
         margin-left: 0;
       }
     }
   }
+}
+
+.filter-active{
+  color: @selling;
 }
 
 .tasks{
@@ -27,6 +37,7 @@
   padding:15px;
   &__td{
     position: relative;
+    outline: none;
     &:first-child{
       width: 40%;
     }
@@ -46,17 +57,11 @@
       &:hover{
         cursor: pointer;
         text-decoration: underline;
+        color:#555;
       }
     }
-    &__favorite{
-      text-align: center;
-      width: 80px;
-      background: rgba(0,0,0,.35);
-      color: #ffffff;
-      font-size: 12px;
-      border-radius:3px;
-      display: none;
-      position: absolute;
+    &__hint{
+      margin:-25px 0 0 40px;
     }
   }
   &:first-child{
@@ -66,12 +71,12 @@
     background: darken(#f2f2f2,5%);
   }
   &__star{
-    font-size: 18px;
+    font-size: 22px;
     &:hover{
       color: @selling;
 
     }
-    &:hover .task__td__favorite{
+    &:hover .task__td__hint{
       display: block;
     }
   }
@@ -104,3 +109,9 @@
 .circle-active{
   background:@selling ;
 }
+
+.active_filter{
+  color: @selling;
+  font-weight: bold;
+}
+

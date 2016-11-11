@@ -1,5 +1,10 @@
 .main-container
-    a.newTask(ui-sref='newTask') +
+    .logout
+        a.logout__link(ng-click="vm.logout()")
+            md-tooltip.logout__tooltip(md-direction="bottom") Выйти
+    .newTask
+        a.newTask__link(ui-sref='newTask') +
+            md-tooltip.newTask__tooltip(md-direction="bottom") Поставить задачу
     //a.newTask(ng-click="vm.logout()") Выход
     nav.tabs
         a.tab(ui-sref-active="active" ui-sref="myTasks") Мои задачи

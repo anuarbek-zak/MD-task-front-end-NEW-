@@ -15,11 +15,12 @@
   color:#555;
   margin-left: 0.3%;
   border-bottom:transparent;
+  &:hover,&:visited,&:active,&:focus{
+    text-decoration: none !important;
+    color: @selling !important;
+  }
 }
-.tab:hover,.tab:visited,.tab:active{
-  text-decoration: none;
-  color: #f47373;
-}
+
 .active{
   color: #f47373;
   border-color:  #f47373;
@@ -32,23 +33,46 @@
   padding:5px 10px;
 }
 
-
-
 .newTask{
   position: absolute;
+  display: inline-block;
+  top: 2px;
   left: 100%;
-  top: 0;
-  background: #f2f2f2;
-  color: @selling;
-  padding:5px 15px;
-  font-size: 25px;
-  border-radius:0 3px 3px 0;
-  border: 2px solid #f2f2f2;
-  &:hover{
-    color:darken(@selling,5%);
-    text-decoration: none;
-    cursor: pointer;
+  &__link{
+
+    color:#fff;
+    padding:5px 15px;
+    font-size: 25px;
+    border-radius:0 3px 3px 0;
+
+    &:hover{
+      background: #f2f2f2;
+      color:#333;
+      text-decoration: none;
+      cursor: pointer;
+    }
   }
 }
 
+.logout{
+  position: absolute;
+  display: inline-block;
+  top: 45px;
+  left: 100%;
+  &__link{
+    border-radius:0px 3px 3px 0px;
+    background:url('../assets/images/menu_icons/realisation6.svg') no-repeat;
+    background-size: 35px 35px;
+    background-position: center center;
+    padding:5px 45px;
+    font-size: 25px;
+    &:hover{
+      background:#f2f2f2 url('../assets/images/menu_icons/realisation6-reverse.svg') no-repeat;
+      background-size: 35px 35px;
+      background-position: center center;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  }
+}
 

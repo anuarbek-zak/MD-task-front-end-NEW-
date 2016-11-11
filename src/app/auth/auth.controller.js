@@ -7,7 +7,7 @@ export class AuthController {
     self.backGroundStyle = ()=>{
       return {
         'background-selling':$state.includes('selling'),
-        'background-selling':$state.includes('myTasks'),
+        'background-myTasks':$state.includes('myTasks'),
         'background-supply':$state.includes('supply'),
         'background-staff':$state.includes('staff'),
         'background-payments':$state.includes('payments'),
@@ -60,6 +60,5 @@ export class AuthController {
     console.log('auth controller');
 
   }
-
 
 }

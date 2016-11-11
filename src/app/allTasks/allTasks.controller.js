@@ -7,12 +7,12 @@ export class AllTasksController{
         //Запрос на все таски
         $http.get(envService.read('apiUrl')+"/api/tasks/all")
             .success(function(response){
-                vm.tasks = response;
+                vm.tasks = response.reverse();
             })
             .error(function(err){
                 console.log(err);
             });
 
-        this.logout = CheckAuthService.logout;
+        // this.logout = CheckAuthService.logout;
     }
 }
