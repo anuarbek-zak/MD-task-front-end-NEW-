@@ -3,20 +3,20 @@ export function config ($logProvider, toastrConfig, $mdThemingProvider, tmhDynam
   // Enable log
   $logProvider.debugEnabled(true);
 
-
   $httpProvider.defaults.timeout = 90000000000;
 
   // Set options third-party lib
   toastrConfig.allowHtml = true;
-  toastrConfig.timeOut = 3000;
+  toastrConfig.timeOut = 2000;
   toastrConfig.positionClass = 'toast-top-right';
   //toastrConfig.preventDuplicates = true;
-  toastrConfig.progressBar = true;
+  // toastrConfig.progressBar = true;
 
   //tmhDynamicLocaleProvider.set('ru');
   tmhDynamicLocaleProvider.localeLocationPattern('https://cdnjs.cloudflare.com/ajax/libs/angular-i18n/1.5.8/angular-locale_ru-ru.js');
   $mdThemingProvider.theme('default')
     .primaryPalette('blue')
+
 
   // set the domains and variables for each environment
   envServiceProvider.config({
@@ -29,7 +29,7 @@ export function config ($logProvider, toastrConfig, $mdThemingProvider, tmhDynam
         apiUrl: 'https://md-tasks.herokuapp.com'
       },
       production: {
-        apiUrl: 'http://159.203.234.82:8080/'
+        apiUrl: 'http://159.203.234.82:8081/'
       }
     }
   });

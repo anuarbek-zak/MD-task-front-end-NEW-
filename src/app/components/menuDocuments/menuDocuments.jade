@@ -5,3 +5,13 @@
 //    img.active(ng-src='{{item.srcRevers}}')
 //    md-tooltip(md-direction="top") {{item.title}}
 
+
+.dropdown
+  button.btn.btn-primary.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='false')
+    span() {{['Не выбрано',vm.menuObject[vm.$state.current.name]][(vm.menuObject[vm.$state.current.name]!=undefined)+0]}}
+  ul.dropdown-menu
+
+    li(ng-repeat = 'item in vm.menuItems' ui-sref='{{item.state}}', ui-sref-active='m-menu-document-item-active')
+      a(href='#', data-toggle='modal', data-target='#adModal') {{item.title}}
+
+img.dropdownImag(src='assets/images/help_desk/ticket.svg')

@@ -7,6 +7,9 @@ export class NewTaskController{
         vm.performers=[];
         vm.auditors = [];
         vm.responsible="";
+        vm.currentPerformer = "Выберите соисполнителя";
+        vm.currentAuditor = "Выберите аудитора";
+        vm.currentResponsible = "Выберите ответсвенного";
         let userId = $localStorage.user._id;
         console.log(userId);
 
@@ -33,6 +36,7 @@ export class NewTaskController{
                 if(vm.responsible!="") vm.users.push(vm.responsible);
                 vm.users.forEach(function (user,i,users) {
                     if(user._id==id){
+                        vm.currentResponsible = user.name;
                         vm.responsible = user;
                         users.splice(i,1)
                     }
@@ -50,13 +54,19 @@ export class NewTaskController{
         };
 
         //удаляет из массива юзеров выбраного юзера по айди
-        vm.removeFromUsers = function (id,arr) {
-            vm.users.forEach(function (user,i,users) {
-                if(user._id==id){
-                    users.splice(i,1);
-                    arr.push(user);
-                }
-            });
+        vm.removeFromUsers = function (index,arr) {
+            var user = vm.users[index];
+            switch (arr){
+                case vm.performers:
+                    vm.currentPerformer = user.name;
+                    break;
+                case vm.auditors:
+                    vm.currentAuditor = user.name;
+                    break;
+            }
+            arr.push(user);
+            vm.users.splice(index,1);
+
         };
 
         //добавляет в массив юзеров выбраного юзера
@@ -66,7 +76,7 @@ export class NewTaskController{
         };
 
         //беру id из юзера и добавляю массив
-        vm.idToArr = function (fromArr,toArr) {
+        vm.idFromObj = function (fromArr,toArr) {
             fromArr.forEach(function (user,i) {
                 toArr[i] = user._id;
             });
@@ -79,8 +89,8 @@ export class NewTaskController{
                 task.performer = [];
                 task.auditor = [];
                 task.creator = userId;
-                vm.idToArr(vm.performers,task.performer);
-                vm.idToArr(vm.auditors,task.auditor);
+                vm.idFromObj(vm.performers,task.performer);
+                vm.idFromObj(vm.auditors,task.auditor);
                 $http.post(envService.read('apiUrl')+"/api/tasks/create",task)
                     .success(function(response){
                         console.log(response);

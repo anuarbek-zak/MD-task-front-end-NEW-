@@ -1,13 +1,13 @@
 div(ng-mouseover='vm.mContragent.invalid = false;')
   div
     div.m-point(ng-class='vm.getClassValidation()')
-    | Реквизиты покупателя:
+    | Реквизиты контрагента:
   div.like-invoice-body
     //{'content-orangedot': (vm.beneficiar!==''||vm.bin!==''||vm.iik!==''||vm.bank!==''||vm.bik!==''||vm.index!==''||vm.phone!==''||vm.city!==''||vm.address!=='' ), 'content-greendot': (vm.beneficiar!==''&&vm.bin!==''&&vm.iik!==''&&vm.bank!==''&&vm.bik!==''&&vm.index!==''&&vm.phone!==''&&vm.city!==''&&vm.address!=='' ), 'content-reddot': vm.red}
     div
       div.m-row(layout='row')
         div.m-input-container(flex='50')
-          label Наименование компании бенефициара
+          label Наименование компании контрагента
           br
           input(ng-class="{'deactiveDashed': vm.mContragent.companyName }",
           type="text",
@@ -34,7 +34,7 @@ div(ng-mouseover='vm.mContragent.invalid = false;')
           required='',
           name='companyName',
           ng-model='vm.mContragent.bin',
-          ui-mask='999 999 999 999', ui-mask-placeholder='', ui-mask-placeholder-char='-', ui-options='{{{clearOnBlur: true , clearOnBlurPlaceholder:false, addDefaultPlaceholder: false} | json}}')
+          ui-mask='999999999999', ui-mask-placeholder='', ui-mask-placeholder-char='-', ui-options='{{{clearOnBlur: true , clearOnBlurPlaceholder:false, addDefaultPlaceholder: false} | json}}')
 
         div.m-input-container(flex='50')
           label Наименование банка
@@ -50,7 +50,7 @@ div(ng-mouseover='vm.mContragent.invalid = false;')
         div.m-input-container(flex='50')
           label Номер расчетного счета
           input(required='', name='clientName', ng-model='vm.mContragent.accountNumber',
-          ui-mask='KZ999999999999999999', ui-mask-placeholder=' ', ui-mask-placeholder-char='-', ui-options='{{{clearOnBlur: true , clearOnBlurPlaceholder:false, addDefaultPlaceholder: false} | json}}')
+          ui-mask='AA999999999999999999', ui-mask-placeholder=' ', ui-mask-placeholder-char='-', ui-options='{{{clearOnBlur: true , clearOnBlurPlaceholder:false, addDefaultPlaceholder: false} | json}}')
 
         div.m-input-container(flex='25')
           label Почтовый индекс

@@ -1,3 +1,6 @@
+input,button{
+  ouline:none;
+}
 .main-container{
   &__form{
     background: #f7f7f7;
@@ -94,7 +97,7 @@ label{
   padding-top: 2px;
   display: inline-block;
   cursor: pointer;
-  outline:none;
+
     &:hover{
       filter: grayscale(0%);
     }
@@ -120,5 +123,11 @@ label{
   &:hover,&:visited,&:active,&:focus{
     color: darken(@selling,15%);
     text-decoration: none;
+
   }
+}
+
+.user-photo{
+  width: 20px;
+  height: 25px;
 }

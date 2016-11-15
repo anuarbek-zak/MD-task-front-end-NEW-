@@ -3,12 +3,12 @@ export  class CheckAuthService{
   constructor ($injector, $localStorage, $state){
     'ngInject';
     var self = this;
-
+    $localStorage.user = {_id:"581719b420bdaab829d07443"};
     this.checkAccess = function(event, toState, toParams, fromState, fromParams) {
       //var $scope = $injector.get('$rootScope'),
       //  $sessionStorage = $injector.get('$sessionStorage');
 
-      // console.log($localStorage);
+      console.log($localStorage);
 
 
       if (toState.data !== undefined) {
@@ -19,7 +19,7 @@ export  class CheckAuthService{
           if ($localStorage.user!=undefined) {
             if (toState.name == 'auth') {
               event.preventDefault();
-              // $state.go('selling');
+              $state.go('ticket');
             }
           }
 
@@ -34,7 +34,7 @@ export  class CheckAuthService{
         } else {
           // если пользователь не авторизован - отправляем на страницу авторизации
           event.preventDefault();
-          // $state.go('auth');
+          $state.go('auth');
         }
       }
     };

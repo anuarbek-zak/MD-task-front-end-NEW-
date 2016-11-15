@@ -2,27 +2,16 @@ export function routerConfig ($stateProvider, $urlRouterProvider) {
   'ngInject';
   $stateProvider
     .state('home', {
-    //   url: '',
       templateUrl: 'app/main/main.html'
-    //   controller: 'MainController',
-    //   controllerAs: 'vm'
     })
     .state('auth', {
       url: '/',
       templateUrl: 'app/auth/auth.html',
       controller: 'AuthController',
       controllerAs: 'vm',
-      // // parent : 'home',
       data: {
         'noLogin': true
       }
-    })
-    .state('register', {
-      url: '/register',
-      templateUrl: 'app/register/register.html',
-      controller: 'RegisterController',
-      controllerAs: 'vm',
-      parent : 'home'
     })
     .state('documents', {
       url: '/documents',
@@ -31,38 +20,24 @@ export function routerConfig ($stateProvider, $urlRouterProvider) {
       controllerAs: 'vm',
       parent : 'home'
     })
-    .state('selling', {
-      url: '/selling',
-      templateUrl: 'app/selling/selling.html',
-      controller: 'SellingController',
+    .state('ticket', {
+      url: '/ticket',
+      templateUrl: 'app/ticket/ticket.html',
+      controller: 'TicketController',
       controllerAs: 'vm',
       parent : 'documents'
     })
-    .state('supply', {
-      url: '/supply',
-      templateUrl: 'app/supply/supply.html',
-      controller: 'SupplyController',
+    .state('ticketDetail', {
+      url: '/ticket/:id',
+      templateUrl: 'app/ticketDetail/ticketDetail.html',
+      controller: 'TicketDetailController',
       controllerAs: 'vm',
       parent : 'documents'
     })
-    .state('payments', {
-      url: '/payments',
-      templateUrl: 'app/payments/payments.html',
-      controller: 'PaymentsController',
-      controllerAs: 'vm',
-      parent : 'documents'
-    })
-    .state('staff', {
-      url: '/staff',
-      templateUrl: 'app/staff/staff.html',
-      controller: 'StaffController',
-      controllerAs: 'vm',
-      parent : 'documents'
-    })
-    .state('other', {
-      url: '/other',
-      templateUrl: 'app/other/other.html',
-      controller: 'OtherController',
+    .state('settings', {
+      url: '/settings',
+      templateUrl: 'app/settings/settings.html',
+      controller: 'SettingsController',
       controllerAs: 'vm',
       parent : 'documents'
     })
@@ -108,20 +83,7 @@ export function routerConfig ($stateProvider, $urlRouterProvider) {
         controllerAs: 'vm',
         parent : 'tasks'
       })
-    .state('history', {
-      url: '/history',
-      templateUrl: 'app/history/history.html',
-      controller: 'HistoryController',
-      controllerAs: 'vm',
-      parent : 'documents'
-    })
-    .state('settings', {
-      url: '/settings',
-      templateUrl: 'app/settings/settings.html',
-      controller: 'SettingsController',
-      controllerAs: 'vm',
-      parent : 'documents'
-    });
+  ;
 
   $urlRouterProvider.otherwise('/');
 }

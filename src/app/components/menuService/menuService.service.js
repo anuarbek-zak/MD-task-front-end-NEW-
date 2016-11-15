@@ -4,42 +4,71 @@ export  class MenuService{
 
     self.menuItems = [
       {
-        title : 'Реализация',
+        title : 'Заявки',
         state : 'selling',
         src : '../assets/images/menu_icons/shopping-cart.svg',
         srcRevers : '../assets/images/menu_icons/shopping-cart-revers.svg'
       },
       {
-        title : 'Поступление',
-        state : 'supply',
+        title : 'Задачи',
+        state : 'myTasks',
         src : '../assets/images/menu_icons/letter.svg',
         srcRevers : '../assets/images/menu_icons/letter-revers.svg'
       },
       {
-        title : 'Платежи',
+        title : 'Обсуждение',
         state : 'payments',
         src : '../assets/images/menu_icons/paper-plane.svg',
         srcRevers : '../assets/images/menu_icons/paper-plane-revers.svg'
       },
       {
-        title : 'Кадры',
+        title : 'Сотрудники',
         state : 'staff',
         src : '../assets/images/menu_icons/staff-symbol.svg',
         srcRevers : '../assets/images/menu_icons/staff-symbol-revers.svg'
       },
       {
-        title : 'Прочее',
-        state : 'other',
-        src : '../assets/images/menu_icons/bill.svg',
-        srcRevers : '../assets/images/menu_icons/bill-revers.svg'
+        title : 'Дела',
+        state : 'staff',
+        src : '../assets/images/menu_icons/staff-symbol.svg',
+        srcRevers : '../assets/images/menu_icons/staff-symbol-revers.svg'
+      },
+      {
+        title : 'Клиенты',
+        state : 'staff',
+        src : '../assets/images/menu_icons/staff-symbol.svg',
+        srcRevers : '../assets/images/menu_icons/staff-symbol-revers.svg'
+      },
+      {
+        title : 'Сделки',
+        state : 'staff',
+        src : '../assets/images/menu_icons/staff-symbol.svg',
+        srcRevers : '../assets/images/menu_icons/staff-symbol-revers.svg'
+      },
+      {
+        title : 'Счета',
+        state : 'staff',
+        src : '../assets/images/menu_icons/staff-symbol.svg',
+        srcRevers : '../assets/images/menu_icons/staff-symbol-revers.svg'
+      },
+      {
+        title : 'Документы',
+        state : 'staff',
+        src : '../assets/images/menu_icons/staff-symbol.svg',
+        srcRevers : '../assets/images/menu_icons/staff-symbol-revers.svg'
+      },
+      {
+        title : 'Отчеты',
+        state : 'staff',
+        src : '../assets/images/menu_icons/staff-symbol.svg',
+        srcRevers : '../assets/images/menu_icons/staff-symbol-revers.svg'
+      },
+      {
+        title : 'Письма',
+        state : 'staff',
+        src : '../assets/images/menu_icons/staff-symbol.svg',
+        srcRevers : '../assets/images/menu_icons/staff-symbol-revers.svg'
       }
-      // ,
-      //{
-      //  title : 'История',
-      //  state : 'history',
-      //  src : '../assets/images/menu_icons/list.svg',
-      //  srcRevers : '../assets/images/menu_icons/list-revers.svg'
-      //}
     ];
 
     self.menuObject = {

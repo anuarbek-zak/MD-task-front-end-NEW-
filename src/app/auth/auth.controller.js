@@ -7,7 +7,6 @@ export class AuthController {
     self.backGroundStyle = ()=>{
       return {
         'background-selling':$state.includes('selling'),
-        'background-myTasks':$state.includes('myTasks'),
         'background-supply':$state.includes('supply'),
         'background-staff':$state.includes('staff'),
         'background-payments':$state.includes('payments'),
@@ -16,16 +15,20 @@ export class AuthController {
     };
     console.log('auth controller');
 
-
     // $http({
-    //   url : "http://localhost:8080/api/signup",
+    //   url : envService.read('apiUrl')+"api/signup",
     //   method : "POST",
     //   data : {
-    //     email : 'aleckseypro@mail.ru',
-    //     name : 'Alex Petrov',
-    //     password : '123456'
+    //     email : 'ticketmirusdesk@gmail.com',
+    //     name : 'John Silver',
+    //     password : '1',
+    //     idToEnter: '25AU17',
+    //     telephone: '+77017217306',
+    //     role: 1
     //   }
     // }).then(function successCallback(response) {
+    //
+    //   console.error(response);
     //   console.log(response);
     // }, function errorCallback(response) {
     //   console.log(response);
@@ -34,11 +37,12 @@ export class AuthController {
 
     console.log(envService.read('apiUrl'));
 
+
     self.auth = ()=>{
 
       // login
       $http({
-        url : envService.read('apiUrl')+"/auth/api/login",
+        url : envService.read('apiUrl')+"api/login",
         method : "POST",
         data : {
           idToEnter : self.idToEnter,
@@ -48,10 +52,9 @@ export class AuthController {
         console.log(response);
 
         $localStorage.user = response.data;
-
-        $state.go('myTasks');
+        $state.go('selling');
       }, function errorCallback(response) {
-        // console.log(response);
+        console.log(response);
         console.log('open toastr');
         toastr.error('Ошибка авторизации', 'Ошибка!');
       });
@@ -60,5 +63,6 @@ export class AuthController {
     console.log('auth controller');
 
   }
+
 
 }
