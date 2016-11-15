@@ -1,26 +1,28 @@
-.main-container
-    .text(ng-show="vm.asd") text
-    table.tasks(ng-show="vm.tasks.length")
-        th.task__th Задача
-        th.task__th Дедлайн
-        th.task__th Ответственный
-        th.task__th Постановщик
-        th.task__th  Избранные
-            //Если не посещен таск, то добавляется класс not-visited и span.circle будет розового цвета
-            tr.task(ng-repeat="task in vm.tasks")
-                td.task__td(style="width:20%" ui-sref="taskInfo({taskId:task._id})" ng-class="{'not-visited':!task.visited}")
-                    h4.task__td__name(ng-class="{'not-visited':!(task.visited.indexOf(vm._id)>-1)}")  {{task.name}}
-                    span.task__td__circle(ng-class="{'circle-active':!(task.visited.indexOf(vm._id)>-1)}")
-                td.task__td
-                    span.deadline(ng-class="{'not-visited':!(task.visited.indexOf(vm._id)>-1)}"){{task.deadline}}{{vm.hello}}
 
-                td.task__td
-                    span.responsible(ng-class="{'not-visited':!(task.visited.indexOf(vm._id)>-1)}"){{task.responsible.name}}
+            .task(ng-repeat='task in vm.tasks')
+                input.m-checkbox(ng-click='$event.stopPropagation();', type="checkbox", ng-model='item.checked', value="")
 
-                td.task__td
-                    span.creator(ng-class="{'not-visited':!(task.visited.indexOf(vm._id)>-1)}"){{task.creator.name}}
+                .task__star.m-checkbox-start.m-checkbox-start-normal(
+                ng-class="{'m-checkbox-checked-start':task.favourite.indexOf(vm._id)>-1}",
+                ng-click="vm.addToFavourites(task)")
+                    md-tooltip.task__star__hint(md-direction="bottom") Добавить в избранные
 
-                //при нажатии на звезду вызывается метод addtoFavourites
-                td.task__td.task__star(ng-class="{'star-active':(task.favourite.indexOf(vm._id)>-1)}" ng-click="vm.addToFavourites(task)")  &#9733;
-                    md-tooltip.task__td__hint(md-direction="bottom") Добавить в избранные
+                h4.task__name(ng-class="{'not-visited':!(task.visited.indexOf(vm._id)>-1)}")
+                a(ui-sref="taskInfo({taskId:task._id})") {{task.name}}
+                    span.task__circle(ng-class="{'circle-active':!(task.visited.indexOf(vm._id)>-1)}")
+                .task__right-div
+                    span.task__deadline(ng-class="{'not-visited':!(task.visited.indexOf(vm._id)>-1)}") до:
+                        span.task__deadline__date{{task.deadline}}{{vm.hello}}
+
+                    .task__creator-responsible
+                        span.task__creator-responsible__creator(ng-class="{'not-visited':!(task.visited.indexOf(vm._id)>-1)}") Постановщик: {{task.creator.name}}
+                        span.task__creator-responsible__responsible(ng-class="{'not-visited':!(task.visited.indexOf(vm._id)>-1)}") Ответсвенный: {{task.responsible.name}}
+
+
+
+
+
+
+
+
 
