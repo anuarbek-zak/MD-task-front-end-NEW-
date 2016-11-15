@@ -22,9 +22,6 @@ import { TicketSupportService } from '../app/components/ticketSupport/ticketSupp
 
 import { NewTaskController } from './newTask/newTask.controller';
 import {  TasksController } from './tasks/tasks.controller';
-import {  MyTasksController } from './myTasks/myTasks.controller';
-import {  CommonTasksController } from './commonTasks/commonTasks.controller';
-import {  AllTasksController } from './allTasks/allTasks.controller';
 import {  TaskInfoController } from './taskInfo/taskInfo.controller';
 
 angular.module('ticketMirusDesk', ['ngAnimate', 'ngCookies', 'ngSanitize', 'ngMessages', 'ngAria', 'ngResource',
@@ -43,9 +40,6 @@ angular.module('ticketMirusDesk', ['ngAnimate', 'ngCookies', 'ngSanitize', 'ngMe
   .controller('SettingsController', SettingsController)
     .controller('NewTaskController', NewTaskController)
     .controller('TasksController',  TasksController)
-    .controller('MyTasksController',  MyTasksController)
-    .controller('AllTasksController', AllTasksController)
-    .controller('CommonTasksController', CommonTasksController)
     .controller('TaskInfoController', TaskInfoController)
 
 

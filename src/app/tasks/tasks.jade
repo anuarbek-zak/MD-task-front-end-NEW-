@@ -20,19 +20,15 @@ div.m-menu-documents(data-offset-top="100", bs-affix)
         img.active(ng-src='../assets/images/help_desk/ticket-reverse.svg')
         md-tooltip(md-direction="bottom") Закрытые
     div.m-menu-documents-item(
-    ui-sref="newTask",
     ng-click='vm.document.docType = item.value; vm.getNumberDocument()',
-    ng-class='{"m-menu-document-item-active": false}'
+    ng-class='{"m-menu-document-item-active": false}',
+    ui-sref='newTask'
     )
         img.disabled(ng-src='../assets/images/help_desk/ticket.svg')
         img.active(ng-src='../assets/images/help_desk/ticket-reverse.svg')
         md-tooltip(md-direction="bottom") Добавить новый
 
 div.m-menu-documents.m-menu-documents-right(data-offset-top="100", bs-affix)
-    div.m-menu-documents-item(ng-click='vm.sendRequestSelling()', ng-class='{animation: vm.getClassValidationForSubmit()}')
-        img.disabled(ng-src='../assets/images/help_desk/backup.svg')
-        img.active(ng-src='../assets/images/help_desk/backup-reverse.svg')
-        md-tooltip(md-direction="bottom") Отправить
     div.m-menu-documents-item(ui-sref='settings')
         img.disabled(ng-src='../assets/images/help_desk/settings.svg')
         img.active(ng-src='../assets/images/help_desk/settings-reverse.svg')
@@ -45,17 +41,21 @@ div.m-menu-documents.m-menu-documents-right(data-offset-top="100", bs-affix)
 div.m-row.m-document.m-flex
     div.m-left-body
         div.m-row
-            h1.text-header Список тикетов
-            .btn-group.m-radio-group(ng-model='vm.selector', bs-radio-group='')
-                a.btn.btn-default(ui-sref="myTasks")
+            h1.text-header Список задач
+            .btn-group.m-radio-group(ng-model='vm.selector',bs-radio-group='')
+                label.btn.btn-default(ng-click="vm.myTasks()")
                     input.btn.btn-default(type='radio', value='my')
                     |  Мои
-                a.btn.btn-default(ui-sref="commonTasks")
+                label.btn.btn-default(ng-click="vm.commonTasks()")
                     input.btn.btn-default(type='radio', value='withMe')
                     |  Общие
-                a.btn.btn-default(ui-sref="allTasks")
+                label.btn.btn-default(ng-click="vm.allTasks()")
                     input.btn.btn-default(type='radio', value='all')
                     |  Все
+        div.like-invoice-title
+            div.m-point.m-point-greendot
+            | Количество заявок: {{vm.tickets.length}}
+
         div
         .m-table.like-invoice-body-clear-left-top-padding
             .m-row(layout='row')
@@ -82,7 +82,27 @@ div.m-row.m-document.m-flex
                 .m-col(flex=5)
                 .m-col(flex=5)
 
-            div(ui-view)
+            .task(ng-repeat='task in vm.tasks', ng-class="{'task__not-visited':(!(task.visited.indexOf(vm._id)>-1) && vm.selector!='all')}")
+                input.m-checkbox(ng-click='$event.stopPropagation();', type="checkbox", ng-model='item.checked', value="")
+                .task__star.m-checkbox-start.m-checkbox-start-normal(
+                ng-class="{'m-checkbox-checked-start':task.favourite.indexOf(vm._id)>-1}",
+                ng-click="vm.addToFavourites(task)",
+                ng-hide="vm.selector=='all'")
+                    md-tooltip.task__star__hint(md-direction="bottom") Добавить в избранные
+
+                a.task__name(ui-sref="taskInfo({taskId:task._id})") {{task.name}}
+                        span.task__circle(ng-hide="vm.selector=='all'" ng-class="{'task__circle-active':!(task.visited.indexOf(vm._id)>-1)}")
+
+                .task__right-div
+                    span.task__deadline до:
+                        span.task__deadline__date{{task.deadline}}{{vm.hello}}
+
+                    .task__creator-responsible
+                        span.task__creator-responsible__creator Постановщик: {{task.creator.name}}
+                        span.task__creator-responsible__responsible Ответсвенный: {{task.responsible.name}}
+
+
+
 
     div.m-right-list
         div.m-block-search.m-input-container
@@ -124,3 +144,9 @@ div.m-row.m-document.m-flex
                 span.gray &nbsp; от
                 span.black &nbsp; 15AD94
                 span.red &nbsp; Корлан Апраимова
+
+
+
+
+
+

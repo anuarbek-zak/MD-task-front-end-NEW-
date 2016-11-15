@@ -89,16 +89,18 @@ export class NewTaskController{
                 task.performer = [];
                 task.auditor = [];
                 task.creator = userId;
+                console.log(task.responsible);
+                task.responsible = vm.responsible._id;
                 vm.idFromObj(vm.performers,task.performer);
                 vm.idFromObj(vm.auditors,task.auditor);
                 $http.post(envService.read('apiUrl')+"/api/tasks/create",task)
                     .success(function(response){
                         console.log(response);
                         toastr.success("","Задачи успешно поставлена !");
-                        $state.go('myTasks');
+                        $state.go('tasks');
                     })
                     .error(function(err){
-                        alert("Задача не созадана. Попробуйте еще раз");
+                        toastr.error("Ошибка подключения","Ошибка");
                         console.log(err);
                     });
 

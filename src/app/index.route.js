@@ -61,29 +61,7 @@ export function routerConfig ($stateProvider, $urlRouterProvider) {
         controller: 'NewTaskController',
         controllerAs: 'vm',
         parent : 'documents'
-      })
-      .state('myTasks', {
-        url: '/myTasks',
-        templateUrl: 'app/myTasks/myTasks.html',
-        controller: 'MyTasksController',
-        controllerAs: 'vm',
-        parent : 'tasks'
-      })
-      .state('allTasks', {
-        url: '/allTasks',
-        templateUrl: 'app/allTasks/allTasks.html',
-        controller: 'AllTasksController',
-        controllerAs: 'vm',
-        parent : 'tasks'
-      })
-      .state('commonTasks', {
-        url: '/commonTasks',
-        templateUrl: 'app/commonTasks/commonTasks.html',
-        controller: 'CommonTasksController',
-        controllerAs: 'vm',
-        parent : 'tasks'
-      })
-  ;
+      });
 
   $urlRouterProvider.otherwise('/');
 }
