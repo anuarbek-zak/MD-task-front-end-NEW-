@@ -1,4 +1,5 @@
 div.m-menu-documents(data-offset-top="100", bs-affix)
+
     div.m-menu-documents-item(
     ng-click='vm.document.docType = item.value; vm.getNumberDocument()',
     ng-class='{"m-menu-document-item-active": false}')
@@ -28,6 +29,31 @@ div.m-menu-documents(data-offset-top="100", bs-affix)
         img.active(ng-src='../assets/images/help_desk/ticket-reverse.svg')
         md-tooltip(md-direction="bottom") Добавить новый
 
+    div.m-menu-documents-item(
+    ng-click='vm.myTasks(true,false,false,false)',
+    ng-class='{"m-menu-document-item-active": false}')
+        img.disabled(ng-src='../assets/images/help_desk/ticket.svg')
+        img.active(ng-src='../assets/images/help_desk/ticket-reverse.svg')
+        md-tooltip(md-direction="bottom") Входящие
+    div.m-menu-documents-item(
+    ng-click='vm.myTasks(false,true,false,false)',
+    ng-class='{"m-menu-document-item-active": false}')
+        img.disabled(ng-src='../assets/images/help_desk/ticket.svg')
+        img.active(ng-src='../assets/images/help_desk/ticket-reverse.svg')
+        md-tooltip(md-direction="bottom") Иcходящие
+    div.m-menu-documents-item(
+    ng-click='vm.myTasks(true,true,true,false)',
+    ng-class='{"m-menu-document-item-active": false}')
+        img.disabled(ng-src='../assets/images/help_desk/ticket.svg')
+        img.active(ng-src='../assets/images/help_desk/ticket-reverse.svg')
+        md-tooltip(md-direction="bottom") Избранные
+    div.m-menu-documents-item(
+    ng-click='vm.myTasks(true,true,false,true)',
+    ng-class='{"m-menu-document-item-active": false}')
+        img.disabled(ng-src='../assets/images/help_desk/ticket.svg')
+        img.active(ng-src='../assets/images/help_desk/ticket-reverse.svg')
+        md-tooltip(md-direction="bottom") Горящие
+
 div.m-menu-documents.m-menu-documents-right(data-offset-top="100", bs-affix)
     div.m-menu-documents-item(ui-sref='settings')
         img.disabled(ng-src='../assets/images/help_desk/settings.svg')
@@ -42,7 +68,7 @@ div.m-row.m-document.m-flex
     div.m-left-body
         div.m-row
             h1.text-header Список задач
-            .btn-group.m-radio-group(ng-model='vm.selector',bs-radio-group='')
+            .btn-group.m-radio-group(style="margin-top:-30px", ng-model='vm.selector',bs-radio-group='')
                 label.btn.btn-default(ng-click="vm.myTasks()")
                     input.btn.btn-default(type='radio', value='my')
                     |  Мои
@@ -81,8 +107,9 @@ div.m-row.m-document.m-flex
 
                 .m-col(flex=5)
                 .m-col(flex=5)
-
-            .task(ng-repeat='task in vm.tasks', ng-class="{'task__not-visited':(!(task.visited.indexOf(vm._id)>-1) && vm.selector!='all')}")
+            //---------------------------------------------------------
+                //Класс not-visited добавляется тогда,когда _id юзера нету в массиве visited данного таска
+            .task(ng-repeat='task in vm.tasks | filter: vm.neededTask', ng-class="{'task__not-visited':(!(task.visited.indexOf(vm._id)>-1) && vm.selector!='all')}")
                 input.m-checkbox(ng-click='$event.stopPropagation();', type="checkbox", ng-model='item.checked', value="")
                 .task__star.m-checkbox-start.m-checkbox-start-normal(
                 ng-class="{'m-checkbox-checked-start':task.favourite.indexOf(vm._id)>-1}",
@@ -94,20 +121,20 @@ div.m-row.m-document.m-flex
                         span.task__circle(ng-hide="vm.selector=='all'" ng-class="{'task__circle-active':!(task.visited.indexOf(vm._id)>-1)}")
 
                 .task__right-div
-                    span.task__deadline до:
-                        span.task__deadline__date{{task.deadline}}{{vm.hello}}
+                    span(ng-show="task.deadline").task__deadline до:
+                        span.task__deadline__date{{task.deadline}}
 
                     .task__creator-responsible
                         span.task__creator-responsible__creator Постановщик: {{task.creator.name}}
                         span.task__creator-responsible__responsible Ответсвенный: {{task.responsible.name}}
 
 
-
+                //------------------------------------------------------------
 
     div.m-right-list
         div.m-block-search.m-input-container
             div.m-wrapper
-                input.m-serach-input(type='text')
+                input.m-serach-input(type='text',ng-model="vm.neededTask")
 
         div.m-body-activity
             div.m-title-activity Последние активности

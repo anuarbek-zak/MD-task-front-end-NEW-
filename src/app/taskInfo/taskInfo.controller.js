@@ -14,15 +14,16 @@ export class TaskInfoController{
                 console.log(err);
             });
 
-        // vm.closeTask = function(){
-        //     $http.delete("apiwka",vm.taskId)
-        //         .success(function (res) {
-        //
-        //         })
-        //         .error(function (res) {
-        //             console.log(res);
-        //         })
-        // }
+        vm.closeTask = function(){
+            $http.delete(envService.read('apiUrl')+"/api/close"+vm.taskId)
+                .success(function (res) {
+
+                })
+                .error(function (res) {
+                    console.log(err);
+                    toastr.error("Ошибка подключения","Ошибка");
+                });
+        }
 
     }
 }

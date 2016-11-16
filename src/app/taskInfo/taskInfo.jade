@@ -1,4 +1,4 @@
-.main-container {{task}}
+.taskInfo-container {{task}}
             //информация о таске
             h3 {{vm.task.name}}
             //ul.project-actions
@@ -12,20 +12,21 @@
                 h5 Суть задачи:
                 p {{vm.task.description}}
 
-            h5.performers Соисполнитель(ли):
+            h5.performers(ng-show="vm.task.performers.length") Соисполнитель(ли):
                 span.performer(ng-repeat="performer in vm.task.performers") {{" "+performer.name+" "}}
 
-            p.auditors Аудитор(ы):
+            p.auditors(ng-show="vm.task.auditors.length") Аудитор(ы):
                 span.auditor(ng-repeat="auditor in vm.task.auditors") {{" "+auditor.name+" "}}
 
             p.responsibles Ответсвенный:
                 span.responsible {{" "+vm.task.responsible.name+" "}}
 
-            p Дедлайн:
+            p(ng-show="vm.task.deadline")  Дедлайн:
                 span.deadline{{vm.task.deadline}}
 
+
             h5.creator Постановщик: {{vm.task.creator.name}}
-            //form.main-container__form(name="newTaskForm" ng-submit="vm.func(form)")
+            //form.taskInfo-container__form(name="newTaskForm" ng-submit="vm.func(form)")
             //    .m-input-container.comment
             //        label Коментарийй
             //        input(type="text" ng-model="form.comment")
@@ -37,3 +38,22 @@
             //        input(type="text" ng-model="form." +
             //        "progress" placeholder="Укажите процент завершениязадачи на данный момент")
             //    input.md-btn.myTask__write-btn(type="submit" value="Написать")
+
+    div.m-menu-documents.m-menu-documents-right(data-offset-top="100", bs-affix)
+        div.m-menu-documents-item(ui-sref='settings')
+            img.disabled(ng-src='../assets/images/help_desk/settings.svg')
+            img.active(ng-src='../assets/images/help_desk/settings-reverse.svg')
+            md-tooltip(md-direction="bottom") Настройки
+
+        div.m-menu-documents-item(ng-click="vm.closeTask()")
+            img.disabled(ng-src='../assets/images/help_desk/settings.svg')
+            img.active(ng-src='../assets/images/help_desk/settings-reverse.svg')
+            md-tooltip(md-direction="bottom") Закрыть задачу
+        div.m-menu-documents-item(ui-sref='settings')
+            img.disabled(ng-src='../assets/images/help_desk/settings.svg')
+            img.active(ng-src='../assets/images/help_desk/settings-reverse.svg')
+            md-tooltip(md-direction="bottom") Поставить на паузу
+        div.m-menu-documents-item(ui-sref="tasks")
+            img.disabled(ng-src='../assets/images/help_desk/close.svg')
+            img.active(ng-src='../assets/images/help_desk/close-reverse.svg')
+            md-tooltip(md-direction="bottom") Закрыть
