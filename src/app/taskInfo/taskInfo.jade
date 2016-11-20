@@ -9,7 +9,7 @@
             //        a.project-actions__action(ng-click="vm.pauseTask()") Поставить на паузу
             //    li
             //        a.project-actions__action(ng-click="vm.addSubTask()") Добавить подзадачу
-            .description
+            .description(ng-show="vm.task.description")
                 h5 Суть задачи:
                 p {{vm.task.description}}
 
@@ -22,29 +22,16 @@
             p.responsibles Ответсвенный:
                 span.responsible {{" "+vm.task.responsible.name+" "}}
 
-            p(ng-show="vm.task.deadline")  Дедлайн:
-                span.deadline{{vm.task.deadline}}
+            p.deadline(ng-show="vm.task.deadline")  Дедлайн: {{vm.task.deadline| date : "dd MMMM | H:00"}}
 
 
             h5.creator Постановщик: {{vm.task.creator.name}}
-            //form.taskInfo-container-left__form(name="newTaskForm" ng-submit="vm.func(form)")
-            //    .m-input-container.comment
-            //        label Коментарийй
-            //        input(type="text" ng-model="form.comment")
-            //    .m-input-container.comment
-            //        label Потрачено времени
-            //        input(type="text" placeholder="Пример: 2 недели 3 дня 4 часа 30 минут" ng-model="form.time")
-            //    .m-input-container.comment
-            //        label Процент завершения
-            //        input(type="text" ng-model="form." +
-            //        "progress" placeholder="Укажите процент завершениязадачи на данный момент")
-            //    input.md-btn.myTask__write-btn(type="submit" value="Написать")
 
     .taskInfo-container-right(flex=25 flex-offset=5)
         .taskInfo-container-right__read(ng-repeat="msg in vm.messages")
             .taskInfo-container-right__read__message {{msg}}
         .taskInfo-container-right__write
-            input.taskInfo-container-right__write__input(ng-model="vm.msg")
+            input.taskInfo-container-right__write__input(ng-enter, ng-model="vm.msg")
 
     div.m-menu-documents.m-menu-documents-right(data-offset-top="100", bs-affix)
         div.m-menu-documents-item(ui-sref='settings')

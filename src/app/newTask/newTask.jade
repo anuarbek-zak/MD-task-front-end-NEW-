@@ -38,13 +38,13 @@
 
             span.burn(ng-click="task.urgent=!task.urgent" ng-class="{'active-burn':task.urgent}" ng-init="task.urgent=false") Горит
             .required
-                label.required__text(for='required') Сделать задачу объязательной
+                label.required__text(for='required') Сделать задачу обязательной
                 input.required__input(type="checkbox" name="required" id="required" ng-model="task.required")
                 br
 
             .members.extra-section(ng-show="vm.members")
                 span.md-btn.extra-section__delete(ng-click="vm.hideMembers();task.customer=''") Удалить участников
-                //                ---------------------------------------------------------------
+                //                --------------------------------------------------------------
                 .m-input-container
                     label(for="performer") Соисполнители
                     button.newTask__btn(id="performer" bs-dropdown) {{vm.currentPerformer}}
@@ -56,24 +56,24 @@
                 .users(ng-show="vm.performers.length")
                     .user(ng-repeat="performer in vm.performers")
                         img.user-photo(ng-src="../../assets/images/help_desk/user.jpg")
-                        p(style="display:inline-block") {{performer.name+" "+performer.position}}
+                        p(style="display:inline-block") {{performer.name}}
                         button.user__btn-remove(ng-click="vm.addToUsers(performer,vm.performers)") Х
                     br
                 //                ---------------------------------------------------------------
                 .m-input-container
                     label(for="auditor") Аудиторы
-                    button.newTask__btn(id="auditor"  bs-dropdown) {{vm.currentAuditor}}
+                    button.newTask__btn(id="auditor" bs-dropdown) {{vm.currentAuditor}}
                         span.caret
                     ul.newTask__dropdown(class="dropdown-menu" role="menu")
-                        li.newTask__drop    down__item(ng-repeat="user in vm.users" ng-click="vm.removeFromUsers($index,vm.auditors)")
-                                img.user-photo(ng-src="../../assets/images/help_desk/user.jpg")
-                                span {{user.name}}
-                .users(ng-show="vm.auditors.length")
-                    .user(ng-repeat="auditor in vm.auditors")
-                        img.user-photo(ng-src="../../assets/images/help_desk/user.jpg")
-                        p(style="display:inline-block") {{auditor.name}}
-                        button.user__btn-remove(ng-click="vm.addToUsers(auditor,vm.auditors)") Х
-                    br
+                        li.newTask__dropdown__item(ng-repeat="user in vm.users" ng-click="vm.removeFromUsers($index,vm.auditors)")
+                            img.user-photo(ng-src="../../assets/images/help_desk/user.jpg")
+                            span {{user.name}}
+                    .users(ng-show="vm.auditors.length")
+                        .user(ng-repeat="auditor in vm.auditors")
+                            img.user-photo(ng-src="../../assets/images/help_desk/user.jpg")
+                            p(style="display:inline-block") {{auditor.name}}
+                            button.user__btn-remove(ng-click="vm.addToUsers(auditor,vm.auditors)") Х
+                        br
             .hidden-sections
                 a.newTask__link.hidden-sections__link(ng-click="vm.members=true" ng-show="!vm.members") + Добавить участников
             //Кнопка отправка disabled пока не заполнены поля имя и ответственный

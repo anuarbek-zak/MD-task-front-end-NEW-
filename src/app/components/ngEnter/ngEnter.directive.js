@@ -1,15 +1,15 @@
-export function NgEnterDirective() {
+export function NgEnterDirective($compile) {
     'ngInject';
 
-    return function (scope, element, attrs) {
-        element.bind("keydown keypress", function (event) {
-            if (event.which === 13) {
-                scope.$apply(function () {
-                    scope.$eval(attrs.ngEnter);
-                });
-
-                event.preventDefault();
-            }
-        });
+    return {
+      link:function (scope,element,attrs) {
+          console.log('LINK');
+          element.on("keydown", function (event) {
+              if (event.keyCode === 13) {
+                    console.log("NAZHALj");
+                  event.preventDefault();
+              }
+          });
+      }
     };
 }

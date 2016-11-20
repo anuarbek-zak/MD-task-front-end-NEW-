@@ -24,6 +24,7 @@ import { TicketSupportService } from '../app/components/ticketSupport/ticketSupp
 import { NewTaskController } from './newTask/newTask.controller';
 import {  TasksController } from './tasks/tasks.controller';
 import {  TaskInfoController } from './taskInfo/taskInfo.controller';
+import {  ChatService } from './components/chat/chat.service';
 
 angular.module('ticketMirusDesk', ['ngAnimate', 'ngCookies', 'ngSanitize', 'ngMessages', 'ngAria', 'ngResource',
   'ui.router', 'ngMaterial','ngMdIcons','btford.socket-io', 'toastr', 'lfNgMdFileInput', 'ui.mask','mgcrea.ngStrap','monospaced.elastic',
@@ -54,5 +55,6 @@ angular.module('ticketMirusDesk', ['ngAnimate', 'ngCookies', 'ngSanitize', 'ngMe
 
   .service('MenuService', MenuService)
   .service('CheckAuthService', CheckAuthService)
+  .service('ChatService', ChatService)
   .service('TicketSupportService', TicketSupportService);
 

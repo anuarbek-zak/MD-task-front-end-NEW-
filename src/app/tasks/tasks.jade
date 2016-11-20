@@ -122,7 +122,7 @@ div.m-row.m-document.m-flex
 
                 .task__right-div
                     span(ng-show="task.deadline").task__deadline до:
-                        span.task__deadline__date{{task.deadline | date : "dd MMMM , H:00"}}
+                        span.task__deadline__date{{task.deadline | date : "dd MMMM | H:00"}}
 
                     .task__creator-responsible
                         span.task__creator-responsible__creator Постановщик: {{task.creator.name}}

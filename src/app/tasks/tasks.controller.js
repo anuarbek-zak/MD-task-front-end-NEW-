@@ -55,13 +55,11 @@ export class TasksController{
         //метод для добавления в избранные(при нажатии на звездочку)
         // и получаю boolean - таск в избранных или нет
         vm.addToFavourites = function (task) {
+            if(task.favourite.indexOf(userId)>-1) task.favourite.splice(task.favourite.indexOf(userId),1);
+            else task.favourite.push(userId);
             $http.post(envService.read('apiUrl')+"/api/tasks/addToFavourites",{_id:task._id,userId:userId})
                 .success(function (res) {
-                    if(res) task.favourite.push(userId);
-                    else {
-                        task.favourite.splice(task.favourite.indexOf(userId),1);
-                    }
-                    console.log(res)
+                    console.log(res);
                 })
                 .error(function (res) {
                     toastr.error("Ошибка подключения","Ошибка");
