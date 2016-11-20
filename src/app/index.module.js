@@ -21,8 +21,9 @@ import { MenuService } from '../app/components/menuService/menuService.service';
 import { CheckAuthService } from '../app/components/checkAuth/checkAuth.service';
 import { TicketSupportService } from '../app/components/ticketSupport/ticketSupport.service';
 
-import { NewTaskController } from './newTask/newTask.controller';
 import {  TasksController } from './tasks/tasks.controller';
+import { NewTaskController } from './newTask/newTask.controller';
+import {  TasksListController } from './tasksList/tasksList.controller';
 import {  TaskInfoController } from './taskInfo/taskInfo.controller';
 import {  ChatService } from './components/chat/chat.service';
 
@@ -40,9 +41,11 @@ angular.module('ticketMirusDesk', ['ngAnimate', 'ngCookies', 'ngSanitize', 'ngMe
   .controller('TicketController', TicketController)
   .controller('TicketDetailController', TicketDetailController)
   .controller('SettingsController', SettingsController)
+    .controller('TasksController', TasksController)
     .controller('NewTaskController', NewTaskController)
-    .controller('TasksController',  TasksController)
+    .controller('TasksListController',  TasksListController)
     .controller('TaskInfoController', TaskInfoController)
+
 
 
 

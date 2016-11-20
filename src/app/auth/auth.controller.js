@@ -53,7 +53,7 @@ export class AuthController {
         console.log(response);
 
         $localStorage.user = response.data;
-        $state.go('tasks');
+        $state.go('ticket');
       }, function errorCallback(response) {
         console.log(response);
         console.log('open toastr');

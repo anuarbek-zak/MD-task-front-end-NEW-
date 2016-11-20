@@ -1,4 +1,13 @@
-.taskInfo-container(layout="row") {{task}}
+.taskInfo-container(layout="row")
+    .m-menu-documents(data-offset-top="100", bs-affix)
+        div.m-menu-documents-item(
+        ng-click='vm.document.docType = item.value; vm.getNumberDocument()',
+        ui-sref="tasksList",
+        ng-class='{"m-menu-document-item-active": false}'
+        )
+            img.disabled(ng-src='../assets/images/help_desk/ticket.svg')
+            img.active(ng-src='../assets/images/help_desk/ticket-reverse.svg')
+            md-tooltip(md-direction="bottom") Мои задачи
     .taskInfo-container-left(flex=70)
             //информация о таске
             h3 {{vm.task.name}}
@@ -47,7 +56,7 @@
             img.disabled(ng-src='../assets/images/help_desk/settings.svg')
             img.active(ng-src='../assets/images/help_desk/settings-reverse.svg')
             md-tooltip(md-direction="bottom") Поставить на паузу
-        div.m-menu-documents-item(ui-sref="tasks")
+        div.m-menu-documents-item(ui-sref="tasksList")
             img.disabled(ng-src='../assets/images/help_desk/close.svg')
             img.active(ng-src='../assets/images/help_desk/close-reverse.svg')
             md-tooltip(md-direction="bottom") Закрыть

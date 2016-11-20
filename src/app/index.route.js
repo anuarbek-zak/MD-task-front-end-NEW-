@@ -48,19 +48,26 @@ export function routerConfig ($stateProvider, $urlRouterProvider) {
         controllerAs: 'vm',
         parent : 'documents'
       })
+      .state('tasksList', {
+        url: '/tasksList',
+        templateUrl: 'app/tasksList/tasksList.html',
+        controller: 'TasksListController',
+        controllerAs: 'vm',
+        parent : 'tasks'
+      })
       .state('taskInfo', {
         url: '/taskInfo/:taskId',
         templateUrl: 'app/taskInfo/taskInfo.html',
         controller: 'TaskInfoController',
         controllerAs: 'vm',
-        parent : 'documents'
+        parent : 'tasks'
       })
       .state('newTask', {
         url: '/newTask',
         templateUrl: 'app/newTask/newTask.html',
         controller: 'NewTaskController',
         controllerAs: 'vm',
-        parent : 'documents'
+        parent : 'tasks'
       });
 
   $urlRouterProvider.otherwise('/');
