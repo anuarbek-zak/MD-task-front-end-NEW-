@@ -1,3 +1,7 @@
+button{
+  outline: none;
+}
+
 .main-container{
   &__form{
     background: #f7f7f7;
@@ -18,14 +22,21 @@ label{
   margin-top: 30px;
 }
 
+.users{
+  background: darken(#fff,1%);
+  border: 1px solid #999999;
+  padding: 10px;
+  margin-top: 15px;
+  max-width: 45%;
+}
+
 .user{
   background: #eee;
   border:1px solid #d7d4d4;
   display: inline-block;
   text-align: center;
   padding: 10px 15px 5px 5px;
-  margin-top: 15px;
-  margin-left: 5px;
+  margin-left: 10px;
   position: relative;
   &__btn-remove{
     color: @selling;
@@ -95,9 +106,6 @@ label{
   display: inline-block;
   cursor: pointer;
   outline: none;
-    &:hover{
-      filter: grayscale(0%);
-    }
 }
 
 .active-burn{
@@ -127,4 +135,40 @@ label{
 .user-photo{
   width: 20px;
   height: 25px;
+  margin-right: 10px;
 }
+
+.newTask{
+  &__addHour{
+    display: inline-block;
+    margin:20px;
+    outline: none;
+    color: @selling;
+  }
+  &__hours{
+    display: inline-block;
+  }
+  &__btn{
+    border:none;
+    outline:none;
+    padding:5px 10px;
+    .caret{
+      margin-left: 5px;
+    }
+  }
+  &__dropdown{
+    max-height: 200px;
+    overflow: auto;
+    width: 180px;
+    &__item{
+      padding: 3px;
+      margin-bottom: 5px;
+      border-bottom:1px solid #eee;
+      &:hover{
+        background: #eee;
+      }
+    }
+  }
+}
+
+

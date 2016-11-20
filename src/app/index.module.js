@@ -15,6 +15,7 @@ import { FooterDirective } from '../app/components/footer/footer.directive';
 import { MenuDocumentsDirective } from '../app/components/menuDocuments/menuDocuments.directive';
 import { TypeClientDirective } from '../app/components/typeClient/typeClient.directive';
 import { DynamicTextArea } from '../app/components/dynamicTextArea/dynamicTextArea.directive';
+import { NgEnterDirective } from '../app/components/ngEnter/ngEnter.directive';
 
 import { MenuService } from '../app/components/menuService/menuService.service';
 import { CheckAuthService } from '../app/components/checkAuth/checkAuth.service';
@@ -25,7 +26,7 @@ import {  TasksController } from './tasks/tasks.controller';
 import {  TaskInfoController } from './taskInfo/taskInfo.controller';
 
 angular.module('ticketMirusDesk', ['ngAnimate', 'ngCookies', 'ngSanitize', 'ngMessages', 'ngAria', 'ngResource',
-  'ui.router', 'ngMaterial', 'toastr', 'lfNgMdFileInput', 'ui.mask','mgcrea.ngStrap','monospaced.elastic',
+  'ui.router', 'ngMaterial','ngMdIcons','btford.socket-io', 'toastr', 'lfNgMdFileInput', 'ui.mask','mgcrea.ngStrap','monospaced.elastic',
   '720kb.datepicker', 'tmh.dynamicLocale', 'ngStorage', 'naif.base64', 'environment', 'base64'])
   .constant('malarkey', malarkey)
   .constant('moment', moment)
@@ -43,11 +44,13 @@ angular.module('ticketMirusDesk', ['ngAnimate', 'ngCookies', 'ngSanitize', 'ngMe
     .controller('TaskInfoController', TaskInfoController)
 
 
-    .directive('acmeNavbar', NavbarDirective)
+
+  .directive('acmeNavbar', NavbarDirective)
   .directive('mFooter', FooterDirective)
   .directive('mMenuDocuments', MenuDocumentsDirective)
   .directive('mTypeClient', TypeClientDirective)
   .directive('dynamicTextArea', DynamicTextArea)
+  .directive('ngEnter', NgEnterDirective)
 
   .service('MenuService', MenuService)
   .service('CheckAuthService', CheckAuthService)

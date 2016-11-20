@@ -1,32 +1,42 @@
 .main-container
         form.main-container__form(name="form" ng-submit="vm.createTask(task)")
-            .m-input-container
+            .m-input-container(flex=50)
                 label(for="name") Название задачи
                 input.m-input-container(novalidate required class="md-input-container"  name="name" id="name" ng-model="task.name")
                 br
 
-            .m-input-container
+            .m-input-container(flex=50)
                 label(for="description") Суть задачи
                 textarea(name="description" cols=80 rows=7 id="description" ng-model="task.description")
                 br
 
-            .m-input-container
+            .m-input-container(flex=50)
                 label(for="responsible") Ответсвенный
-                button.btn(id="responsible"  bs-dropdown) {{vm.currentResponsible}}
+                button.newTask__btn(id="responsible" bs-dropdown) {{vm.currentResponsible}}
                     span.caret
-                ul(class="dropdown-menu" role="menu")
-                    li(ng-repeat="user in vm.users" ng-click="vm.chooseResponsible(user._id)")
-                        .responsible {{user.name}}
+                ul.newTask__dropdown(class="dropdown-menu" role="menu")
+                    li.newTask__dropdown__item(ng-repeat="user in vm.users" ng-click="vm.chooseResponsible(user._id)")
+                            img.user-photo(ng-src="../../assets/images/help_desk/user.jpg")
+                            span {{user.name}}
 
                 br
+
 
             .m-input-container(flex='50')
                 label(for="deadline") Дедлайн
-                datepicker.m-datepicker(date-format="dd MMMM yyyy")
+                datepicker.m-datepicker(date-format="yyyy-MM-dd")
                     input.newTask__deadline.m-input-picker(name="deadline" id="deadline" type='text' ng-model="task.deadline")
-                br
-                span.burn(ng-click="task.urgent=!task.urgent" ng-class="{'active-burn':task.urgent}" ng-init="task.urgent=false") Горит
 
+            .newTask__addHour.newTask__link(flex='50' ng-click="vm.showHours=!vm.showHours;vm.currentHour=0") Уточнить время
+
+            .newTask__hours(ng-show='vm.showHours') до
+                button.newTask__btn(bs-dropdown) {{vm.currentHour}}:00
+                    span.caret
+                ul.newTask__dropdown(class="dropdown-menu" role="menu")
+                    li.newTask__dropdown__item(ng-repeat="hour in vm.hours", ng-click="vm.asd($index)") {{hour}}:00
+            br
+
+            span.burn(ng-click="task.urgent=!task.urgent" ng-class="{'active-burn':task.urgent}" ng-init="task.urgent=false") Горит
             .required
                 label.required__text(for='required') Сделать задачу объязательной
                 input.required__input(type="checkbox" name="required" id="required" ng-model="task.required")
@@ -37,41 +47,38 @@
                 //                ---------------------------------------------------------------
                 .m-input-container
                     label(for="performer") Соисполнители
-                    button.btn(id="performer" bs-dropdown) {{vm.currentPerformer}}
+                    button.newTask__btn(id="performer" bs-dropdown) {{vm.currentPerformer}}
                         span.caret
-                    ul(class="dropdown-menu" role="menu")
-                        li(ng-repeat="user in vm.users" ng-click="vm.removeFromUsers($index,vm.performers)")
-                            .performer
-                                img.user-photo(ng-src="../../assets/images/user.png")
+                    ul.newTask__dropdown(class="dropdown-menu" role="menu")
+                        li.newTask__dropdown__item(ng-repeat="user in vm.users" ng-click="vm.removeFromUsers($index,vm.performers)")
+                                img.user-photo(ng-src="../../assets/images/help_desk/user.jpg")
                                 span {{user.name}}
-
-                .user(ng-repeat="performer in vm.performers")
-                    img.user-photo(ng-src="../../assets/images/user.png")
-                    p(style="display:inline-block") {{performer.name+" "+performer.position}}
-                    button.user__btn-remove(ng-click="vm.addToUsers(performer,vm.performers)") Х
-                br
+                .users(ng-show="vm.performers.length")
+                    .user(ng-repeat="performer in vm.performers")
+                        img.user-photo(ng-src="../../assets/images/help_desk/user.jpg")
+                        p(style="display:inline-block") {{performer.name+" "+performer.position}}
+                        button.user__btn-remove(ng-click="vm.addToUsers(performer,vm.performers)") Х
+                    br
                 //                ---------------------------------------------------------------
                 .m-input-container
                     label(for="auditor") Аудиторы
-                    button.btn(id="auditor"  bs-dropdown) {{vm.currentAuditor}}
+                    button.newTask__btn(id="auditor"  bs-dropdown) {{vm.currentAuditor}}
                         span.caret
-                    ul(class="dropdown-menu" role="menu")
-                        li(ng-repeat="user in vm.users" ng-click="vm.removeFromUsers($index,vm.auditors)")
-                            .auditor
-                                img.user-photo(ng-src="../../assets/images/user.png")
+                    ul.newTask__dropdown(class="dropdown-menu" role="menu")
+                        li.newTask__drop    down__item(ng-repeat="user in vm.users" ng-click="vm.removeFromUsers($index,vm.auditors)")
+                                img.user-photo(ng-src="../../assets/images/help_desk/user.jpg")
                                 span {{user.name}}
-
-                .user(ng-repeat="auditor in vm.auditors")
-                    img.user-photo(ng-src="../../assets/images/user.png")
-                    p(style="display:inline-block") {{auditor.name}}
-                    button.user__btn-remove(ng-click="vm.addToUsers(auditor,vm.auditors)") Х
-                br
+                .users(ng-show="vm.auditors.length")
+                    .user(ng-repeat="auditor in vm.auditors")
+                        img.user-photo(ng-src="../../assets/images/help_desk/user.jpg")
+                        p(style="display:inline-block") {{auditor.name}}
+                        button.user__btn-remove(ng-click="vm.addToUsers(auditor,vm.auditors)") Х
+                    br
             .hidden-sections
                 a.newTask__link.hidden-sections__link(ng-click="vm.members=true" ng-show="!vm.members") + Добавить участников
             //Кнопка отправка disabled пока не заполнены поля имя и ответственный
             .submit-btns
-                input.md-btn.submit(type="submit" value="Поставить задачу" ng-disabled="form.$invalid")
+                input.md-btn.submit(type="submit" value="{{vm.submitText}}" ng-disabled="form.$invalid ||vm.currentResponsible=='Выберите ответсвенного'")
                 a.newTask__link.close-task(ui-sref="tasks") Закрыть без сохранения
 
-
-
+        //.task{{task}}

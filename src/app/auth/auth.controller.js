@@ -8,6 +8,7 @@ export class AuthController {
       return {
         'background-selling':$state.includes('selling'),
         'background-supply':$state.includes('supply'),
+        'background-tasks':$state.includes('tasks'),
         'background-staff':$state.includes('staff'),
         'background-payments':$state.includes('payments'),
         'background-other':$state.includes('other')
@@ -42,7 +43,7 @@ export class AuthController {
 
       // login
       $http({
-        url : envService.read('apiUrl')+"api/login",
+        url : envService.read('apiUrl')+"/auth/api/login",
         method : "POST",
         data : {
           idToEnter : self.idToEnter,
@@ -52,7 +53,7 @@ export class AuthController {
         console.log(response);
 
         $localStorage.user = response.data;
-        $state.go('selling');
+        $state.go('tasks');
       }, function errorCallback(response) {
         console.log(response);
         console.log('open toastr');
@@ -63,6 +64,7 @@ export class AuthController {
     console.log('auth controller');
 
   }
+
 
 
 }
