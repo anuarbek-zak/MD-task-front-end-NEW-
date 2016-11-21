@@ -4,19 +4,16 @@ export class NewTaskController{
         console.log($filter);
         var vm = this;
         vm.members = false;
+        vm.responsible=false;
         vm.performers=[];
         vm.auditors = [];
         vm.hours = [];
         vm.currentHour = 0;
-        vm.responsible=false;
-        vm.currentPerformer = "Выберите соисполнителя";
-        vm.currentAuditor = "Выберите аудитора";
-        vm.currentResponsible = "Выберите ответсвенного";
-        vm.submitText = "Поставить задачу";
         vm.showHours=false;
         let userId = $localStorage.user._id;
         console.log(userId);
 
+        //создаю массив часов
         for(var i=0;i<24;i++){
             vm.hours[i] = i;
         }
@@ -40,25 +37,11 @@ export class NewTaskController{
                 console.log(err);
             });
 
-        vm.hour = function (index) {
-            console.log(index);
-        };
-
-        vm.asd = function (index) {
-          vm.currentHour = vm.hours[index];
-            console.log(vm.currentHour);
-        };
-
         //Записываю ответсвенного в vm.responsible и удаляю его из массива всех юзеров
-        vm.chooseResponsible = function (id) {
+        vm.chooseResponsible = function (index) {
                 if(vm.responsible!="") vm.users.push(vm.responsible);
-                vm.users.forEach(function (user,i,users) {
-                    if(user._id==id){
-                        vm.currentResponsible = user.name;
-                        vm.responsible = user;
-                        users.splice(i,1)
-                    }
-                });
+                vm.responsible = vm.users[index];
+                vm.users.splice(index,1);
             };
 
 
@@ -97,7 +80,7 @@ export class NewTaskController{
         //айди создателя равен айди текущего юзера
         vm.createTask = function (task) {
             if(task){
-                vm.submitText = "Отправка запроса";
+                vm.showFooter = true;
                 task.performers = [];
                 task.auditors = [];
                 task.creator = userId;
@@ -110,7 +93,7 @@ export class NewTaskController{
                     .success(function(response){
                         console.log(response);
                         toastr.success("","Задачи успешно поставлена !");
-                        $state.go('tasks');
+                        $state.go('tasksList');
                     })
                     .error(function(err){
                         toastr.error("Ошибка подключения","Ошибка");

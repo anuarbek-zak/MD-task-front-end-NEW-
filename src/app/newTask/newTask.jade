@@ -21,10 +21,10 @@
 
             .m-input-container(flex=50)
                 label(for="responsible") Ответсвенный
-                button.newTask__btn(id="responsible" bs-dropdown) {{vm.currentResponsible}}
+                button.newTask__btn(id="responsible" bs-dropdown) {{vm.responsible.name || 'Выберите ответственного'}}
                     span.caret
                 ul.newTask__dropdown(class="dropdown-menu" role="menu")
-                    li.newTask__dropdown__item(ng-repeat="user in vm.users" ng-click="vm.chooseResponsible(user._id)")
+                    li.newTask__dropdown__item(ng-repeat="user in vm.users" ng-click="vm.chooseResponsible($index)")
                             img.user-photo(ng-src="../../assets/images/help_desk/user.jpg")
                             span {{user.name}}
 
@@ -42,7 +42,7 @@
                 button.newTask__btn(bs-dropdown) {{vm.currentHour}}:00
                     span.caret
                 ul.newTask__dropdown(class="dropdown-menu" role="menu")
-                    li.newTask__dropdown__item(ng-repeat="hour in vm.hours", ng-click="vm.asd($index)") {{hour}}:00
+                    li.newTask__dropdown__item(ng-repeat="hour in vm.hours", ng-click="vm.currentHour=vm.hours[$index]") {{hour}}:00
             br
 
             span.burn(ng-click="task.urgent=!task.urgent" ng-class="{'active-burn':task.urgent}" ng-init="task.urgent=false") Горит
@@ -55,8 +55,8 @@
                 span.md-btn.extra-section__delete(ng-click="vm.hideMembers();task.customer=''") Удалить участников
                 //                ---------------------------------------------------------------
                 .m-input-container
-                    label(for="performer") Соисполнители
-                    button.newTask__btn(id="performer" bs-dropdown) {{vm.currentPerformer}}
+                    label(for="performer")(flex=50) Соисполнители
+                    button.md-btn.newTask__btn(id="performer" bs-dropdown) Выберите соисполнителя
                         span.caret
                     ul.newTask__dropdown(class="dropdown-menu" role="menu")
                         li.newTask__dropdown__item(ng-repeat="user in vm.users" ng-click="vm.removeFromUsers($index,vm.performers)")
@@ -66,12 +66,12 @@
                     .user(ng-repeat="performer in vm.performers")
                         img.user-photo(ng-src="../../assets/images/help_desk/user.jpg")
                         p(style="display:inline-block") {{performer.name+" "+performer.position}}
-                        button.user__btn-remove(ng-click="vm.addToUsers(performer,vm.performers)") Х
-                    br
+                        span.user__btn-remove(ng-click="vm.addToUsers(performer,vm.performers)") Х
+
                 //                ---------------------------------------------------------------
                 .m-input-container
                     label(for="auditor") Аудиторы
-                    button.newTask__btn(id="auditor" bs-dropdown) {{vm.currentAuditor}}
+                    button.md-btn.newTask__btn(id="auditor" bs-dropdown) Выберите аудитора
                         span.caret
                     ul.newTask__dropdown(class="dropdown-menu" role="menu")
                         li.newTask__dropdown__item(ng-repeat="user in vm.users" ng-click="vm.removeFromUsers($index,vm.auditors)")
@@ -81,12 +81,24 @@
                         .user(ng-repeat="auditor in vm.auditors")
                             img.user-photo(ng-src="../../assets/images/help_desk/user.jpg")
                             p(style="display:inline-block") {{auditor.name+" "+auditor.position}}
-                            button.user__btn-remove(ng-click="vm.addToUsers(auditor,vm.auditors)") Х
-                        br
+                            span.user__btn-remove(ng-click="vm.addToUsers(auditor,vm.auditors)") Х
+
+                .m-input-container(flex=50)
+                    label(for="customer") Заказчик
+                    button.md-btn.newTask__btn(id="customer" bs-dropdown) {{task.customer.nameCompany || 'Выберите заказчика'}}
+                        span.caret
+                    ul.newTask__dropdown(class="dropdown-menu" role="menu")
+                        li.newTask__dropdown__item(ng-repeat="customer in vm.customers" ng-click="task.customer=customer")
+                            span {{customer.nameCompany}}
+
+
+
             .hidden-sections
                 a.newTask__link.hidden-sections__link(ng-click="vm.members=true" ng-show="!vm.members") + Добавить участников
             //Кнопка отправка disabled пока не заполнены поля имя и ответственный
             .submit-btns
-                input.md-btn.submit(type="submit" value="{{vm.submitText}}" ng-disabled="form.$invalid ||vm.currentResponsible=='Выберите ответсвенного'")
+                input.md-btn.submit(type="submit" value="Поставить задачу" ng-disabled="form.$invalid ||vm.responsible==false")
 
-        //.task{{task}}
+        .main-container__footer(ng-class="{'main-container__footer__show':vm.showFooter}")
+            img.main-container__footer__preloader(ng-src="../assets/images/preloader.gif")
+            h4.main-container__footer__text Отправка запроса

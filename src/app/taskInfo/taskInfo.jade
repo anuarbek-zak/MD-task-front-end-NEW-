@@ -8,6 +8,16 @@
             img.disabled(ng-src='../assets/images/help_desk/ticket.svg')
             img.active(ng-src='../assets/images/help_desk/ticket-reverse.svg')
             md-tooltip(md-direction="bottom") Мои задачи
+
+        div.m-menu-documents-item(
+        ng-click='vm.document.docType = item.value; vm.getNumberDocument()',
+        ui-sref="newTask",
+        ng-class='{"m-menu-document-item-active": false}'
+        )
+            img.disabled(ng-src='../assets/images/help_desk/ticket.svg')
+            img.active(ng-src='../assets/images/help_desk/ticket-reverse.svg')
+            md-tooltip(md-direction="bottom") Поставить задачу
+
     .taskInfo-container-left(flex=70)
             //информация о таске
             h3 {{vm.task.name}}
@@ -18,45 +28,22 @@
             //        a.project-actions__action(ng-click="vm.pauseTask()") Поставить на паузу
             //    li
             //        a.project-actions__action(ng-click="vm.addSubTask()") Добавить подзадачу
-            .description(ng-show="vm.task.description")
+            .taskInfo-container-left__description(ng-show="vm.task.description")
                 h5 Суть задачи:
                 p {{vm.task.description}}
 
-            h5.performers(ng-show="vm.task.performers.length") Соисполнитель(ли):
-                span.performer(ng-repeat="performer in vm.task.performers") {{" "+performer.name+" "}}
+            h5.taskInfo-container-left__creator Постановщик: {{vm.task.creator.name}}
 
-            p.auditors(ng-show="vm.task.auditors.length") Аудитор(ы):
-                span.auditor(ng-repeat="auditor in vm.task.auditors") {{" "+auditor.name+" "}}
-
-            p.responsibles Ответсвенный:
-                span.responsible {{" "+vm.task.responsible.name+" "}}
-
-            p.deadline(ng-show="vm.task.deadline")  Дедлайн: {{vm.task.deadline| date : "dd MMMM | H:00"}}
+            p.taskInfo-container-left__responsibles Ответсвенный:
+                span.taskInfo-container-left__responsibles__responsible {{" "+vm.task.responsible.name+" "}}
 
 
-            h5.creator Постановщик: {{vm.task.creator.name}}
+            p.taskInfo-container-left__deadline(ng-show="vm.task.deadline")  Дедлайн:
+                span.taskInfo-container-left__deadline__date {{vm.task.deadline| date : "dd MMMM | H:00"}}
 
-    .taskInfo-container-right(flex=25 flex-offset=5)
-        .taskInfo-container-right__read(ng-repeat="msg in vm.messages")
-            .taskInfo-container-right__read__message {{msg}}
-        .taskInfo-container-right__write
-            input.taskInfo-container-right__write__input(ng-enter, ng-model="vm.msg")
 
-    div.m-menu-documents.m-menu-documents-right(data-offset-top="100", bs-affix)
-        div.m-menu-documents-item(ui-sref='settings')
-            img.disabled(ng-src='../assets/images/help_desk/settings.svg')
-            img.active(ng-src='../assets/images/help_desk/settings-reverse.svg')
-            md-tooltip(md-direction="bottom") Настройки
+            h5.taskInfo-container-left__performers(ng-show="vm.task.performers.length") Соисполнитель(ли):
+                        span.taskInfo-container-left__performers__performer(ng-repeat="performer in vm.task.performers") {{" "+performer.name+" "}}
 
-        div.m-menu-documents-item(ng-click="vm.closeTask()")
-            img.disabled(ng-src='../assets/images/help_desk/settings.svg')
-            img.active(ng-src='../assets/images/help_desk/settings-reverse.svg')
-            md-tooltip(md-direction="bottom") Закрыть задачу
-        div.m-menu-documents-item(ui-sref='settings')
-            img.disabled(ng-src='../assets/images/help_desk/settings.svg')
-            img.active(ng-src='../assets/images/help_desk/settings-reverse.svg')
-            md-tooltip(md-direction="bottom") Поставить на паузу
-        div.m-menu-documents-item(ui-sref="tasksList")
-            img.disabled(ng-src='../assets/images/help_desk/close.svg')
-            img.active(ng-src='../assets/images/help_desk/close-reverse.svg')
-            md-tooltip(md-direction="bottom") Закрыть
+            p.taskInfo-container-left__auditors(ng-show="vm.task.auditors.length") Аудитор(ы):
+                span.taskInfo-container-left__auditors__auditor(ng-repeat="auditor in vm.task.auditors") {{" "+auditor.name+" "}}

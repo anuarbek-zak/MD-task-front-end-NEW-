@@ -1,54 +1,22 @@
-.taskInfo-container{
-  &-right{
-    height: 300px;
-    border: 1px solid #888;
-    border-radius:5px;
-    &__read{
-      height: 250px;
-      background: #fff;
-      border-radius:5px;
-    }
-    &__write{
-
-      &__input{
-        width: 100%;
-        border: 0;
-        border-top:1px solid #888;
-        height: 45px;
-        outline: none;
-        padding: 5px;
-      }
+.taskInfo-container-left{
+  &__auditors{
+    &__auditor+.taskInfo-container-left__auditors__auditor:before{
+      content: " , ";
     }
   }
-}
-
-.myTask{
-  &__write-btn{
-    margin-top: 20px;
+  &__performers{
+    &__performer+.taskInfo-container-left__performers__performer:before{
+      content: " , ";
+    }
   }
-}
-.description{
-  padding:30px;
-  background: #e6e6e6;
-}
-
-.project-actions{
-  position: absolute;
-  top: 0;
-  left: 94%;
-  list-style: none;
-  &__action{
-    background: #f2f2f2;
-    display: inline-block;
-    padding: 7px 4px 7px 15px;
-    border-radius:0 3px 3px 0;
-    cursor: pointer;
-    color: @selling;
-    margin-bottom: 5px;
-    &:hover{
-      transition:.7s;
-      color: darken(@selling, 10%);
-      text-decoration: none;
+  &__description{
+    padding:30px;
+    background: #e6e6e6;
+  }
+  &__deadline{
+    &__date{
+      color: @selling;
+      margin-left: 10px;
     }
   }
 }

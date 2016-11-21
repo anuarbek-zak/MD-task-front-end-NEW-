@@ -3,9 +3,28 @@ button{
 }
 
 .main-container{
+
   &__form{
     background: #f7f7f7;
     padding: 15px;
+  }
+  &__footer{
+    &__show{
+      opacity: 1;
+      transition: .3s;
+    }
+    opacity: 0;
+    text-align: center;
+    padding: 20px;
+    &__preloader{
+      width: 40px;
+      height: 40px;
+      margin-left: -30px;
+    }
+    &__text{
+      display: inline-block;
+      margin-left: 15px;
+    }
   }
 }
 .md-btn{
@@ -136,6 +155,7 @@ label{
   width: 20px;
   height: 25px;
   margin-right: 10px;
+  border-radius: 50%;
 }
 
 .newTask{
@@ -157,7 +177,7 @@ label{
     }
   }
   &__dropdown{
-    max-height: 200px;
+    max-height: 165px;
     overflow: auto;
     width: 180px;
     &__item{
@@ -170,5 +190,3 @@ label{
     }
   }
 }
-
-

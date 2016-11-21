@@ -26,7 +26,7 @@ export class TaskInfoController{
                 });
         };
 
-        vm.sendMessage = function (message) {
+        vm.sendСomment = function (comment) {
             $http.post(envService.read('apiUrl')+"/api/apiwka/"+userId,{message:message})
                 .success(function (res) {
                     vm.messages.push(res);
@@ -36,6 +36,8 @@ export class TaskInfoController{
                     toastr.error("Ошибка подключения","Ошибка");
                 });
         };
+
+        vm.logout = CheckAuthService.logout;
 
     }
 }

@@ -22,14 +22,14 @@ import { CheckAuthService } from '../app/components/checkAuth/checkAuth.service'
 import { TicketSupportService } from '../app/components/ticketSupport/ticketSupport.service';
 
 import {  TasksController } from './tasks/tasks.controller';
+import {  TaskInfoController } from './taskInfo/taskInfo.controller';
 import { NewTaskController } from './newTask/newTask.controller';
 import {  TasksListController } from './tasksList/tasksList.controller';
-import {  TaskInfoController } from './taskInfo/taskInfo.controller';
-import {  ChatService } from './components/chat/chat.service';
+
 
 angular.module('ticketMirusDesk', ['ngAnimate', 'ngCookies', 'ngSanitize', 'ngMessages', 'ngAria', 'ngResource',
   'ui.router', 'ngMaterial','ngMdIcons','btford.socket-io', 'toastr', 'lfNgMdFileInput', 'ui.mask','mgcrea.ngStrap','monospaced.elastic',
-  '720kb.datepicker', 'tmh.dynamicLocale', 'ngStorage', 'naif.base64', 'environment', 'base64'])
+  '720kb.datepicker', 'tmh.dynamicLocale', 'ngStorage', 'naif.base64', 'environment', 'base64','ui.bootstrap'])
   .constant('malarkey', malarkey)
   .constant('moment', moment)
   .config(config)
@@ -58,6 +58,5 @@ angular.module('ticketMirusDesk', ['ngAnimate', 'ngCookies', 'ngSanitize', 'ngMe
 
   .service('MenuService', MenuService)
   .service('CheckAuthService', CheckAuthService)
-  .service('ChatService', ChatService)
   .service('TicketSupportService', TicketSupportService);
 
