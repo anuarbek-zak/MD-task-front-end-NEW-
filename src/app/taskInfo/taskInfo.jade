@@ -1,4 +1,4 @@
-.taskInfo-container(layout="row")
+.taskInfo-container
     .m-menu-documents(data-offset-top="100", bs-affix)
         div.m-menu-documents-item(
         ng-click='vm.document.docType = item.value; vm.getNumberDocument()',
@@ -18,7 +18,7 @@
             img.active(ng-src='../assets/images/help_desk/ticket-reverse.svg')
             md-tooltip(md-direction="bottom") Поставить задачу
 
-    .taskInfo-container-left(flex=70)
+    .taskInfo-container-left
             //информация о таске
             h3 {{vm.task.name}}
             //ul.project-actions
@@ -47,3 +47,20 @@
 
             p.taskInfo-container-left__auditors(ng-show="vm.task.auditors.length") Аудитор(ы):
                 span.taskInfo-container-left__auditors__auditor(ng-repeat="auditor in vm.task.auditors") {{" "+auditor.name+" "}}
+
+    br
+    .taskInfo__comments
+        h3 Коментарии
+        .taskInfo__comments__comment(ng-animate ng-repeat="comment in vm.comments | limitTo:vm.limit")
+            img.taskInfo__comments__comment__creator-photo(ng-src="../../assets/images/help_desk/user.jpg")
+            .taskInfo__comments__comment__div
+                h5.taskInfo__comments__comment__div__creator-name {{comment.user.name}}
+                p.taskInfo__comments__comment__div__content {{comment.text}}
+                span(ng-if="vm.userId==comment.user._id" ng-click="vm.removeComment(comment._id,$index)").taskInfo__comments__comment__div__remove  Удалить
+        .taskInfo__comments__showMore(ng-show="vm.comments.length>4")
+            p(ng-click="vm.limit=vm.limit+5" ng-hide="vm.limit>=vm.comments.length") Показать остальные ({{vm.comments.length-vm.limit}})
+            p(ng-click="vm.limit=4" ng-show="vm.limit>=vm.comments.length") Скрыть
+        .taskInfo__comments__create
+            img.taskInfo__comments__create__creator-photo(ng-src="../../assets/images/help_desk/user.jpg")
+            textarea.taskInfo__comments__create__input(placeholder="Напишите коментарий" ng-model="comment")
+            p.taskInfo__comments__create__send(ng-click="vm.sendComment(comment)") Оставить коментарий

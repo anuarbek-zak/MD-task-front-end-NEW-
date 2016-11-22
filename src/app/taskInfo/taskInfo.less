@@ -1,22 +1,94 @@
-.taskInfo-container-left{
-  &__auditors{
-    &__auditor+.taskInfo-container-left__auditors__auditor:before{
-      content: " , ";
+.taskInfo{
+  &-container-left{
+    &__auditors{
+      &__auditor+.taskInfo-container-left__auditors__auditor:before{
+        content: " , ";
+      }
+    }
+    &__performers{
+      &__performer+.taskInfo-container-left__performers__performer:before{
+        content: " , ";
+      }
+    }
+    &__description{
+      padding:30px;
+      background: #e6e6e6;
+    }
+    &__deadline{
+      &__date{
+        color: @selling;
+        margin-left: 10px;
+      }
     }
   }
-  &__performers{
-    &__performer+.taskInfo-container-left__performers__performer:before{
-      content: " , ";
-    }
-  }
-  &__description{
-    padding:30px;
-    background: #e6e6e6;
-  }
-  &__deadline{
-    &__date{
+
+  &__comments{
+    background: darken(#fff,1%);
+    padding: 15px;
+    &__showMore{
+      font-weight: normal;
+      margin-top: 10px;
       color: @selling;
-      margin-left: 10px;
+      outline:none;
+      &:hover{
+        color: darken(@selling,7%);
+      }
     }
+   &__comment{
+     position: relative;
+     border-bottom:1px solid #cccccc;
+     padding: 15px;
+     &__creator-photo{
+       position: absolute;
+       top: 30%;
+       left: 0;
+       width: 40px;
+       height: 40px;
+       border-radius: 50%;
+     }
+     &__div{
+       margin-left: 40px;
+       width: 90%;
+       display: inline-block;
+       &__creator-name{
+         display: inline-block;
+       }
+       &__remove{
+         color: darken(@selling,10%);
+         cursor: pointer;
+       }
+     }
+
+   }
+   &__create{
+     margin-top: 40px;
+     display: table;
+     &__creator-photo{
+       margin-top: 10px;
+       width: 40px;
+       height: 40px;
+       border-radius: 50%;
+     }
+     &__input{
+       margin-left: 10px;
+       width: 400px;
+       height: 100px;
+       outline:none;
+       border: none;
+       border-bottom:2px solid @selling;
+       resize: none;
+       font-size: 18px;
+       padding: 5px;
+     }
+     &__send{
+       width: 150px;
+       font-weight: bold;
+       font-size: 16px;
+       color: darken(@selling,8%);
+       margin: 20px 0 0 50px;
+       cursor: pointer;
+       outline:none;
+     }
+   }
   }
 }
