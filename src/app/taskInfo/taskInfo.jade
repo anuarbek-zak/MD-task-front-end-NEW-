@@ -51,16 +51,20 @@
     br
     .taskInfo__comments
         h3 Коментарии
+        //коментарий(можно удалить если id текущего юзера равно id создателя)
         .taskInfo__comments__comment(ng-animate ng-repeat="comment in vm.comments | limitTo:vm.limit")
             img.taskInfo__comments__comment__creator-photo(ng-src="../../assets/images/help_desk/user.jpg")
             .taskInfo__comments__comment__div
                 h5.taskInfo__comments__comment__div__creator-name {{comment.user.name}}
                 p.taskInfo__comments__comment__div__content {{comment.text}}
                 span(ng-if="vm.userId==comment.user._id" ng-click="vm.removeComment(comment._id,$index)").taskInfo__comments__comment__div__remove  Удалить
+            span.taskInfo__comments__comment__date {{comment.createdDate | date:'d MMM HH:mm'}}
+        //Show more-отображается когда больше 4 коментов и открывает по 5,так же можно скрыть комменты(до 4)
         .taskInfo__comments__showMore(ng-show="vm.comments.length>4")
             p(ng-click="vm.limit=vm.limit+5" ng-hide="vm.limit>=vm.comments.length") Показать остальные ({{vm.comments.length-vm.limit}})
             p(ng-click="vm.limit=4" ng-show="vm.limit>=vm.comments.length") Скрыть
+        //Создание коментария
         .taskInfo__comments__create
             img.taskInfo__comments__create__creator-photo(ng-src="../../assets/images/help_desk/user.jpg")
             textarea.taskInfo__comments__create__input(placeholder="Напишите коментарий" ng-model="comment")
-            p.taskInfo__comments__create__send(ng-click="vm.sendComment(comment)") Оставить коментарий
+            p.taskInfo__comments__create__send(ng-click="vm.sendComment(comment);comment=''") Оставить коментарий

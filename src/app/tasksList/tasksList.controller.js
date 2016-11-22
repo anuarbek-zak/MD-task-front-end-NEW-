@@ -4,7 +4,7 @@ export class TasksListController{
         var vm = this;
         let userId = $localStorage.user._id;
         vm._id = userId;
-
+        vm.preloader = true;
          // посылается запрос через метод vm.getTasks(responsible,creator,favourite,urgent)
         // и судя по значениям(true,false) выдает массив tasks по которому прохожусь ng-repeatom
         //отправляю входящие,исходящие,избранные,горящие и id юзера
@@ -13,6 +13,7 @@ export class TasksListController{
             $http.post(envService.read('apiUrl')+"/api/tasks/filterBy",
                 {_id:userId,responsible:responsible,creator:creator,favourite:favourite,urgent:urgent})
                 .success(function(response){
+                    vm.preloader = false;
                     vm.tasks = response.reverse();
                     vm.emptyTasks = vm.tasks.length?"":"Нет задач, удовлятворяющиx этой категории";
                     vm.selector = 'my';
@@ -29,6 +30,7 @@ export class TasksListController{
         vm.allTasks = function () {
             $http.get(envService.read('apiUrl')+"/api/tasks/all")
                 .success(function(response){
+                    vm.preloader = false;
                     vm.tasks = response.reverse();
                     vm.emptyTasks = vm.tasks.length?"":"Нет задач, удовлятворяющиx этой категории";
                     vm.selector = 'all';
@@ -43,6 +45,7 @@ export class TasksListController{
         vm.commonTasks = function () {
             $http.post(envService.read('apiUrl')+"/api/tasks/general",{_id:userId})
                 .success(function(response){
+                    vm.preloader = false;
                     vm.tasks = response.reverse();
                     vm.emptyTasks = vm.tasks.length?"":"Нет задач, удовлятворяющиx этой категории";
                     vm.selector = 'withMe';

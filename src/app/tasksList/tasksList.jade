@@ -111,6 +111,9 @@ div.m-row.m-document.m-flex
 
 
             //Класс not-visited добавляется тогда,когда _id юзера нету в массиве visited данного таска
+            .preloader(ng-show="vm.preloader")
+                img.preloader__img(ng-src="../assets/images/preloader.gif")
+                h3 Загрузка
             h3.emptyTasks {{vm.emptyTasks}}
             .task(ng-animate ng-repeat='task in vm.tasks | filter: vm.neededTask', ng-class="{'task__not-visited':(!(task.visited.indexOf(vm._id)>-1) && vm.selector!='all')}")
                 input.m-checkbox(ng-click='$event.stopPropagation();', type="checkbox", ng-model='item.checked', value="")

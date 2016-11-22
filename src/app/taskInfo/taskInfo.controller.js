@@ -19,7 +19,7 @@ export class TaskInfoController{
         $http.post(envService.read('apiUrl')+"/api/comment/all",{taskId:vm.taskId})
             .success(function(response){
                 console.log(response);
-                vm.comments = response;
+                vm.comments = response.reverse();
             })
             .error(function(err){
                 console.log(err);
@@ -27,13 +27,13 @@ export class TaskInfoController{
 
 
         vm.sendComment = function (comment) {
-            console.log(new Date(),comment);
+            if(!comment) return;
             var commentObj = {taskId:vm.taskId,creatorId:userId,comment:comment,createdDate:new Date()};
             $http.post(envService.read('apiUrl')+"/api/comment/add",commentObj)
                 .success(function (res) {
                     commentObj = res;
                     commentObj.user = $localStorage.user;
-                    vm.comments.push(commentObj);
+                    vm.comments.unshift(commentObj);
                     comment = "";
                 })
                 .error(function(err){
