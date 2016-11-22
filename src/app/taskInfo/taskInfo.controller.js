@@ -6,7 +6,12 @@ export class TaskInfoController{
         vm.userId = userId;
         vm.taskId = $stateParams.taskId;
         vm.limit =  4;
-        console.log(vm.userId);
+
+        vm.enableToCreate = function () {
+            // if(userId==vm.task.creator._id || userId==vm.task.responsible._id || vm.task.performers.indexOf(userId)>-1 || vm.task.auditors.indexOf(userId)>-1) return true;
+            return true;
+        };
+
         //беру инфу о таске
         $http.post(envService.read('apiUrl')+"/api/tasks/task",{_id:vm.taskId,userId:userId})
             .success(function(response){
@@ -15,10 +20,10 @@ export class TaskInfoController{
             .error(function(err){
                 console.log(err);
             });
+
         //беру все коменты
         $http.post(envService.read('apiUrl')+"/api/comment/all",{taskId:vm.taskId})
             .success(function(response){
-                console.log(response);
                 vm.comments = response.reverse();
             })
             .error(function(err){
@@ -26,6 +31,7 @@ export class TaskInfoController{
             });
 
 
+        //отправка комента,проверка на пустой комент,принимаю объект комента и добавлю в массив комментов
         vm.sendComment = function (comment) {
             if(!comment) return;
             var commentObj = {taskId:vm.taskId,creatorId:userId,comment:comment,createdDate:new Date()};
@@ -34,14 +40,13 @@ export class TaskInfoController{
                     commentObj = res;
                     commentObj.user = $localStorage.user;
                     vm.comments.unshift(commentObj);
-                    comment = "";
                 })
                 .error(function(err){
                     console.log(err);
                     toastr.error("Ошибка подключения","Ошибка");
                 });
         };
-
+        //удаление коммента
          vm.removeComment = function (commentId,i) {
                     console.log(commentId,i);
                     $http.post(envService.read('apiUrl')+"/api/comment/delete",{_id:commentId})
@@ -55,15 +60,15 @@ export class TaskInfoController{
                         });
                 };
 
-        vm.closeTask = function(){
-            $http.delete(envService.read('apiUrl')+"/api/close/"+vm.taskId)
-                .success(function (res) {
-                    console.log(res);
-                })
-                .error(function (res) {
-                    console.log(err);
-                    toastr.error("Ошибка подключения","Ошибка");
-                });
-        };
+        // vm.closeTask = function(){
+        //     $http.delete(envService.read('apiUrl')+"/api/close/"+vm.taskId)
+        //         .success(function (res) {
+        //             console.log(res);
+        //         })
+        //         .error(function (res) {
+        //             console.log(err);
+        //             toastr.error("Ошибка подключения","Ошибка");
+        //         });
+        // };
     }
 }
