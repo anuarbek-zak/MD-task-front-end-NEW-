@@ -115,7 +115,7 @@ div.m-row.m-document.m-flex
                 img.preloader__img(ng-src="../assets/images/preloader.gif")
                 h3 Загрузка
             h3.emptyTasks {{vm.emptyTasks}}
-            .task(ng-animate ng-repeat='task in vm.tasks | filter: vm.neededTask', ng-class="{'task__not-visited':(!(task.visited.indexOf(vm._id)>-1) && vm.selector!='all')}")
+            .task(ng-repeat='task in vm.tasks | filter: vm.neededTask', ng-class="{'task__not-visited':(!(task.visited.indexOf(vm._id)>-1) && vm.selector!='all')}")
                 input.m-checkbox(ng-click='$event.stopPropagation();', type="checkbox", ng-model='item.checked', value="")
                 .task__star.m-checkbox-start.m-checkbox-start-normal(
                 ng-class="{'m-checkbox-checked-start':task.favourite.indexOf(vm._id)>-1}",
