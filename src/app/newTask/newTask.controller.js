@@ -96,6 +96,7 @@ export class NewTaskController{
                         $state.go('tasksList');
                     })
                     .error(function(err){
+                        vm.showFooter = false;
                         toastr.error("Ошибка подключения","Ошибка");
                         console.log(err);
                     });
