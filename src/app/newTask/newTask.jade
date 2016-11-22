@@ -36,7 +36,7 @@
                 datepicker.m-datepicker(date-format="yyyy-MM-dd")
                     input.newTask__deadline.m-input-picker(name="deadline" id="deadline" type='text' ng-model="task.deadline")
 
-            .newTask__addHour.newTask__link(flex='50' ng-click="vm.showHours=!vm.showHours;vm.currentHour=0") Уточнить время
+            .newTask__addHour.newTask__link(flex='50' ng-show="task.deadline" ng-click="vm.showHours=!vm.showHours;vm.currentHour=0") Уточнить время
 
             .newTask__hours(ng-show='vm.showHours') до
                 button.newTask__btn(bs-dropdown) {{vm.currentHour}}:00
