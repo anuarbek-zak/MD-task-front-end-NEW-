@@ -63,7 +63,7 @@ export function routerConfig ($stateProvider, $urlRouterProvider) {
         parent : 'tasks'
       })
       .state('newTask', {
-        url: '/newTask',
+        url: '/newTask/:taskId',
         templateUrl: 'app/newTask/newTask.html',
         controller: 'NewTaskController',
         controllerAs: 'vm',

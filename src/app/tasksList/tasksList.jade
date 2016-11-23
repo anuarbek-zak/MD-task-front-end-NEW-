@@ -115,7 +115,7 @@ div.m-row.m-document.m-flex
                 img.preloader__img(ng-src="../assets/images/preloader.gif")
                 h3 Загрузка
             h3.emptyTasks {{vm.emptyTasks}}
-            .task(ng-repeat='task in vm.tasks | filter: vm.neededTask', ng-class="{'task__not-visited':(!(task.visited.indexOf(vm._id)>-1) && vm.selector!='all')}")
+            .task(ng-repeat='task in vm.tasks | filter: vm.neededTask track by $index', ng-class="{'task__not-visited':(!(task.visited.indexOf(vm._id)>-1) && vm.selector!='all')}")
                 input.m-checkbox(ng-click='$event.stopPropagation();', type="checkbox", ng-model='item.checked', value="")
                 .task__star.m-checkbox-start.m-checkbox-start-normal(
                 ng-class="{'m-checkbox-checked-start':task.favourite.indexOf(vm._id)>-1}",
@@ -123,16 +123,16 @@ div.m-row.m-document.m-flex
                 ng-hide="vm.selector=='all'")
                     md-tooltip.task__star__hint(md-direction="bottom") Добавить в избранные
 
-                a.task__name(ui-sref="taskInfo({taskId:task._id})") {{task.name}}
+                a.task__name(ui-sref="taskInfo({taskId:task._id})") {{task.name | limitTo:20}}
                         span.task__circle(ng-hide="vm.selector=='all'" ng-class="{'task__circle-active':!(task.visited.indexOf(vm._id)>-1)}")
                 //пока работаем над этим
-                //.task__require-btns(ng-show="(!(task.visited.indexOf(vm._id)>-1)&&vm.selector!='all')")
-                //    button.task__require-btns__accept.btn.btn-success(ng-click="vm.accepted(task._id)") Принять
-                //    button.task__require-btns__cancel.btn.btn-danger(ng-click="vm.canceled(task._id)") Отклонить
+                .task__require-btns(ng-show="(!(task.visited.indexOf(vm._id)>-1)&&vm.selector!='all')")
+                    button.task__require-btns__accept.btn.btn-success(ng-click="vm.accepted(task._id)") Принять
+                    button.task__require-btns__cancel.btn.btn-danger(ng-click="vm.canceled(task._id,$event)") Отклонить
 
                 .task__right-div
                     span(ng-show="task.deadline").task__deadline до:
-                        span.task__deadline__date{{task.deadline | date : "dd MMMM | H:00"}}
+                        span.task__deadline__date {{task.deadline | date : "dd MMMM | H:00"}}
 
                     .task__creator-responsible
                         span.task__creator-responsible__creator Постановщик: {{task.creator.name}}

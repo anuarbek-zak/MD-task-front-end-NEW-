@@ -1,5 +1,5 @@
 export class TasksListController{
-    constructor($http, $localStorage, CheckAuthService, envService,toastr,$uibModal){
+    constructor($http, $localStorage, CheckAuthService, envService,toastr,$mdDialog){
         'ngInject';
         var vm = this;
         let userId = $localStorage.user._id;
@@ -9,18 +9,31 @@ export class TasksListController{
         // и судя по значениям(true,false) выдает массив tasks по которому прохожусь ng-repeatom
         //отправляю входящие,исходящие,избранные,горящие и id юзера
         console.log(userId);
+
+        //функция срабатывает при успехе запроса
+        vm.success = function (selector,response) {
+            vm.preloader = false;
+            vm.tasks = response.reverse();
+            vm.emptyTasks = vm.tasks.length?"":"Нет задач, удовлятворяющиx этой категории";
+            vm.selector = selector;
+        };
+
+        //функция срабатывает при ошибке
+        vm.error = function (err) {
+            vm.preloader = false;
+            console.log(err);
+            toastr.error("Ошибка подключения","Ошибка");
+        };
+
         vm.myTasks = function (responsible=true,creator=true,favourite=false,urgent=false) {
             $http.post(envService.read('apiUrl')+"/api/tasks/filterBy",
                 {_id:userId,responsible:responsible,creator:creator,favourite:favourite,urgent:urgent})
                 .success(function(response){
-                    vm.preloader = false;
-                    vm.tasks = response.reverse();
-                    vm.emptyTasks = vm.tasks.length?"":"Нет задач, удовлятворяющиx этой категории";
-                    vm.selector = 'my';
+                    cl(response);
+                    vm.success('my',response);
                 })
                 .error(function(err){
-                    console.log(err);
-                    toastr.error("Ошибка подключения","Ошибка");
+                    vm.error(err);
                 });
         };
 
@@ -30,29 +43,20 @@ export class TasksListController{
         vm.allTasks = function () {
             $http.get(envService.read('apiUrl')+"/api/tasks/all")
                 .success(function(response){
-                    vm.preloader = false;
-                    vm.tasks = response.reverse();
-                    vm.emptyTasks = vm.tasks.length?"":"Нет задач, удовлятворяющиx этой категории";
-                    vm.selector = 'all';
-
+                    vm.success('all',response);
                 })
                 .error(function(err){
-                    toastr.error("Ошибка подключения","Ошибка");
-                    console.log(err);
+                    vm.error(err);
                 });
         };
 
         vm.commonTasks = function () {
             $http.post(envService.read('apiUrl')+"/api/tasks/general",{_id:userId})
                 .success(function(response){
-                    vm.preloader = false;
-                    vm.tasks = response.reverse();
-                    vm.emptyTasks = vm.tasks.length?"":"Нет задач, удовлятворяющиx этой категории";
-                    vm.selector = 'withMe';
+                    vm.success('withMe',response);
                 })
                 .error(function(err){
-                    toastr.error("Ошибка подключения","Ошибка");
-                    console.log(err);
+                    vm.error(err);
                 });
         };
 
@@ -67,36 +71,42 @@ export class TasksListController{
               });
         };
 
-        vm.canceled = function (taskId) {
+        vm.canceled = function (taskId,ev) {
             console.log(taskId);
 
-            var modalInstance = $uibModal.open({
-                animation: vm.animationsEnabled,
-                template:"a",
-                resolve: {
-                    items: function () {
-                        return vm.items;
-                    }
-                }
-            });
+                // Appending dialog to document.body to cover sidenav in docs app
+                var confirm = $mdDialog.prompt()
+                    .title('Опишите причину отказа')
+                    .placeholder('Написать ...')
+                    .ariaLabel('Dog name')
+                    .targetEvent(ev)
+                    .cancel('Отмена')
+                    .ok('Отправить');
 
-            modalInstance.result.then(function (selectedItem) {
-                vm.selected = selectedItem;
-            }, function () {
-               console.log("success");
-            });
-          // $http.put(envService.read('apiUrl')+"/api/tasks/general/"+taskId)
-          //     .success(function(response){
-          //
-          //     })
-          //     .error(function(err){
-          //         toastr.error("Ошибка подключения","Ошибка");
-          //         console.log(err);
-          //     });
+                $mdDialog.show(confirm).then(function(result) {
+                    vm.reason = result;
+                    cl(vm.reason);
+                    // $http.put(envService.read('apiUrl')+"/api/tasks/general/"+taskId)
+                    //     .success(function(response){
+                    //
+                    //     })
+                    //     .error(function(err){
+                    //         toastr.error("Ошибка подключения","Ошибка");
+                    //         console.log(err);
+                    //     });
+                }, function() {
+                   vm.reason = "";
+                });
+        };
+
+        //для быстрого вывода
+        var cl = function (a) {
+            console.log("-----------");
+            console.log(a);
+            console.log("-----------");
         };
 
         //метод для добавления в избранные(при нажатии на звездочку)
-        // и получаю boolean - таск в избранных или нет
         vm.addToFavourites = function (task) {
             if(task.favourite.indexOf(userId)>-1) task.favourite.splice(task.favourite.indexOf(userId),1);
             else task.favourite.push(userId);
@@ -111,7 +121,6 @@ export class TasksListController{
 
         };
         vm.logout = CheckAuthService.logout;
-
 
 
     }

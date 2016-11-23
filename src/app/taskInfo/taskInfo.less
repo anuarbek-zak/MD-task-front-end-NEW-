@@ -1,18 +1,28 @@
 .taskInfo{
+  word-break: break-all;
+
   &-container-left{
     &__auditors{
+      word-break: break-all;
+
       &__auditor+.taskInfo-container-left__auditors__auditor:before{
         content: " , ";
       }
     }
     &__performers{
+      word-break: break-all;
+
       &__performer+.taskInfo-container-left__performers__performer:before{
         content: " , ";
       }
     }
+    &__name{
+      word-break: break-all;
+    }
     &__description{
       padding:30px;
       background: #e6e6e6;
+      word-break: break-all;
     }
     &__deadline{
       &__date{
@@ -38,6 +48,8 @@
      position: relative;
      border-bottom:1px solid #cccccc;
      padding: 15px;
+     word-break: break-all;
+
      &__creator-photo{
        position: absolute;
        top: 30%;
@@ -114,4 +126,8 @@
 .taskInfo__comments__comment.ng-enter-active{
   transform: scaleY(1);
   opacity: 1;
+}
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
 }

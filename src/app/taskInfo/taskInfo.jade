@@ -18,9 +18,16 @@
             img.active(ng-src='../assets/images/help_desk/ticket-reverse.svg')
             md-tooltip(md-direction="bottom") Поставить задачу
 
+
+    div.m-menu-documents.m-menu-documents-right(data-offset-top="100", bs-affix)
+        div.m-menu-documents-item(ui-sref="newTask({taskId:vm.taskId})" ng-if="vm.userId==vm.task.creator._id")
+            img.disabled(ng-src='../assets/images/help_desk/settings.svg')
+            img.active(ng-src='../assets/images/help_desk/settings-reverse.svg',)
+            md-tooltip(md-direction="bottom") Изменить задачу
+
     .taskInfo-container-left
             //информация о таске
-            h3 {{vm.task.name}}
+            h3.taskInfo-container-left__name {{vm.task.name}}
             //ul.project-actions
             //    li
             //        a.project-actions__action(ng-click="vm.closeTask()") Закрыть задачу
@@ -50,7 +57,7 @@
 
     br
     .taskInfo__comments
-        h3 {{vm.comments.length?"Коментарии":"Пока нет коментариев"}}
+        h3(ng-cloak) {{vm.comments.length?"Коментарии":"Пока нет коментариев"}}
         //коментарий(можно удалить если id текущего юзера равно id создателя)
         .taskInfo__comments__comment(ng-repeat="comment in vm.comments | limitTo:vm.limit")
             img.taskInfo__comments__comment__creator-photo(ng-src="../../assets/images/help_desk/user.jpg")
@@ -68,3 +75,5 @@
             img.taskInfo__comments__create__creator-photo(ng-src="../../assets/images/help_desk/user.jpg")
             textarea.taskInfo__comments__create__input(ng-enter placeholder="Написать ..." ng-model="comment")
             p.taskInfo__comments__create__send(ng-click="vm.sendComment(comment);comment=''") Оставить коментарий
+
+

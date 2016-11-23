@@ -7,6 +7,12 @@ export class TaskInfoController{
         vm.taskId = $stateParams.taskId;
         vm.limit =  4;
 
+        //для быстрого вывода
+        var cl = function (a) {
+            console.log("-----------");
+            console.log(a);
+        };
+        cl(userId);
         vm.enableToCreate = function () {
             // if(userId==vm.task.creator._id || userId==vm.task.responsible._id || vm.task.performers.indexOf(userId)>-1 || vm.task.auditors.indexOf(userId)>-1) return true;
             return true;
@@ -15,6 +21,7 @@ export class TaskInfoController{
         //беру инфу о таске
         $http.post(envService.read('apiUrl')+"/api/tasks/task",{_id:vm.taskId,userId:userId})
             .success(function(response){
+                cl(response);
                 vm.task = response;
             })
             .error(function(err){

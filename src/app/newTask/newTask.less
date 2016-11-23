@@ -2,6 +2,12 @@ button{
   outline: none;
 }
 
+.error{
+  color: red;
+  font-weight: normal;
+  font-size: 17px;
+}
+
 .main-container{
 
   &__form{
@@ -10,12 +16,12 @@ button{
   }
   &__footer{
     &__show{
-      opacity: 1;
-      transition: .3s;
+      display: block;
+      margin-top: 15px;
     }
-    opacity: 0;
+    display: none;
     text-align: center;
-    padding: 20px;
+    //padding: 20px;
     &__preloader{
       width: 40px;
       height: 40px;
