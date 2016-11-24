@@ -1,5 +1,5 @@
 export class TaskInfoController{
-    constructor($http, $localStorage,$stateParams,toastr, CheckAuthService, envService){
+    constructor($http, $localStorage,$stateParams,toastr, CheckAuthService, envService,$anchorScroll, $location){
         'ngInject';
         var vm = this;
         let userId = $localStorage.user._id;
@@ -8,9 +8,9 @@ export class TaskInfoController{
         vm.limit =  4;
 
         //для быстрого вывода
-        var cl = function (a) {
+        var cl = function (a="",b) {
             console.log("-----------");
-            console.log(a);
+            console.log(a,b);
         };
         cl(userId);
         vm.enableToCreate = function () {
@@ -21,8 +21,9 @@ export class TaskInfoController{
         //беру инфу о таске
         $http.post(envService.read('apiUrl')+"/api/tasks/task",{_id:vm.taskId,userId:userId})
             .success(function(response){
-                cl(response);
+                cl("task obj",response);
                 vm.task = response;
+                vm.allMembersCount = vm.task.auditors.length+vm.task.performers.length+1;
             })
             .error(function(err){
                 console.log(err);
@@ -37,16 +38,26 @@ export class TaskInfoController{
                 console.log(err);
             });
 
+        //когда нажимаю ответить на комент
+        vm.writeAnswer = function (name) {
+            vm.comment = name+" ,  ";
+            cl("elem ",document.getElementById("createTextArea"));
+            document.getElementById("createTextArea").focus();
+            $location.hash("createTextArea");
+            $anchorScroll(1000);
+
+        };
 
         //отправка комента,проверка на пустой комент,принимаю объект комента и добавлю в массив комментов
-        vm.sendComment = function (comment) {
-            if(!comment) return;
-            var commentObj = {taskId:vm.taskId,creatorId:userId,comment:comment,createdDate:new Date()};
+        vm.sendComment = function () {
+            if(!vm.comment) return;
+            var commentObj = {taskId:vm.taskId,creatorId:userId,comment:vm.comment,createdDate:new Date()};
             $http.post(envService.read('apiUrl')+"/api/comment/add",commentObj)
                 .success(function (res) {
                     commentObj = res;
                     commentObj.user = $localStorage.user;
                     vm.comments.unshift(commentObj);
+                    vm.comment = "";
                 })
                 .error(function(err){
                     console.log(err);

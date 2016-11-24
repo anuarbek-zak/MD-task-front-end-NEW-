@@ -1,5 +1,5 @@
 export class NewTaskController{
-    constructor($http, toastr, $localStorage,$state, CheckAuthService, envService,$stateParams){
+    constructor($http, toastr, $localStorage,$state, CheckAuthService, envService,$stateParams, $filter){
         'ngInject';
         var vm = this;
         let userId = $localStorage.user._id;
@@ -13,6 +13,7 @@ export class NewTaskController{
         vm.currentHour = 0;
         vm.showHours=false;
         vm.taskId = $stateParams.taskId;
+        vm.submitText ="Поставить задачу" ;
         var once = true;
 
         //для быстрого вывода
@@ -43,6 +44,33 @@ export class NewTaskController{
         //
         // removeResp();
 
+        //проверка:если пришел taskId то значит меняем task,если нет,то создаем новый
+
+        var ifTaskId = function () {
+            if($stateParams.taskId) {
+                vm.submitText = "Внести изменения";
+                $http.post(envService.read('apiUrl') + "/api/tasks/task", {_id: $stateParams.taskId, userId: userId})
+                    .success(function (response) {
+                        vm.task = response;
+                        vm.task.deadline = $filter('date')(vm.task.deadline,'yyyy-MM-dd');
+                        //удаляю из массива юзеров всех аудиторов,соисполнителей и ответсвенных
+                        //что бы не дублировались
+                        var arr = vm.task.performers.concat(vm.task.auditors);
+                        arr.push(vm.task.responsible);
+                        for (var i = 0; i < arr.length; i++) {
+                            for (var j = 0; j < vm.users.length; j++) {
+                                if (arr[i]._id == vm.users[j]._id) vm.users.splice(j, 1);
+                            }
+                        }
+
+                    })
+                    .error(function (err) {
+                        console.log(err);
+                        toastr.error("Ошибка подключения", "Ошибка");
+                    });
+            }
+        };
+
         //Запрос на всех клиентов(Заказчиков)
         $http.get(envService.read('apiUrl')+"/api/clients/all")
             .success(function(response){
@@ -59,33 +87,7 @@ export class NewTaskController{
                 // vm.users = [{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},];
 
                 //проверка:если пришел taskId то значит меняем task,если нет,то создаем новый
-                (function () {
-                    if(!$stateParams.taskId) {
-                        vm.submitText ="Поставить задачу" ;
-                        return;
-                    }
-                    else{
-                        vm.submitText ="Внести изменения" ;
-                        $http.post(envService.read('apiUrl')+"/api/tasks/task",{_id:$stateParams.taskId,userId:userId})
-                            .success(function(response){
-                                vm.task = response;
-                                //удаляю из массива юзеров всех аудиторов,соисполнителей и ответсвенных
-                                //что бы не дублировались
-                                var arr = vm.task.performers.concat(vm.task.auditors);
-                                arr.push(vm.task.responsible);
-                                for(var i=0;i<arr.length;i++){
-                                    for(var j=0;j<vm.users.length;j++){
-                                        if(arr[i]._id==vm.users[j]._id) vm.users.splice(j,1);
-                                    }
-                                }
-
-                            })
-                            .error(function(err){
-                                console.log(err);
-                                toastr.error("Ошибка подключения","Ошибка");
-                            });
-                    }
-                })();
+                ifTaskId();
             })
             .error(function(err){
                 console.log(err);

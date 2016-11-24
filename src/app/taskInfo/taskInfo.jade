@@ -44,7 +44,6 @@
             p.taskInfo-container-left__responsibles Ответсвенный:
                 span.taskInfo-container-left__responsibles__responsible {{" "+vm.task.responsible.name+" "}}
 
-
             p.taskInfo-container-left__deadline(ng-show="vm.task.deadline")  Дедлайн:
                 span.taskInfo-container-left__deadline__date {{vm.task.deadline| date : "dd MMMM | H:00"}}
 
@@ -55,16 +54,23 @@
             p.taskInfo-container-left__auditors(ng-show="vm.task.auditors.length") Аудитор(ы):
                 span.taskInfo-container-left__auditors__auditor(ng-repeat="auditor in vm.task.auditors") {{" "+auditor.name+" "}}
 
+            p.taskInfo-container-left__auditors(ng-show="vm.userId==vm.task.creator._id") Просмотрели {{vm.task.visited.length+"/"+vm.allMembersCount}} :
+                span.taskInfo-container-left__auditors__auditor(ng-repeat="visited in vm.task.visited") {{" "+visited+" "}}
+
+            p.taskInfo-container-left__auditors(ng-show="vm.userId==vm.task.creator._id") Приняли {{vm.task.accepted.length+"/"+vm.allMembersCount}} :
+                span.taskInfo-container-left__auditors__auditor(ng-repeat="accepted in vm.task.accepted") {{" "+accepted+" "}}
+
     br
     .taskInfo__comments
         h3(ng-cloak) {{vm.comments.length?"Коментарии":"Пока нет коментариев"}}
         //коментарий(можно удалить если id текущего юзера равно id создателя)
-        .taskInfo__comments__comment(ng-repeat="comment in vm.comments | limitTo:vm.limit")
+        .taskInfo__comments__comment(ng-repeat="comment in vm.comments | limitTo:vm.limit track by $index")
             img.taskInfo__comments__comment__creator-photo(ng-src="../../assets/images/help_desk/user.jpg")
             .taskInfo__comments__comment__div
                 h5.taskInfo__comments__comment__div__creator-name {{comment.user.name}}
                 p.taskInfo__comments__comment__div__content {{comment.text}}
                 span(ng-if="vm.userId==comment.user._id" ng-click="vm.removeComment(comment._id,$index)").taskInfo__comments__comment__div__remove  Удалить
+                span(ng-if="vm.userId!=comment.user._id" ng-click="vm.writeAnswer(comment.user.name)").taskInfo__comments__comment__div__remove  Ответить
             span.taskInfo__comments__comment__date {{comment.createdDate | date:'d MMM HH:mm'}}
         //Show more-отображается когда больше 4 коментов и открывает по 5,так же можно скрыть комменты(до 4)
         .taskInfo__comments__showMore(ng-show="vm.comments.length>4")
@@ -73,7 +79,7 @@
         //Создание коментария
         .taskInfo__comments__create(ng-if="vm.enableToCreate()")
             img.taskInfo__comments__create__creator-photo(ng-src="../../assets/images/help_desk/user.jpg")
-            textarea.taskInfo__comments__create__input(ng-enter placeholder="Написать ..." ng-model="comment")
-            p.taskInfo__comments__create__send(ng-click="vm.sendComment(comment);comment=''") Оставить коментарий
+            textarea.taskInfo__comments__create__input(id="createTextArea" ng-enter placeholder="Написать ..." ng-model="vm.comment")
+            p.taskInfo__comments__create__send(ng-click="vm.sendComment()") Оставить коментарий
 
 
