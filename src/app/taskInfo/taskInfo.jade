@@ -1,4 +1,5 @@
 .taskInfo-container
+
     .m-menu-documents(data-offset-top="100", bs-affix)
         div.m-menu-documents-item(
         ng-click='vm.document.docType = item.value; vm.getNumberDocument()',
@@ -54,13 +55,20 @@
             p.taskInfo-container-left__auditors(ng-show="vm.task.auditors.length") Аудитор(ы):
                 span.taskInfo-container-left__auditors__auditor(ng-repeat="auditor in vm.task.auditors") {{" "+auditor.name+" "}}
 
-            p.taskInfo-container-left__auditors(ng-show="vm.userId==vm.task.creator._id") Просмотрели {{vm.task.visited.length+"/"+vm.allMembersCount}} :
-                span.taskInfo-container-left__auditors__auditor(ng-repeat="visited in vm.task.visited") {{" "+visited+" "}}
+            p(ng-if="vm.task.customer").taskInfo-container-left__customers Заказчик:
+                span.taskInfo-container-left__customers__customer {{" "+vm.task.customer.nameCompany+" "}}
 
-            p.taskInfo-container-left__auditors(ng-show="vm.userId==vm.task.creator._id") Приняли {{vm.task.accepted.length+"/"+vm.allMembersCount}} :
-                span.taskInfo-container-left__auditors__auditor(ng-repeat="accepted in vm.task.accepted") {{" "+accepted+" "}}
+            p.taskInfo-container-left__auditors Просмотрели {{vm.task.visited.length+"/"+vm.allMembersCount}} :
+                span.taskInfo-container-left__auditors__auditor(ng-repeat="visited in vm.task.visited") {{" "+visited.name+" "}}
+
+            p.taskInfo-container-left__auditors      Приняли или отклонили {{vm.task.status.length+"/"+vm.allMembersCount}} :
+                span.taskInfo-container-left__auditors__auditor(ng-repeat="accepted in vm.task.status") {{" "+accepted.user.name+" "}}
 
     br
+    .taskInfo-container__reqiure-btns(ng-show="vm.showRequireBtns")
+        button.taskInfo-container__reqiure-btns__accept.btn.btn-success(ng-click="vm.accepted()") Принять
+        button.taskInfo-container__reqiure-btns__cancel.btn.btn-danger(ng-click="vm.canceled($event)") Отклонить
+
     .taskInfo__comments
         h3(ng-cloak) {{vm.comments.length?"Коментарии":"Пока нет коментариев"}}
         //коментарий(можно удалить если id текущего юзера равно id создателя)

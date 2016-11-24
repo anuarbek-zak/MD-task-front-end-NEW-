@@ -1,5 +1,5 @@
 export class TasksListController{
-    constructor($http, $localStorage, CheckAuthService, envService,toastr,$mdDialog){
+    constructor($http, $localStorage, CheckAuthService, envService,toastr){
         'ngInject';
         var vm = this;
         let userId = $localStorage.user._id;
@@ -9,6 +9,12 @@ export class TasksListController{
         // и судя по значениям(true,false) выдает массив tasks по которому прохожусь ng-repeatom
         //отправляю входящие,исходящие,избранные,горящие и id юзера
         console.log(userId);
+
+
+        var cl = function (a="",b) {
+            console.log("-----------");
+            console.log(a,b);
+        };
 
         //функция срабатывает при успехе запроса
         vm.success = function (selector,response) {
@@ -60,51 +66,6 @@ export class TasksListController{
                 });
         };
 
-        vm.accepted = function (taskId) {
-          $http.put(envService.read('apiUrl')+"/api/tasks/general/"+taskId)
-              .success(function(response){
-
-              })
-              .error(function(err){
-                  toastr.error("Ошибка подключения","Ошибка");
-                  console.log(err);
-              });
-        };
-
-        vm.canceled = function (taskId,ev) {
-            console.log(taskId);
-
-                // Appending dialog to document.body to cover sidenav in docs app
-                var confirm = $mdDialog.prompt()
-                    .title('Опишите причину отказа')
-                    .placeholder('Написать ...')
-                    .ariaLabel('Dog name')
-                    .targetEvent(ev)
-                    .cancel('Отмена')
-                    .ok('Отправить');
-
-                $mdDialog.show(confirm).then(function(result) {
-                    vm.reason = result;
-                    cl(vm.reason);
-                    // $http.put(envService.read('apiUrl')+"/api/tasks/general/"+taskId)
-                    //     .success(function(response){
-                    //
-                    //     })
-                    //     .error(function(err){
-                    //         toastr.error("Ошибка подключения","Ошибка");
-                    //         console.log(err);
-                    //     });
-                }, function() {
-                   vm.reason = "";
-                });
-        };
-
-        //для быстрого вывода
-        var cl = function (a) {
-            console.log("-----------");
-            console.log(a);
-            console.log("-----------");
-        };
 
         //метод для добавления в избранные(при нажатии на звездочку)
         vm.addToFavourites = function (task) {

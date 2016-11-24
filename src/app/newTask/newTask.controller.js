@@ -17,10 +17,9 @@ export class NewTaskController{
         var once = true;
 
         //для быстрого вывода
-        var cl = function (a) {
+        var cl = function (a="",b) {
             console.log("-----------");
-            console.log(a);
-            console.log("-----------");
+            console.log(a,b);
         };
 
         //создаю массив часов
@@ -29,20 +28,6 @@ export class NewTaskController{
                 vm.hours[i] = i;
             }
         })();
-
-        //удаляю responsible из массива юзеров если
-        // он уже есть(на редактировании)
-        // var removeResp = function () {
-        //     if(once && $stateParams.taskId){
-        //         once = false;
-        //         vm.users.forEach(function (user,i,arr) {
-        //             if(user._id==vm.task.responsible._id)  arr.splice(i,1);
-        //
-        //         });
-        //     }
-        // }
-        //
-        // removeResp();
 
         //проверка:если пришел taskId то значит меняем task,если нет,то создаем новый
 
@@ -137,32 +122,31 @@ export class NewTaskController{
         //айди создателя равен айди текущего юзера
         vm.createTask = function () {
             if(vm.task){
+                cl("deadline",vm.task.deadline);
+                if(vm.task.deadline!==undefined && vm.task.deadline!=null){
+                    var timestamp=Date.parse(vm.task.deadline );
+                    if (isNaN(timestamp)==true) {
+                        vm.dateError = true;
+                        return;
+                    }
+                    vm.task.deadline = new Date(timestamp);
+                    vm.task.deadline.setHours(vm.currentHour);
+                }
                 vm.showFooter = true;
                 vm.dateError = false;
                 vm.task.creator = userId;
                 vm.task.responsible = vm.task.responsible._id;
-                cl("DEADLINE"+vm.task.deadline);
                 //проверка на дату(если есть,то правильно ли введена)
-                if(vm.task.deadline!==undefined){
-                    var timestamp=Date.parse(vm.task.deadline );
-                    if (isNaN(timestamp)==true) {
-                        vm.dateError = true;
-                        vm.showFooter = false;
-                        return;
-                    }
 
-                    vm.task.deadline = new Date(timestamp);
-                    vm.task.deadline.setHours(vm.currentHour);
-                }
 
                 vm.idFromObj(vm.task.performers);
                 vm.idFromObj(vm.task.auditors);
-                if($stateParams.taskId){
-                    $http.put(envService.read('apiUrl')+"/api/tasks/update/"+$stateParams.taskId,vm.task)
+                if(vm.taskId){
+                    $http.post(envService.read('apiUrl')+"/api/tasks/update/",{_id:vm.taskId,task:vm.task})
                         .success(function(response){
                             console.log(response);
                             toastr.success("","Задача успешно изменена !");
-                            $state.go('taskInfo({taskId:vm.taskId})');
+                            $state.go('taskInfo({taskId:$stateParams.taskId})');
                         })
                         .error(function(err){
                             vm.showFooter = false;

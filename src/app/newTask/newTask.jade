@@ -1,4 +1,4 @@
-div {{vm.task}}
+//div {{vm.task}}
 .main-container
         div.m-menu-documents.m-menu-documents-right(data-offset-top="100", bs-affix)
             div.m-menu-documents-item(
@@ -37,7 +37,7 @@ div {{vm.task}}
                 button.newTask__btn(id="responsible" bs-dropdown) {{vm.task.responsible.name || 'Выберите ответственного'}}
                     span.caret
                 ul.newTask__dropdown(class="dropdown-menu" role="menu")
-                    li.newTask__dropdown__item(ng-repeat="user in vm.users" ng-click="vm.chooseResponsible($index)")
+                    li.newTask__dropdown__item(ng-repeat="user in vm.users | orderBy:'name'" ng-click="vm.chooseResponsible($index)")
                             img.user-photo(ng-src="../../assets/images/help_desk/user.jpg")
                             span {{user.name}}
 
