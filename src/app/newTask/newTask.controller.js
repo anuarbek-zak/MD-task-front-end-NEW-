@@ -22,25 +22,6 @@ export class NewTaskController{
             console.log("-----------");
         };
 
-        //проверка:если пришел taskId то значит меняем task,если нет,то создаем новый
-        (function () {
-            if(!$stateParams.taskId) {
-                vm.submitText ="Поставить задачу" ;
-                return;
-            }
-            else{
-                vm.submitText ="Внести изменения" ;
-                $http.post(envService.read('apiUrl')+"/api/tasks/task",{_id:$stateParams.taskId,userId:userId})
-                    .success(function(response){
-                        vm.task = response;
-
-                    })
-                    .error(function(err){
-                        console.log(err);
-                    });
-            }
-        })();
-
         //создаю массив часов
         (function () {
             for(var i=0;i<24;i++){
@@ -76,7 +57,35 @@ export class NewTaskController{
             .success(function(response){
                 vm.users = response;
                 // vm.users = [{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},];
-                cl(vm.users);
+
+                //проверка:если пришел taskId то значит меняем task,если нет,то создаем новый
+                (function () {
+                    if(!$stateParams.taskId) {
+                        vm.submitText ="Поставить задачу" ;
+                        return;
+                    }
+                    else{
+                        vm.submitText ="Внести изменения" ;
+                        $http.post(envService.read('apiUrl')+"/api/tasks/task",{_id:$stateParams.taskId,userId:userId})
+                            .success(function(response){
+                                vm.task = response;
+                                //удаляю из массива юзеров всех аудиторов,соисполнителей и ответсвенных
+                                //что бы не дублировались
+                                var arr = vm.task.performers.concat(vm.task.auditors);
+                                arr.push(vm.task.responsible);
+                                for(var i=0;i<arr.length;i++){
+                                    for(var j=0;j<vm.users.length;j++){
+                                        if(arr[i]._id==vm.users[j]._id) vm.users.splice(j,1);
+                                    }
+                                }
+
+                            })
+                            .error(function(err){
+                                console.log(err);
+                                toastr.error("Ошибка подключения","Ошибка");
+                            });
+                    }
+                })();
             })
             .error(function(err){
                 console.log(err);
@@ -130,31 +139,51 @@ export class NewTaskController{
                 vm.dateError = false;
                 vm.task.creator = userId;
                 vm.task.responsible = vm.task.responsible._id;
-                var timestamp=Date.parse(vm.task.deadline );
-                if (isNaN(timestamp)==true) {
-                    vm.dateError = true;
-                    vm.showFooter = false;
-                    return;
+                cl("DEADLINE"+vm.task.deadline);
+                //проверка на дату(если есть,то правильно ли введена)
+                if(vm.task.deadline!==undefined){
+                    var timestamp=Date.parse(vm.task.deadline );
+                    if (isNaN(timestamp)==true) {
+                        vm.dateError = true;
+                        vm.showFooter = false;
+                        return;
+                    }
+
+                    vm.task.deadline = new Date(timestamp);
+                    vm.task.deadline.setHours(vm.currentHour);
                 }
 
-                vm.task.deadline = new Date(timestamp);
-                vm.task.deadline.setHours(vm.currentHour);
                 vm.idFromObj(vm.task.performers);
                 vm.idFromObj(vm.task.auditors);
-                $http.post(envService.read('apiUrl')+"/api/tasks/create",vm.task)
-                    .success(function(response){
-                        console.log(response);
-                        toastr.success("","Задачи успешно поставлена !");
-                        $state.go('tasksList');
-                    })
-                    .error(function(err){
-                        vm.showFooter = false;
-                        toastr.error("Ошибка подключения","Ошибка");
-                        console.log(err);
-                    });
+                if($stateParams.taskId){
+                    $http.put(envService.read('apiUrl')+"/api/tasks/update/"+$stateParams.taskId,vm.task)
+                        .success(function(response){
+                            console.log(response);
+                            toastr.success("","Задача успешно изменена !");
+                            $state.go('taskInfo({taskId:vm.taskId})');
+                        })
+                        .error(function(err){
+                            vm.showFooter = false;
+                            toastr.error("Ошибка подключения","Ошибка");
+                            console.log(err);
+                        });
                 }else{
-                    console.log("OTMENA");
+                    $http.post(envService.read('apiUrl')+"/api/tasks/create",vm.task)
+                        .success(function(response){
+                            console.log(response);
+                            toastr.success("","Задача успешно поставлена !");
+                            $state.go('tasksList');
+                        })
+                        .error(function(err){
+                            vm.showFooter = false;
+                            toastr.error("Ошибка подключения","Ошибка");
+                            console.log(err);
+                        });
                 }
+
+            }else{
+               console.log("OTMENA");
+            }
         };
     }
 }
