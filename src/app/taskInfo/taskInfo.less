@@ -6,12 +6,40 @@
     }
   }
   &-container-left{
+    &__accepteds{
+      &__accepted{
+        color: limegreen;
+      }
+    }
+    &__canceleds{
+      &__canceled{
+        cursor: pointer;
+        color: red;
+        position: relative;
+        &:hover .taskInfo-container-left__canceleds__canceled__comment{
+          transform: scale(1);
+        }
+        &__comment{
+          text-align: center;
+          transition: .2s;
+          transform: scale(0);
+          word-break: break-all;
+          background:#999;
+          width: 200px;
+          display: inline-block;
+          position: absolute;
+          top: 120%;
+          left: -100%;
+          padding: 10px;
+          border-radius:4px;
+          color: #ffffff;
+          z-index: 20;
+          letter-spacing: 1px;
+        }
+      }
+    }
     &__auditors{
       word-break: break-all;
-
-      &__auditor+.taskInfo-container-left__auditors__auditor:before{
-        content: " , ";
-      }
     }
     &__performers{
       word-break: break-all;
@@ -134,4 +162,7 @@
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
+}
+.taskInfo__user+.taskInfo__user:before{
+  content: " , ";
 }

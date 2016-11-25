@@ -49,20 +49,25 @@
                 span.taskInfo-container-left__deadline__date {{vm.task.deadline| date : "dd MMMM | H:00"}}
 
 
-            h5.taskInfo-container-left__performers(ng-show="vm.task.performers.length") Соисполнитель(ли):
-                        span.taskInfo-container-left__performers__performer(ng-repeat="performer in vm.task.performers") {{" "+performer.name+" "}}
+            p.taskInfo-container-left__performers(ng-show="vm.task.performers.length") Соисполнитель(ли):
+                span.taskInfo__user.taskInfo-container-left__performers__performer(ng-repeat="performer in vm.task.performers") {{" "+performer.name+" "}}
 
             p.taskInfo-container-left__auditors(ng-show="vm.task.auditors.length") Аудитор(ы):
-                span.taskInfo-container-left__auditors__auditor(ng-repeat="auditor in vm.task.auditors") {{" "+auditor.name+" "}}
+                span.taskInfo__user.taskInfo-container-left__auditors__auditor(ng-repeat="auditor in vm.task.auditors") {{" "+auditor.name+" "}}
 
             p(ng-if="vm.task.customer").taskInfo-container-left__customers Заказчик:
                 span.taskInfo-container-left__customers__customer {{" "+vm.task.customer.nameCompany+" "}}
 
-            p.taskInfo-container-left__auditors Просмотрели {{vm.task.visited.length+"/"+vm.allMembersCount}} :
-                span.taskInfo-container-left__auditors__auditor(ng-repeat="visited in vm.task.visited") {{" "+visited.name+" "}}
+            p.taskInfo-container-left__visitors Просмотрели :
+                span.taskInfo__user.taskInfo-container-left__visitors__visitor(ng-repeat="visited in vm.task.visited") {{" "+visited.name+" "}}
 
-            p.taskInfo-container-left__auditors      Приняли или отклонили {{vm.task.status.length+"/"+vm.allMembersCount}} :
-                span.taskInfo-container-left__auditors__auditor(ng-repeat="accepted in vm.task.status") {{" "+accepted.user.name+" "}}
+            div(ng-show="vm.task.status.length")
+                p.taskInfo-container-left__accepteds    Приняли :
+                    span.taskInfo__user.taskInfo-container-left__accepteds__accepted(ng-repeat="status in vm.task.status") {{status | accepted:true}}
+
+                p.taskInfo-container-left__canceleds    Отклонили :
+                    span.taskInfo__user.taskInfo-container-left__canceleds__canceled(ng-repeat="status in vm.task.status") {{status | accepted:false}}
+                        span.taskInfo-container-left__canceleds__canceled__comment {{status.comment}}
 
     br
     .taskInfo-container__reqiure-btns(ng-show="vm.showRequireBtns")

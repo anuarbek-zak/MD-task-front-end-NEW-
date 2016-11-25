@@ -35,25 +35,25 @@ div.m-menu-documents(data-offset-top="100", bs-affix)
     //    img.active(ng-src='../assets/images/help_desk/ticket-reverse.svg')
     //    md-tooltip(md-direction="bottom") Закрытые
     div.m-menu-documents-item(
-    ng-click='vm.myTasks(true,false,false,false)',
+    ng-click='vm.getTasks(true,false,false,false,false,false)',
     ng-class='{"m-menu-document-item-active": false}')
         img.disabled(ng-src='../assets/images/help_desk/ticket.svg')
         img.active(ng-src='../assets/images/help_desk/ticket-reverse.svg')
         md-tooltip(md-direction="bottom") Входящие
     div.m-menu-documents-item(
-    ng-click='vm.myTasks(false,true,false,false)',
+    ng-click='vm.getTasks(false,true,false,false,false,false)',
     ng-class='{"m-menu-document-item-active": false}')
         img.disabled(ng-src='../assets/images/help_desk/ticket.svg')
         img.active(ng-src='../assets/images/help_desk/ticket-reverse.svg')
         md-tooltip(md-direction="bottom") Иcходящие
     div.m-menu-documents-item(
-    ng-click='vm.myTasks(true,true,true,false)',
+    ng-click='vm.getTasks(true,true,true,false,false,false)',
     ng-class='{"m-menu-document-item-active": false}')
         img.disabled(ng-src='../assets/images/help_desk/ticket.svg')
         img.active(ng-src='../assets/images/help_desk/ticket-reverse.svg')
         md-tooltip(md-direction="bottom") Избранные
     div.m-menu-documents-item(
-    ng-click='vm.myTasks(true,true,false,true)',
+    ng-click='vm.getTasks(true,true,false,true,false,false)',
     ng-class='{"m-menu-document-item-active": false}')
         img.disabled(ng-src='../assets/images/help_desk/ticket.svg')
         img.active(ng-src='../assets/images/help_desk/ticket-reverse.svg')
@@ -69,13 +69,13 @@ div.m-row.m-document.m-flex
         div.m-row
             h1.text-header Список задач
             .taskList-btns.btn-group.m-radio-group(ng-model='vm.selector',bs-radio-group='')
-                label.btn.btn-default(ng-click="vm.myTasks()")
+                label.btn.btn-default(ng-click="vm.getTasks()")
                     input.btn.btn-default(type='radio', value='my')
                     |  Мои
-                label.btn.btn-default(ng-click="vm.commonTasks()")
+                label.btn.btn-default(ng-click="vm.getTasks(false,false,false,false,true,false)")
                     input.btn.btn-default(type='radio', value='withMe')
                     |  Общие
-                label.btn.btn-default(ng-click="vm.allTasks()")
+                label.btn.btn-default(ng-click="vm.getTasks(false,false,false,false,false,true)")
                     input.btn.btn-default(type='radio', value='all')
                     |  Все
         div.like-invoice-title
@@ -111,8 +111,6 @@ div.m-row.m-document.m-flex
 
 
             //Класс not-visited добавляется тогда,когда _id юзера нету в массиве visited данного таска
-            .preloader(ng-show="vm.preloader")
-                img.preloader__img(ng-src="../assets/images/preloader.gif")
             h3.emptyTasks {{vm.emptyTasks}}
             .task(ng-repeat='task in vm.tasks | filter: vm.neededTask', ng-class="{'task__not-visited':(!(task.visited.indexOf(vm._id)>-1) && vm.selector!='all')&&task.creator._id!=vm._id}")
                 input.m-checkbox(ng-click='$event.stopPropagation();', type="checkbox", ng-model='item.checked', value="")

@@ -69,7 +69,7 @@
                 span.md-btn.extra-section__delete(ng-click="vm.hideMembers();vm.task.customer=''") Удалить участников
                         //  ---------------------------------------------------------------
                 .m-input-container
-                    label(for="performer")(flex=50) Соисполнители
+                    label(for="performer") Соисполнители
                     button.md-btn.newTask__btn(id="performer" bs-dropdown) Выберите соисполнителя
                         span.caret
                     ul.newTask__dropdown(class="dropdown-menu" role="menu")
@@ -110,10 +110,9 @@
 
             .hidden-sections
                 a.newTask__link.hidden-sections__link(ng-click="vm.members=true" ng-show="!vm.members") + Добавить участников
-            //Кнопка отправка disabled пока не заполнены поля имя и ответственный
+            //Кнопка отправки disabled пока не заполнены поля имя и ответственный
             .submit-btns
                 input.md-btn.submit(type="submit" value="{{vm.submitText}}" ng-disabled="form.$invalid ||vm.task.responsible==false")
 
         .main-container__footer(ng-class="{'main-container__footer__show':vm.showFooter}")
-            img.main-container__footer__preloader(ng-src="../assets/images/preloader.gif")
-            h4.main-container__footer__text Создание задачи
+

@@ -1,5 +1,5 @@
 export class TaskInfoController{
-    constructor($http, $localStorage,$stateParams,toastr, CheckAuthService, envService,$anchorScroll, $location,$mdDialog){
+    constructor($http, $localStorage,$stateParams,toastr, CheckAuthService, envService,$anchorScroll, $location,$mdDialog,ngProgressFactory){
         'ngInject';
         var vm = this;
         let userId = $localStorage.user._id;
@@ -7,6 +7,9 @@ export class TaskInfoController{
         vm.taskId = $stateParams.taskId;
         vm.limit =  4;
         vm.userAccepted=false;
+        vm.progressbar = ngProgressFactory.createInstance();
+        vm.progressbar.setHeight('4px');
+        vm.progressbar.start();
         //для быстрого вывода
         var cl = function (a="",b) {
             console.log("-----------");
@@ -19,17 +22,14 @@ export class TaskInfoController{
         };
 
         //беру инфу о таске
-        $http.post(envService.read('apiUrl')+"/api/tasks/task",{_id:vm.taskId,userId:userId})
+        $http.get(envService.read('apiUrl')+"/api/tasks/"+vm.taskId+"/"+userId)
             .success(function(response){
                 cl("task obj",response);
                 vm.task = response;
-                vm.allMembersCount = vm.task.auditors.length+vm.task.performers.length+1;
+                vm.progressbar.complete();
                 vm.task.status.forEach(function (obj) {
                    if(vm.userId==obj.user._id) vm.userAccepted=true;
                 });
-                cl("isCreator",vm.task.creator._id!=vm.userId);
-                cl("notRequired",vm.task.required==false);
-                cl("userAccepted",vm.userAccepted);
                 vm.showRequireBtns = (vm.task.creator._id!=vm.userId&&vm.task.required==false&&!vm.userAccepted)?true:false;
             })
             .error(function(err){
@@ -37,7 +37,7 @@ export class TaskInfoController{
             });
 
         //беру все коменты
-        $http.post(envService.read('apiUrl')+"/api/comment/all",{taskId:vm.taskId})
+        $http.get(envService.read('apiUrl')+"/api/comment/"+vm.taskId)
             .success(function(response){
                 vm.comments = response.reverse();
             })
@@ -47,13 +47,11 @@ export class TaskInfoController{
 
         //когда принял таск
         vm.accepted = function (taskId=vm.taskId,userId=vm.userId,comment="",accepted=true,statusText="Задача принята") {
-            cl("taskId",taskId);
-            cl("userId",userId);
-            cl("comment",comment);
-            cl("accepted",accepted);
-            $http.post(envService.read('apiUrl')+"/api/tasks/accept",{_id:taskId,userId:userId,comment:comment,accepted:accepted})
+            $http.put(envService.read('apiUrl')+"/api/tasks/"+vm.taskId,{case:"accept",userId:userId,comment:comment,accepted:accepted})
                 .success(function(response){
-                    toastr.info("","Задача принята");
+                    toastr.info("",statusText);
+                    vm.showRequireBtns= false;
+                    vm.task.status.push({_id:taskId,user:$localStorage.user,comment:comment,accepted:accepted});
                 })
                 .error(function(err){
                     toastr.error("Ошибка подключения","Ошибка");
@@ -73,8 +71,11 @@ export class TaskInfoController{
                 .ok('Отправить');
 
             $mdDialog.show(confirm).then(function(result) {
+                if(!result){
+                    toastr.error("","Заполните причину отказа");
+                    return;
+                }
                 vm.reason = result;
-                cl(vm.reason);
                 vm.accepted(vm.taskId,vm.userId,vm.reason,false,"Задача отклонена");
 
             }, function() {
@@ -97,7 +98,7 @@ export class TaskInfoController{
         vm.sendComment = function () {
             if(!vm.comment) return;
             var commentObj = {taskId:vm.taskId,creatorId:userId,comment:vm.comment,createdDate:new Date()};
-            $http.post(envService.read('apiUrl')+"/api/comment/add",commentObj)
+            $http.post(envService.read('apiUrl')+"/api/comment",commentObj)
                 .success(function (res) {
                     commentObj = res;
                     commentObj.user = $localStorage.user;
@@ -112,7 +113,7 @@ export class TaskInfoController{
         //удаление коммента
          vm.removeComment = function (commentId,i) {
                     console.log(commentId,i);
-                    $http.post(envService.read('apiUrl')+"/api/comment/delete",{_id:commentId})
+                    $http.delete(envService.read('apiUrl')+"/api/comment/"+commentId)
                         .success(function (res) {
                             console.log(res);
                             vm.comments.splice(i,1);

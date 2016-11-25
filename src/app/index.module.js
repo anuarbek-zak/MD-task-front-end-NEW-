@@ -16,6 +16,7 @@ import { MenuDocumentsDirective } from '../app/components/menuDocuments/menuDocu
 import { TypeClientDirective } from '../app/components/typeClient/typeClient.directive';
 import { DynamicTextArea } from '../app/components/dynamicTextArea/dynamicTextArea.directive';
 import { NgEnterDirective } from '../app/components/ngEnter/ngEnter.directive';
+import { AcceptedFilter } from '../app/components/acceptedFilter/accepted.filter';
 
 import { MenuService } from '../app/components/menuService/menuService.service';
 import { CheckAuthService } from '../app/components/checkAuth/checkAuth.service';
@@ -28,8 +29,8 @@ import {  TasksListController } from './tasksList/tasksList.controller';
 
 
 angular.module('ticketMirusDesk', ['ngAnimate', 'ngCookies', 'ngSanitize', 'ngMessages', 'ngAria', 'ngResource',
-  'ui.router', 'ngMaterial','ngMdIcons','btford.socket-io', 'toastr', 'lfNgMdFileInput', 'ui.mask','mgcrea.ngStrap','monospaced.elastic',
-  '720kb.datepicker', 'tmh.dynamicLocale', 'ngStorage', 'naif.base64', 'environment', 'base64','ui.bootstrap'])
+  'ui.router', 'ngMaterial','ngMdIcons', 'toastr', 'lfNgMdFileInput', 'ui.mask','mgcrea.ngStrap','monospaced.elastic',
+  '720kb.datepicker', 'tmh.dynamicLocale', 'ngStorage', 'naif.base64', 'environment', 'base64','ui.bootstrap','ngProgress'])
   .constant('malarkey', malarkey)
   .constant('moment', moment)
   .config(config)
@@ -55,7 +56,7 @@ angular.module('ticketMirusDesk', ['ngAnimate', 'ngCookies', 'ngSanitize', 'ngMe
   .directive('mTypeClient', TypeClientDirective)
   .directive('dynamicTextArea', DynamicTextArea)
   .directive('ngEnter', NgEnterDirective)
-
+    .filter('accepted',AcceptedFilter)
   .service('MenuService', MenuService)
   .service('CheckAuthService', CheckAuthService)
   .service('TicketSupportService', TicketSupportService);

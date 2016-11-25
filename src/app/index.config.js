@@ -7,8 +7,9 @@ export function config ($logProvider, toastrConfig, $mdThemingProvider, tmhDynam
 
   // Set options third-party lib
   toastrConfig.allowHtml = true;
-  toastrConfig.timeOut = 2000;
+  toastrConfig.timeOut = 3000;
   toastrConfig.positionClass = 'toast-top-right';
+
   //toastrConfig.preventDuplicates = true;
   // toastrConfig.progressBar = true;
 
