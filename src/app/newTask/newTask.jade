@@ -44,10 +44,10 @@
                 br
 
 
-            .m-input-container(flex='50')
+            .m-input-container(flex='40')
                 label(for="deadline") Дедлайн
                 datepicker.m-datepicker(date-format="yyyy-MM-dd")
-                    input.newTask__deadline.m-input-picker(name="deadline" id="deadline" type="text" ng-model="vm.task.deadline")
+                    input.newTask__deadline.m-input-picker(placeholder="2016-12-31" name="deadline" id="deadline" type="text" ng-model="vm.task.deadline")
 
             .newTask__addHour.newTask__link(flex='50' ng-show="vm.task.deadline" ng-click="vm.showHours=!vm.showHours;vm.currentHour=0") Уточнить время
 
@@ -114,5 +114,5 @@
             .submit-btns
                 input.md-btn.submit(type="submit" value="{{vm.submitText}}" ng-disabled="form.$invalid ||vm.task.responsible==false")
 
-        .main-container__footer(ng-class="{'main-container__footer__show':vm.showFooter}")
+        .main-container__footer
 

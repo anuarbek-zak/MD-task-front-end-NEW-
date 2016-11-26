@@ -115,6 +115,7 @@
      margin-top: 40px;
      display: table;
      &__creator-photo{
+       display: inline-block;
        margin-top: 10px;
        width: 40px;
        height: 40px;
@@ -122,21 +123,26 @@
      }
      &__input{
        margin-left: 10px;
-       width: 400px;
-       height: 100px;
+       width: 500px;
+       height: 130px;
        outline:none;
-       border: none;
-       border-bottom:2px solid @selling;
+       border: 1px solid #ccc;
+       background: transparent;
        resize: none;
        font-size: 18px;
        padding: 5px;
      }
      &__send{
-       width: 150px;
-       font-weight: bold;
-       font-size: 16px;
-       color: darken(@selling,8%);
-       margin: 20px 0 0 50px;
+       text-transform: uppercase;
+       display: inline-block;
+       border: none;
+       float: right;
+       margin-top: 10px;
+       padding:7px  12px;
+       background: @selling;
+       border-radius:3px;
+       color: #ffffff;
+       text-align: center;
        cursor: pointer;
        outline:none;
      }

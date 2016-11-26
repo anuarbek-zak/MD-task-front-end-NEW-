@@ -121,6 +121,7 @@ div.m-row.m-document.m-flex
                     md-tooltip.task__star__hint(md-direction="bottom") Добавить в избранные
 
                 a.task__name(ui-sref="taskInfo({taskId:task._id})") {{task.name | limitTo:20}}
+                        span(ng-show="task.name.length>25") ...
                         span.task__circle(ng-hide="vm.selector=='all'||task.creator._id==vm._id" ng-class="{'task__circle-active':!(task.visited.indexOf(vm._id)>-1)}")
 
                 .task__right-div

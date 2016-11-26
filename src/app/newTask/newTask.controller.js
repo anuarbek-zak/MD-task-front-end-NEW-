@@ -15,7 +15,6 @@ export class NewTaskController{
         vm.taskId = $stateParams.taskId;
         vm.submitText ="Поставить задачу" ;
         vm.progressbar = ngProgressFactory.createInstance();
-        vm.progressbar.start();
         vm.progressbar.setHeight('4px');
 
         //для быстрого вывода
@@ -34,7 +33,6 @@ export class NewTaskController{
         //проверка:если пришел taskId то значит меняем task,если нет,то создаем новый
 
         var ifTaskId = function () {
-            if(vm.taskId) {
                 vm.submitText = "Внести изменения";
                 $http.get(envService.read('apiUrl')+"/api/tasks/"+vm.taskId+"/"+userId)
                     .success(function (response) {
@@ -55,7 +53,7 @@ export class NewTaskController{
                         console.log(err);
                         toastr.error("Ошибка подключения", "Ошибка");
                     });
-            }
+
         };
 
         //Запрос на всех клиентов(Заказчиков)
@@ -74,7 +72,10 @@ export class NewTaskController{
                 // vm.users = [{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},];
 
                 //проверка:если пришел taskId то значит меняем task,если нет,то создаем новый
-                ifTaskId();
+                if(vm.taskId)  {
+                    vm.progressbar.start();
+                    ifTaskId();
+                }
 
             })
             .error(function(err){
@@ -122,7 +123,8 @@ export class NewTaskController{
         };
 
         //отправляю созданный таск на сервер
-        //айди создателя равен айди текущего юзера
+
+        //проверка на дату(если есть,то правильно ли введена)
         vm.createTask = function () {
             if(vm.task){
                 cl("deadline",vm.task.deadline);
@@ -135,16 +137,17 @@ export class NewTaskController{
                     vm.task.deadline = new Date(timestamp);
                     vm.task.deadline.setHours(vm.currentHour);
                 }
-                vm.showFooter = true;
+                vm.progressbar.start();
                 vm.dateError = false;
+                //айди создателя равен айди текущего юзера
                 vm.task.creator = userId;
                 vm.task.responsible = vm.task.responsible._id;
-                //проверка на дату(если есть,то правильно ли введена)
 
 
+                //из массива объектов преобразую в массив айдишек
                 vm.idFromObj(vm.task.performers);
                 vm.idFromObj(vm.task.auditors);
-                vm.progressbar.start();
+
 
                 if(vm.taskId){
                     vm.task.case = "edit";
@@ -156,7 +159,6 @@ export class NewTaskController{
                             window.history.back();
                         })
                         .error(function(err){
-                            vm.showFooter = false;
                             toastr.error("Ошибка подключения","Ошибка");
                             console.log(err);
                         });
@@ -170,7 +172,6 @@ export class NewTaskController{
                             $state.go('tasksList');
                         })
                         .error(function(err){
-                            vm.showFooter = false;
                             toastr.error("Ошибка подключения","Ошибка");
                             console.log(err);
                         });

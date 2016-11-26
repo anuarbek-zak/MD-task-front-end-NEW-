@@ -4,7 +4,6 @@ export class TasksListController{
         var vm = this;
         let userId = $localStorage.user._id;
         vm._id = userId;
-        vm.preloader = true;
          // посылается запрос через метод vm.getTasks(responsible,creator,favourite,urgent)
         // и судя по значениям(true,false) выдает массив tasks по которому прохожусь ng-repeatom
         //отправляю входящие,исходящие,избранные,горящие и id юзера

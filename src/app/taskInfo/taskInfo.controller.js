@@ -123,16 +123,6 @@ export class TaskInfoController{
                             toastr.error("Ошибка подключения","Ошибка");
                         });
                 };
-
-        // vm.closeTask = function(){
-        //     $http.delete(envService.read('apiUrl')+"/api/close/"+vm.taskId)
-        //         .success(function (res) {
-        //             console.log(res);
-        //         })
-        //         .error(function (res) {
-        //             console.log(err);
-        //             toastr.error("Ошибка подключения","Ошибка");
-        //         });
-        // };
+        vm.logout = CheckAuthService.logout;
     }
 }
