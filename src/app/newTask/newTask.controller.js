@@ -7,13 +7,12 @@ export class NewTaskController{
         vm.task = {};
         vm.task.urgent = false;
         vm.task.performers = [];
-        vm.task.auditors = [];
+       vm.task.auditors = [];
         vm.members = false;
-        vm.task.responsible=false;
         vm.hours = [];
         vm.currentHour = 0;
         vm.showHours=false;
-        vm.taskId = $stateParams.taskId;
+        vm.taskId = $stateParams.taskId=="new"?undefined:$stateParams.taskId;
         console.log(vm.taskId);
         vm.submitText ="Поставить задачу" ;
         vm.progressbar = ngProgressFactory.createInstance();
@@ -160,8 +159,24 @@ export class NewTaskController{
         //Запрос на всех юзеров
         $http.get(envService.read('apiUrl')+"api/users")
             .success(function(response){
-                vm.users = response;
-                // vm.users = [{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},{name:"laefafafdasdfas",_id:1},];
+                vm.users  = [
+                    {name:"Alex",_id:12},
+                    {name:"John",_id:12},
+                    {name:"Baha",_id:12},
+                    {name:"Anuarbek",_id:12},
+                    {name:"Danik",_id:12},
+                    {name:"Danik",_id:12},
+                    {name:"Ashat",_id:12},
+                    {name:"Ersain",_id:12},
+                    {name:"Elena",_id:12},
+                    {name:"Cemal",_id:12},
+                    {name:"Nurbol",_id:12},
+                    {name:"Rasul",_id:12},
+                    {name:"Kasm",_id:12},
+                    {name:"Rauan",_id:12},
+                    {name:"Zak",_id:12},
+                    {name:"Yak",_id:12}];
+                // vm.users = response;
                 vm.progressbar.complete();
                 //проверка:если пришел taskId то значит меняем task,если нет,то создаем новый
                 if(vm.taskId)  {
@@ -176,10 +191,13 @@ export class NewTaskController{
 
 
         //Записываю ответсвенного в vm.task.responsible и удаляю его из массива всех юзеров
-        vm.chooseResponsible = function (index) {
+        vm.chooseResponsible = function (user) {
                 if(vm.task.responsible!="") vm.users.push(vm.task.responsible);
-                vm.task.responsible = vm.users[index];
-                vm.users.splice(index,1);
+                vm.task.responsible = user;
+                vm.users.splice(vm.users.indexOf(user),1);
+                if(vm.users.indexOf(undefined)>-1) vm.users.splice(vm.users.indexOf(undefined));
+                vm.searchResponsible = user.name;
+
             };
 
 
@@ -195,10 +213,10 @@ export class NewTaskController{
         };
 
         //удаляет из массива юзеров выбраного юзера по айди
-        vm.removeFromUsers = function (index,arr) {
-            arr.push(vm.users[index]);
-            vm.users.splice(index,1);
-
+        vm.removeFromUsers = function (user,arr) {
+            arr.push(vm.users[vm.users.indexOf(user)]);
+            vm.users.splice(vm.users.indexOf(user),1);
+            console.log(user);
         };
 
         //добавляет в массив юзеров выбраного юзера
@@ -220,7 +238,7 @@ export class NewTaskController{
         //проверка на дату(если есть,то правильно ли введена)
         vm.createTask = function () {
             if(vm.task){
-                vm.progressbar.start();
+
                 if(vm.task.deadline!==undefined && vm.task.deadline!=null&&vm.task.deadline!=""){
                     var timestamp=Date.parse(vm.task.deadline );
                     if (isNaN(timestamp)==true) {
@@ -230,7 +248,11 @@ export class NewTaskController{
                     vm.task.deadline = new Date(timestamp);
                     vm.task.deadline.setHours(vm.currentHour);
                 }
-
+                if(typeof vm.task.responsible !== 'object'){
+                    vm.responsibleError = true;
+                    return;
+                }
+                vm.progressbar.start();
                 vm.dateError = false;
                 //айди создателя равен айди текущего юзера
                 vm.task.creator = userId;

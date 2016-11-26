@@ -21,18 +21,17 @@ div {{vm.task}}
                 br
             //
             .m-input-container(flex=50)
-                span.taskInfo-container-left__creator(ng-show="vm.taskId") Постановщик: {{vm.task.creator.name}}
-                label(for="responsible") Ответсвенный
-                button.newTask__btn(ng-disabled="vm.isCreator" id="responsible" bs-dropdown) {{vm.task.responsible.name || 'Выберите ответственного'}}
-                    span.caret
+                span.taskInfo-container-left__creator(ng-show="vm.taskId") Постановщик: {{vm.task.creator.name}}'
+            .m-input-container(flex=50)
+                label(for="responsible") Ответсвенный {{vm.task.responsible.name}}
+                input(id="responsible" name="responsible" type="text" ng-model="vm.searchResponsible" bs-dropdown)
+
                 ul.newTask__dropdown(class="dropdown-menu" role="menu")
-                    li.newTask__dropdown__item(ng-repeat="user in vm.users | orderBy:'name'" ng-click="vm.chooseResponsible($index)")
-                            img.user-photo(ng-src="../../assets/images/help_desk/user.jpg")
-                            span {{user.name}}
+                    li.newTask__dropdown__item(ng-repeat="user in vm.users | orderBy:'name' | filter:vm.searchResponsible track by $index" ng-click="vm.chooseResponsible(user);")
+                        img.user-photo(ng-src="../../assets/images/help_desk/user.jpg")
+                        span {{user.name}}
 
-
-                br
-
+                p.error(ng-show="vm.responsibleError&&vm.task.responsible") Выберите ответсвенного правильно !
 
             .m-input-container(flex='40')
                 label(for="deadline") Дедлайн
@@ -75,13 +74,14 @@ div {{vm.task}}
 
                 br
 
-                .m-input-container
-                    button.md-btn.newTask__btn(ng-show="!vm.taskId||!vm.isCreator" id="performer" bs-dropdown) Соисполнители
-                        span.caret
+                .m-input-container(flex=30)
+                    input.md-btn.newTask__btn(ng-show="!vm.taskId||!vm.isCreator" ng-model="searchPerformer" id="performer" bs-dropdown)
                     ul.newTask__dropdown(class="dropdown-menu" role="menu")
-                        li.newTask__dropdown__item(ng-repeat="user in vm.users" ng-click="vm.removeFromUsers($index,vm.task.performers)")
+                        li.newTask__dropdown__item(ng-repeat="user in vm.users | orderBy:'name' | filter:searchPerformer" ng-click="vm.removeFromUsers(user,vm.task.performers)")
                                 img.user-photo(ng-src="../../assets/images/help_desk/user.jpg")
                                 span {{user.name}}
+
+
                     .users(ng-show="vm.task.performers.length")
                         .user(ng-repeat="performer in vm.task.performers")
                             img.user-photo(ng-src="../../assets/images/help_desk/user.jpg")
@@ -89,13 +89,13 @@ div {{vm.task}}
                             span.user__btn-remove(ng-show="!vm.taskId||!vm.isCreator" ng-click="vm.addToUsers(performer,vm.task.performers)") Х
 
 
-                .m-input-container
-                    button.md-btn.newTask__btn(ng-show="!vm.taskId||!vm.isCreator" id="auditor" bs-dropdown) Аудиторы
-                        span.caret
+                .m-input-container(flex=30)
+                    input.md-btn.newTask__btn(ng-show="!vm.taskId||!vm.isCreator" ng-model="searchAuditor" id="auditor" bs-dropdown)
                     ul.newTask__dropdown(class="dropdown-menu" role="menu")
-                        li.newTask__dropdown__item(ng-repeat="user in vm.users" ng-click="vm.removeFromUsers($index,vm.task.auditors)")
+                        li.newTask__dropdown__item(ng-repeat="user in vm.users | filter:searchAuditor | orderBy:'name'" ng-click="vm.removeFromUsers(user,vm.task.auditors)")
                             img.user-photo(ng-src="../../assets/images/help_desk/user.jpg")
                             span {{user.name}}
+
                     .users(ng-show="vm.task.auditors.length")
                         .user(ng-repeat="auditor in vm.task.auditors")
                             img.user-photo(ng-src="../../assets/images/help_desk/user.jpg")
@@ -140,7 +140,7 @@ div {{vm.task}}
 
             //Кнопка отправки disabled пока не заполнены поля имя и ответственный
             .submit-btns
-                input.md-btn.submit(ng-show="!vm.taskId||!vm.isCreator" type="submit" value="{{vm.submitText}}" ng-disabled="form.$invalid ||vm.task.responsible==false")
+                input.md-btn.submit(ng-show="!vm.taskId||!vm.isCreator" type="submit" value="{{vm.submitText}}" ng-disabled="form.$invalid||!vm.task.responsible")
 
         .main-container__footer
 

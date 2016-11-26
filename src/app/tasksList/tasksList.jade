@@ -9,7 +9,7 @@ div.m-menu-documents(data-offset-top="100", bs-affix)
     div.m-menu-documents-item(
     ng-click='vm.document.docType = item.value; vm.getNumberDocument()',
     ng-class='{"m-menu-document-item-active": false}',
-    ui-sref='newTask({taskId:undefined})'
+    ui-sref='newTask({taskId:"new"})'
     )
         img.disabled(ng-src='../assets/images/help_desk/ticket.svg')
         img.active(ng-src='../assets/images/help_desk/ticket-reverse.svg')

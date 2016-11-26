@@ -33,7 +33,7 @@ export function config ($logProvider, toastrConfig, $mdThemingProvider, tmhDynam
         apiUrl: 'localhost:8083/'
       },
       production: {
-        apiUrl: 'http://159.203.234.82:8081/'
+        apiUrl: 'http://159.203.234.82:8083/'
       }
     }
   });
