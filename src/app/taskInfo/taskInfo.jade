@@ -26,11 +26,6 @@
             img.active(ng-src='../assets/images/help_desk/settings-reverse.svg',)
             md-tooltip(md-direction="bottom") Изменить задачу
 
-        div.m-menu-documents-item(ng-click="vm.logout()")
-            img.disabled(ng-src='../assets/images/help_desk/close.svg')
-            img.active(ng-src='../assets/images/help_desk/close-reverse.svg',)
-            md-tooltip(md-direction="bottom") Закрыть
-
     .taskInfo-container-left
             //информация о таске
             h3.taskInfo-container-left__name {{vm.task.name}}
@@ -101,4 +96,5 @@
             div
                 button.taskInfo__comments__create__send(ng-click="vm.sendComment()") Ответить
 
+    div.m-menu-documents.m-menu-documents-right(data-offset-top="100", bs-affix)
 

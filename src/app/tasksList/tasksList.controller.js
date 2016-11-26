@@ -7,21 +7,16 @@ export class TasksListController{
          // посылается запрос через метод vm.getTasks(responsible,creator,favourite,urgent)
         // и судя по значениям(true,false) выдает массив tasks по которому прохожусь ng-repeatom
         //отправляю входящие,исходящие,избранные,горящие и id юзера
+
         console.log(userId);
         vm.progressbar = ngProgressFactory.createInstance();
         vm.progressbar.setHeight('4px');
 
-        var cl = function (a="",b) {
-            console.log("-----------");
-            console.log(a,b);
-        };
-
         vm.getTasks = function (responsible=true,creator=true,favourite=false,urgent=false,general=false,all=false) {
-            cl("запрос на таски");
             vm.progressbar.start();
-            $http.post(envService.read('apiUrl')+"/api/tasks/filter",{_id:userId,responsible:responsible,creator:creator,favourite:favourite,urgent:urgent,general:general,all:all})
+            $http.post(envService.read('apiUrl')+"api/tasks/filter",{_id:userId,responsible:responsible,creator:creator,favourite:favourite,urgent:urgent,general:general,all:all})
                 .success(function(response){
-                    cl("taskLIst",response);
+                    console.log(response);
                     vm.progressbar.complete();
                     vm.tasks = response.reverse();
                     vm.emptyTasks = vm.tasks.length?"":"Нет задач, удовлятворяющиx этой категории";
@@ -39,7 +34,7 @@ export class TasksListController{
         vm.addToFavourites = function (task) {
             if(task.favourite.indexOf(userId)>-1) task.favourite.splice(task.favourite.indexOf(userId),1);
             else task.favourite.push(userId);
-            $http.put(envService.read('apiUrl')+"/api/tasks/"+task._id,{userId:userId,case:"favourite"})
+            $http.put(envService.read('apiUrl')+"api/tasks/"+task._id,{userId:userId,case:"favourite"})
                 .success(function (res) {
                     console.log(res);
                 })

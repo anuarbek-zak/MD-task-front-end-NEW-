@@ -9,7 +9,7 @@ div.m-menu-documents(data-offset-top="100", bs-affix)
     div.m-menu-documents-item(
     ng-click='vm.document.docType = item.value; vm.getNumberDocument()',
     ng-class='{"m-menu-document-item-active": false}',
-    ui-sref='newTask'
+    ui-sref='newTask({taskId:undefined})'
     )
         img.disabled(ng-src='../assets/images/help_desk/ticket.svg')
         img.active(ng-src='../assets/images/help_desk/ticket-reverse.svg')
@@ -120,7 +120,7 @@ div.m-row.m-document.m-flex
                 ng-hide="vm.selector=='all'")
                     md-tooltip.task__star__hint(md-direction="bottom") Добавить в избранные
 
-                a.task__name(ui-sref="taskInfo({taskId:task._id})") {{task.name | limitTo:20}}
+                a.task__name(ui-sref="newTask({taskId:task._id})") {{task.name | limitTo:20}}
                         span(ng-show="task.name.length>25") ...
                         span.task__circle(ng-hide="vm.selector=='all'||task.creator._id==vm._id" ng-class="{'task__circle-active':!(task.visited.indexOf(vm._id)>-1)}")
 

@@ -20,54 +20,19 @@ export function routerConfig ($stateProvider, $urlRouterProvider) {
       controllerAs: 'vm',
       parent : 'home'
     })
-    .state('ticket', {
-      url: '/ticket',
-      templateUrl: 'app/ticket/ticket.html',
-      controller: 'TicketController',
-      controllerAs: 'vm',
-      parent : 'documents'
-    })
-    .state('ticketDetail', {
-      url: '/ticket/:id',
-      templateUrl: 'app/ticketDetail/ticketDetail.html',
-      controller: 'TicketDetailController',
-      controllerAs: 'vm',
-      parent : 'documents'
-    })
-    .state('settings', {
-      url: '/settings',
-      templateUrl: 'app/settings/settings.html',
-      controller: 'SettingsController',
-      controllerAs: 'vm',
-      parent : 'documents'
-    })
-      .state('tasks', {
-        url: '/tasks',
-        templateUrl: 'app/tasks/tasks.html',
-        controller: 'TasksController',
-        controllerAs: 'vm',
-        parent : 'documents'
-      })
       .state('tasksList', {
         url: '/tasksList',
         templateUrl: 'app/tasksList/tasksList.html',
         controller: 'TasksListController',
         controllerAs: 'vm',
-        parent : 'tasks'
-      })
-      .state('taskInfo', {
-        url: '/taskInfo/:taskId',
-        templateUrl: 'app/taskInfo/taskInfo.html',
-        controller: 'TaskInfoController',
-        controllerAs: 'vm',
-        parent : 'tasks'
+        parent : 'documents'
       })
       .state('newTask', {
-        url: '/newTask/:taskId',
+        url: '/:taskId',
         templateUrl: 'app/newTask/newTask.html',
         controller: 'NewTaskController',
         controllerAs: 'vm',
-        parent : 'tasks'
+        parent : 'documents'
       });
 
   $urlRouterProvider.otherwise('/');

@@ -108,14 +108,16 @@ label{
 }
 
 .burn{
-  background:url("../../assets/images/burn.png") no-repeat;
   color: rgb(211, 34, 34);
   filter: grayscale(100%);
-  padding-left: 20px;
-  padding-top: 2px;
   display: inline-block;
-  cursor: pointer;
   outline: none;
+  margin-top: -10px;
+  &-text{
+    cursor: pointer;
+    background:url("../../assets/images/burn.png") no-repeat;
+    padding:3px 0 0 20px;
+  }
 }
 
 .active-burn{
@@ -152,12 +154,15 @@ label{
 .newTask{
   &__addHour{
     display: inline-block;
-    margin:20px;
+    margin-top: 20px;
     outline: none;
+    background: transparent;
+    border: none;
     color: @selling;
   }
   &__hours{
     display: inline-block;
+    margin-top: -25px;
   }
   &__btn{
     border:none;

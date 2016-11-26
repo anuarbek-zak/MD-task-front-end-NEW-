@@ -43,7 +43,7 @@ export class AuthController {
 
       // login
       $http({
-        url : envService.read('apiUrl')+"/auth/api/login",
+        url : envService.read('apiUrl')+"auth/api/login",
         method : "POST",
         data : {
           idToEnter : self.idToEnter,
@@ -53,7 +53,7 @@ export class AuthController {
         console.log(response);
 
         $localStorage.user = response.data;
-        $state.go('ticket');
+        $state.go('tasksList');
       }, function errorCallback(response) {
         console.log(response);
         console.log('open toastr');
