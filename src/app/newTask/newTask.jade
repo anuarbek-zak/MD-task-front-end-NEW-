@@ -4,8 +4,8 @@
                 ui-sref="tasksList",
                 ng-class='{"m-menu-document-item-active": false}'
             )
-                img.disabled(ng-src='../assets/images/help_desk/close.svg')
-                img.active(ng-src='../assets/images/help_desk/close-reverse.svg',)
+                img.disabled(ng-src='../assets/images/menu_icons/realisation6.svg')
+                img.active(ng-src='../assets/images/menu_icons/realisation6-reverse.svg',)
                 md-tooltip(md-direction="bottom") Закрыть
 
         form(name="form" ng-submit="vm.createTask()" )
@@ -68,11 +68,11 @@
                         span.taskInfo__user.taskInfo-container-left__visitors__visitor(ng-repeat="visited in vm.task.visited") {{" "+visited.name+" "}}
 
                     div(ng-show="vm.task.status.length")
-                        p.taskInfo-container-left__accepteds    Приняли :
-                            span.taskInfo__user.taskInfo-container-left__accepteds__accepted(ng-repeat="status in vm.task.status") {{status | accepted:true}}
+                        p.taskInfo-container-left__accepteds.success    Приняли :
+                            span.taskInfo__user(ng-repeat="status in vm.task.status") {{status | accepted:true}}
 
                         p.taskInfo-container-left__canceleds    Отклонили :
-                            span.taskInfo__user.taskInfo-container-left__canceleds__canceled(ng-repeat="status in vm.task.status") {{status | accepted:false}}
+                            span.taskInfo__user.error(ng-repeat="status in vm.task.status") {{status | accepted:false}}
                                 span.taskInfo-container-left__canceleds__canceled__comment {{status.comment}}
 
                     br
@@ -80,7 +80,12 @@
                 .members.extra-section(flex='45' flex-offset="10")
                     .m-input-container
                         label(for="performer") Соисполнитель(ли)
-                        input(id="performer" name="performer" type="text" ng-model="searchPerformer" bs-dropdown)
+                        input(id="performer",
+                        ng-hide="vm.taskId&&vm.notCreator",
+                        name="performer",
+                        type="text",
+                        ng-model="searchPerformer",
+                        bs-dropdown)
 
                         ul.newTask__dropdown(class="dropdown-menu" role="menu")
                             li.newTask__dropdown__item(ng-repeat="user in vm.users | orderBy:'name' | filter:searchPerformer track by $index" ng-click="vm.removeFromUsers(user,vm.task.performers)")
@@ -96,7 +101,12 @@
 
                     .m-input-container
                         label(for="auditor") Аудитор(ы)
-                        input(id="auditor" name="auditor" type="text" ng-model="searchAuditor" bs-dropdown)
+                        input(id="auditor",
+                        ng-hide="vm.taskId&&vm.notCreator",
+                        name="auditor",
+                        type="text",
+                        ng-model="searchAuditor",
+                        bs-dropdown)
 
                         ul.newTask__dropdown(class="dropdown-menu" role="menu")
                             li.newTask__dropdown__item(ng-repeat="user in vm.users | orderBy:'name' | filter:searchAuditor track by $index" ng-click="vm.removeFromUsers(user,vm.task.auditors)")
@@ -118,10 +128,9 @@
                                     span {{customer.nameCompany}}
                             p.error(ng-show="vm.customerError") Заказчик введен не корректно !
 
-                    .taskInfo-container__reqiure-btns(ng-show="vm.showRequireBtns")
-                        span.taskInfo-container__reqiure-btns__accept.btn.btn-success(ng-click="vm.accepted()") Принять
-                        span.taskInfo-container__reqiure-btns__cancel.btn.btn-danger(ng-click="vm.canceled($event)") Отклонить
-
+            .reqiure-btns(ng-show="vm.showRequireBtns")
+                span.reqiure-btn.btn.btn-success(ng-click="vm.accepted()") Принять
+                span.reqiure-btn.btn.btn-danger(ng-click="vm.canceled($event)") Отклонить
             //Кнопка отправки disabled пока не заполнены поля имя и ответственный
             input.md-btn.submit(ng-show="!vm.taskId||!vm.notCreator" type="submit" value="{{vm.submitText}}" ng-disabled="form.$invalid||!vm.task.responsible")
 

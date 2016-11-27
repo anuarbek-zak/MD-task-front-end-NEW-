@@ -32,13 +32,17 @@
   }
   &__star{
     display: inline;
+    font-size: 18px;
+    color: @selling;
+    outline:none;
+    margin-right: 10px;
   }
   &__name{
     cursor: pointer;
     margin-top: 10px;
     color: darken(@gray,7%);
     display: inline-block;
-    width: 30%;
+    width: 25%;
     word-break: break-all;
     font-size: 21px;
     &:hover{
@@ -47,23 +51,23 @@
     }
   }
   &__right-div{
-    float: right;
-    height: 100%;
-    margin:-10px -10px 0 0;
+    text-align: center;
+    font-size:13px;
+    width: 40%;
+    margin: 0 auto;
+    margin-top: -40px;
   }
   &__deadline{
+
     color: @gray;
-    float: right;
     &__date{
       margin-left: 10px;
       color: @selling;
     }
   }
   &__creator-responsible{
-    clear: both;
+    margin-bottom: 10px;
     color: @gray;
-    height: 35px;
-    margin-top: 45px;
     &__creator{
       border-right:1px solid #999;
       padding-right: 10px;

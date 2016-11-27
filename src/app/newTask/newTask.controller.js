@@ -17,7 +17,6 @@ export class NewTaskController{
         vm.submitText ="Поставить задачу" ;
         vm.progressbar = ngProgressFactory.createInstance();
         vm.progressbar.setHeight('4px');
-        vm.progressbar.start();
         vm.limit =  4;
         vm.userAccepted=false;
         //создаю массив часов
@@ -31,14 +30,17 @@ export class NewTaskController{
 
         var ifTaskId = function () {
                 vm.submitText = "Внести изменения";
+                vm.progressbar.start();
                 $http.get(envService.read('apiUrl')+"api/tasks/"+vm.taskId+"/"+userId)
                     .success(function (response) {
                          console.log(response);
                         vm.task = response;
+                        vm.currentHour = $filter('date')(vm.task.deadline,'H');
                         vm.task.customer = vm.task.customer?vm.task.customer:undefined;
                         vm.searchCustomer = vm.task.customer?vm.task.customer.nameCompany:"";
                         vm.notCreator = (vm.task.creator._id!=userId)?true:false;
                         vm.task.deadline = $filter('date')(vm.task.deadline,'yyyy-MM-dd');
+
                         vm.searchResponsible = vm.task.responsible.name;
                         vm.task.status.forEach(function (obj) {
                             if(vm.userId==obj.user._id) vm.userAccepted=true;
@@ -53,10 +55,11 @@ export class NewTaskController{
                                 if (arr[i]._id == vm.users[j]._id) vm.users.splice(j, 1);
                             }
                         }
+                        vm.progressbar.complete();
                         //беру все коменты
                         $http.get(envService.read('apiUrl')+"api/comment/"+vm.taskId)
                             .success(function(response){
-                                vm.progressbar.complete();
+
                                 vm.comments = response.reverse();
                             })
                             .error(function(err){
@@ -104,7 +107,6 @@ export class NewTaskController{
                         //когда нажимаю ответить на комент
                         vm.writeAnswer = function (name) {
                             vm.comment = name+" ,  ";
-
                             document.getElementById("createTextArea").focus();
                             $location.hash("createTextArea");
                             $anchorScroll(1000);
@@ -113,14 +115,17 @@ export class NewTaskController{
 
                         //отправка комента,проверка на пустой комент,принимаю объект комента и добавлю в массив комментов
                         vm.sendComment = function () {
+                            vm.progressbar.start();
                             if(!vm.comment) return;
+
                             var commentObj = {taskId:vm.taskId,creatorId:userId,comment:vm.comment,createdDate:new Date()};
                             $http.post(envService.read('apiUrl')+"api/comment",commentObj)
                                 .success(function (res) {
+                                    vm.comment = "";
                                     commentObj = res;
                                     commentObj.user = $localStorage.user;
                                     vm.comments.unshift(commentObj);
-                                    vm.comment = "";
+                                    vm.progressbar.complete();
                                 })
                                 .error(function(err){
                                     console.log(err);
@@ -163,25 +168,7 @@ export class NewTaskController{
         //Запрос на всех юзеров
         $http.get(envService.read('apiUrl')+"api/users")
             .success(function(response){
-                // vm.users  = [
-                //     {name:"Alex",_id:12},
-                //     {name:"John",_id:12},
-                //     {name:"Baha",_id:12},
-                //     {name:"Anuarbek",_id:12},
-                //     {name:"Danik",_id:12},
-                //     {name:"Danik",_id:12},
-                //     {name:"Ashat",_id:12},
-                //     {name:"Ersain",_id:12},
-                //     {name:"Elena",_id:12},
-                //     {name:"Cemal",_id:12},
-                //     {name:"Nurbol",_id:12},
-                //     {name:"Rasul",_id:12},
-                //     {name:"Kasm",_id:12},
-                //     {name:"Rauan",_id:12},
-                //     {name:"Zak",_id:12},
-                //     {name:"Yak",_id:12}];
                 vm.users = response;
-                vm.progressbar.complete();
                 //проверка:если пришел taskId то значит меняем task,если нет,то создаем новый
                 if(vm.taskId)  {
                     ifTaskId();
@@ -254,7 +241,6 @@ export class NewTaskController{
                     var timestamp=Date.parse(vm.task.deadline );
                     if (isNaN(timestamp)==true) {
                         vm.dateError = true;
-                        toastr.error("Ошибка","Заполните поля правильно");
                         return;
                     }
                     vm.task.deadline = new Date(timestamp);
@@ -262,7 +248,6 @@ export class NewTaskController{
                 }
                 if(vm.searchResponsible==""){
                     vm.responsibleError = true;
-                    toastr.error("Ошибка","Заполните поля правильно");
                     return;
                 }
                 if(vm.searchCustomer && typeof vm.task.customer!=="object"){
@@ -272,7 +257,7 @@ export class NewTaskController{
                 if(!vm.searchCustomer) vm.task.customer = undefined;
                 vm.progressbar.start();
                 vm.dateError = false;
-                //айди создателя равен айди текущего юзера
+                //отправляю айдишки вместо объектов
                 vm.task.creator = userId;
                 vm.task.responsible = vm.task.responsible._id;
                 //из массива объектов преобразую в массив айдишек
@@ -285,6 +270,8 @@ export class NewTaskController{
                     $http.put(envService.read('apiUrl')+"api/tasks/"+vm.taskId,vm.task)
                         .success(function(response){
                             vm.task.deadline = $filter('date')(vm.task.deadline,'yyyy-MM-dd');
+                            // vm.task.performers = response.performers;
+                            // vm.task.auditors = response.auditors;
                             toastr.success("","Задача успешно изменена !");
                             vm.progressbar.complete();
                         })
