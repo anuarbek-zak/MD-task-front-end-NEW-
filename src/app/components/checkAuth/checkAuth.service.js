@@ -3,7 +3,7 @@ export  class CheckAuthService{
   constructor ($injector, $localStorage, $state){
     'ngInject';
     var self = this;
-    // $localStorage.user = {_id:"581719b420bdaab829d07443"};
+    // $localStorage.user = {_id:"581719b420bdaab829d07443",name:"Anuarbek"};
     this.checkAccess = function(event, toState, toParams, fromState, fromParams) {
       //var $scope = $injector.get('$rootScope'),
       //  $sessionStorage = $injector.get('$sessionStorage');

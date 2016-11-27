@@ -2,6 +2,10 @@ button{
   outline: none;
 }
 
+input:disabled{
+  border: none !important;
+}
+
 .error{
   color: red;
   font-weight: normal;
@@ -10,14 +14,17 @@ button{
 
 .main-container{
 
-  &__form{
-    background: #f7f7f7;
-    padding: 15px;
+    &__form{
+      background: #f7f7f7;
+      padding: 15px;
+
+      &-left{
+        border:1px dotted #ccc;
+        padding: 15px;
+      }
+    }
   }
-  &__footer {
-    padding: 25px;
-  }
-  }
+
 .md-btn{
   transition: .6s;
   outline: none;
@@ -31,38 +38,27 @@ button{
 label{
   margin-top: 22px;
 }
-
 .users{
-  background: darken(#fff,1%);
-  border: 1px solid #999999;
-  padding: 10px;
   margin-top: 15px;
-  max-width: 45%;
 }
 
 .user{
-  background: #eee;
-  border:1px solid #d7d4d4;
-  display: inline-block;
+  border-bottom:1px solid #d7d4d4;
   text-align: center;
-  padding: 10px 15px 5px 5px;
-  margin-left: 10px;
   position: relative;
+  padding: 5px 0;
   &__btn-remove{
     color: @selling;
     background: transparent;
     border:none;
     font-weight: normal;
     position: absolute;
+    font-size: 20px;
     padding: 0;
     border-radius:50px;
     top: 0;
     right: 3px;
   }
-}
-
-.submit-btns{
-  margin-top: 40px;
 }
 
 .pink-link{
@@ -130,6 +126,7 @@ label{
 }
 
 .submit{
+  margin: 30px 0;
   &:disabled{
     background: lighten(@selling,10%);
     cursor: not-allowed !important;
@@ -145,8 +142,8 @@ label{
 }
 
 .user-photo{
-  width: 20px;
-  height: 25px;
+  width: 30px;
+  height: 30px;
   margin-right: 10px;
   border-radius: 50%;
 }
@@ -173,16 +170,27 @@ label{
     }
   }
   &__dropdown{
-    max-height: 165px;
+    max-height: 190px;
     overflow: auto;
-    width: 180px;
+    width: 38%;
     &__item{
       padding: 3px;
-      margin-bottom: 5px;
       border-bottom:1px solid #eee;
       &:hover{
         background: #eee;
       }
     }
+  }
+}
+
+.newTask__hours{
+  .btn-hours{
+    &:focus,&:active{
+      outline:none;
+    }
+  }
+  .list-hours{
+    width: 50px;
+    margin-left: -90px;
   }
 }

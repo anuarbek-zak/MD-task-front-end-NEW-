@@ -9,6 +9,7 @@ export class TasksListController{
         //отправляю входящие,исходящие,избранные,горящие и id юзера
 
         console.log(userId);
+        console.log($localStorage.user);
         vm.progressbar = ngProgressFactory.createInstance();
         vm.progressbar.setHeight('4px');
 

@@ -35,8 +35,11 @@ export class NewTaskController{
                     .success(function (response) {
                          console.log(response);
                         vm.task = response;
-                        vm.isCreator = (vm.task.creator._id!=userId)?true:false;
+                        vm.task.customer = vm.task.customer?vm.task.customer:undefined;
+                        vm.searchCustomer = vm.task.customer?vm.task.customer.nameCompany:"";
+                        vm.notCreator = (vm.task.creator._id!=userId)?true:false;
                         vm.task.deadline = $filter('date')(vm.task.deadline,'yyyy-MM-dd');
+                        vm.searchResponsible = vm.task.responsible.name;
                         vm.task.status.forEach(function (obj) {
                             if(vm.userId==obj.user._id) vm.userAccepted=true;
                         });
@@ -151,6 +154,7 @@ export class NewTaskController{
         $http.get(envService.read('apiUrl')+"api/clients")
             .success(function(response){
                 vm.customers = response;
+                console.log("customers",vm.customers);
             })
             .error(function(err){
                 console.log(err);
@@ -159,24 +163,24 @@ export class NewTaskController{
         //Запрос на всех юзеров
         $http.get(envService.read('apiUrl')+"api/users")
             .success(function(response){
-                vm.users  = [
-                    {name:"Alex",_id:12},
-                    {name:"John",_id:12},
-                    {name:"Baha",_id:12},
-                    {name:"Anuarbek",_id:12},
-                    {name:"Danik",_id:12},
-                    {name:"Danik",_id:12},
-                    {name:"Ashat",_id:12},
-                    {name:"Ersain",_id:12},
-                    {name:"Elena",_id:12},
-                    {name:"Cemal",_id:12},
-                    {name:"Nurbol",_id:12},
-                    {name:"Rasul",_id:12},
-                    {name:"Kasm",_id:12},
-                    {name:"Rauan",_id:12},
-                    {name:"Zak",_id:12},
-                    {name:"Yak",_id:12}];
-                // vm.users = response;
+                // vm.users  = [
+                //     {name:"Alex",_id:12},
+                //     {name:"John",_id:12},
+                //     {name:"Baha",_id:12},
+                //     {name:"Anuarbek",_id:12},
+                //     {name:"Danik",_id:12},
+                //     {name:"Danik",_id:12},
+                //     {name:"Ashat",_id:12},
+                //     {name:"Ersain",_id:12},
+                //     {name:"Elena",_id:12},
+                //     {name:"Cemal",_id:12},
+                //     {name:"Nurbol",_id:12},
+                //     {name:"Rasul",_id:12},
+                //     {name:"Kasm",_id:12},
+                //     {name:"Rauan",_id:12},
+                //     {name:"Zak",_id:12},
+                //     {name:"Yak",_id:12}];
+                vm.users = response;
                 vm.progressbar.complete();
                 //проверка:если пришел taskId то значит меняем task,если нет,то создаем новый
                 if(vm.taskId)  {
@@ -197,7 +201,7 @@ export class NewTaskController{
                 vm.users.splice(vm.users.indexOf(user),1);
                 if(vm.users.indexOf(undefined)>-1) vm.users.splice(vm.users.indexOf(undefined));
                 vm.searchResponsible = user.name;
-
+                vm.responsibleError = false;
             };
 
 
@@ -210,6 +214,13 @@ export class NewTaskController{
             vm.task.performers=[];
             vm.task.auditors=[];
             vm.members = !vm.members;
+        };
+
+        //когда выбраз заказчика
+        vm.chooserCustomer = function (customer) {
+            vm.task.customer=customer;
+            vm.customerError = false;
+            vm.searchCustomer = customer.nameCompany;
         };
 
         //удаляет из массива юзеров выбраного юзера по айди
@@ -243,22 +254,27 @@ export class NewTaskController{
                     var timestamp=Date.parse(vm.task.deadline );
                     if (isNaN(timestamp)==true) {
                         vm.dateError = true;
+                        toastr.error("Ошибка","Заполните поля правильно");
                         return;
                     }
                     vm.task.deadline = new Date(timestamp);
                     vm.task.deadline.setHours(vm.currentHour);
                 }
-                if(typeof vm.task.responsible !== 'object'){
+                if(vm.searchResponsible==""){
                     vm.responsibleError = true;
+                    toastr.error("Ошибка","Заполните поля правильно");
                     return;
                 }
+                if(vm.searchCustomer && typeof vm.task.customer!=="object"){
+                    vm.customerError = true;
+                    return;
+                }
+                if(!vm.searchCustomer) vm.task.customer = undefined;
                 vm.progressbar.start();
                 vm.dateError = false;
                 //айди создателя равен айди текущего юзера
                 vm.task.creator = userId;
                 vm.task.responsible = vm.task.responsible._id;
-
-
                 //из массива объектов преобразую в массив айдишек
                 vm.idFromObj(vm.task.performers);
                 vm.idFromObj(vm.task.auditors);
@@ -268,7 +284,6 @@ export class NewTaskController{
                     vm.task.case = "edit";
                     $http.put(envService.read('apiUrl')+"api/tasks/"+vm.taskId,vm.task)
                         .success(function(response){
-                            console.log("edit task",response);
                             vm.task.deadline = $filter('date')(vm.task.deadline,'yyyy-MM-dd');
                             toastr.success("","Задача успешно изменена !");
                             vm.progressbar.complete();

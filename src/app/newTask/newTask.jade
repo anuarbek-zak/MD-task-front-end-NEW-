@@ -1,4 +1,3 @@
-div {{vm.task}}
 .main-container
         div.m-menu-documents.m-menu-documents-right(data-offset-top="100", bs-affix)
             div.m-menu-documents-item(
@@ -9,138 +8,147 @@ div {{vm.task}}
                 img.active(ng-src='../assets/images/help_desk/close-reverse.svg',)
                 md-tooltip(md-direction="bottom") Закрыть
 
-        form.main-container__form(name="form" ng-submit="vm.createTask()")
-            .m-input-container(flex=50)
-                label(for="name") Название задачи
-                input.m-input-container(ng-disabled="vm.isCreator" novalidate required class="md-input-container"  name="name" id="name" ng-model="vm.task.name")
-                br
+        form(name="form" ng-submit="vm.createTask()" )
+            .main-container__form(layout="row")
+                .main-container__form-left(flex='45')
+                    .m-input-container
+                        label(for="name") Название задачи
+                        input(ng-disabled="vm.notCreator" novalidate required class="md-input-container"  name="name" id="name" ng-model="vm.task.name")
+                        br
 
-            .m-input-container(flex=50)
-                label(for="description") Суть задачи
-                textarea(ng-disabled="vm.isCreator" name="description" cols=80 rows=7 id="description" ng-model="vm.task.description")
-                br
-            //
-            .m-input-container(flex=50)
-                span.taskInfo-container-left__creator(ng-show="vm.taskId") Постановщик: {{vm.task.creator.name}}'
-            .m-input-container(flex=50)
-                label(for="responsible") Ответсвенный {{vm.task.responsible.name}}
-                input(id="responsible" name="responsible" type="text" ng-model="vm.searchResponsible" bs-dropdown)
+                    .m-input-container
+                        label Суть задачи
+                        textarea.taskInfo__comments__create__input(
+                        dynamic-text-area,
+                        msd-elastic,
+                        ng-disabled="vm.notCreator",
+                        name="description",
+                        id="description" ,
+                        ng-model="vm.task.description")
+                        br
 
-                ul.newTask__dropdown(class="dropdown-menu" role="menu")
-                    li.newTask__dropdown__item(ng-repeat="user in vm.users | orderBy:'name' | filter:vm.searchResponsible track by $index" ng-click="vm.chooseResponsible(user);")
-                        img.user-photo(ng-src="../../assets/images/help_desk/user.jpg")
-                        span {{user.name}}
+                    .m-input-container
+                            h4.creator(ng-show="vm.taskId") Постановщик: {{vm.task.creator.name}}
+                            label(for="responsible") Ответственный
+                            input(ng-disabled="vm.notCreator" id="responsible" name="responsible" type="text" ng-model="vm.searchResponsible" bs-dropdown)
+                            ul.newTask__dropdown(class="dropdown-menu" role="menu")
+                                li.newTask__dropdown__item(ng-repeat="user in vm.users | orderBy:'name' | filter:vm.searchResponsible track by $index" ng-click="vm.chooseResponsible(user)")
+                                    img.user-photo(ng-src="../../assets/images/help_desk/user.jpg")
+                                    span {{user.name}}
 
-                p.error(ng-show="vm.responsibleError&&vm.task.responsible") Выберите ответсвенного правильно !
+                        p.error(ng-show="vm.responsibleError&&vm.task.responsible") Выберите ответсвенного!
 
-            .m-input-container(flex='40')
-                label(for="deadline") Дедлайн
-                datepicker.m-datepicker(date-format="yyyy-MM-dd")
-                    input.newTask__deadline.m-input-picker(ng-disabled="vm.isCreator" placeholder="2016-12-31" name="deadline" id="deadline" type="text" ng-model="vm.task.deadline")
+                    .m-input-container(flex='80')
+                        label(for="deadline") Дедлайн
+                        datepicker.m-datepicker(date-format="yyyy-MM-dd")
+                            input.newTask__deadline.m-input-picker(ng-disabled="vm.notCreator" placeholder="2016-12-31" name="deadline" id="deadline" type="text" ng-model="vm.task.deadline")
 
-            br
+                    br
 
-            .newTask__hours
-                button.newTask__btn(ng-disabled="vm.isCreator" ng-show='vm.task.deadline||vm.taskId' bs-dropdown) {{vm.currentHour}}:00
-                    span.caret
-                ul.newTask__dropdown(class="dropdown-menu" role="menu")
-                    li.newTask__dropdown__item(ng-repeat="hour in vm.hours", ng-click="vm.currentHour=vm.hours[$index]") {{hour}}:00
+                    .newTask__hours(flex='20')
+                        button.btn.btn-hours(ng-disabled="vm.notCreator" ng-show='vm.task.deadline||vm.taskId' bs-dropdown) {{vm.currentHour}}:00{{' '}}
+                            span.caret
+                        ul.newTask__dropdown.list-hours(class="dropdown-menu" role="menu")
+                            li.newTask__dropdown__item(ng-repeat="hour in vm.hours", ng-click="vm.currentHour=vm.hours[$index]") {{hour}}:00
 
-            //если не верно введена дата то выводим ошибку
-            p.error(ng-show="vm.dateError&&vm.task.deadline") Дата введена не корректно !
-            br
+                    //если не верно введена дата то выводим ошибку
+                    p.error(ng-show="vm.dateError&&vm.task.deadline") Дата введена не корректно !
+                    br
 
-            .m-input-container.burn(ng-class="{'active-burn':vm.task.urgent}")
-                label.burn-text(for="urgent") Горит
-                input(ng-hide="true" type="checkbox" name="urgent" id="urgent" ng-disabled="vm.isCreator" ng-click="vm.task.urgent=!vm.task.urgent" )
+                    .m-input-container.burn(ng-class="{'active-burn':vm.task.urgent}")
+                        label.burn-text(for="urgent") Горит
+                        input(ng-hide="true" type="checkbox" name="urgent" id="urgent" ng-disabled="vm.notCreator" ng-click="vm.task.urgent=!vm.task.urgent" )
 
-            .require
-                label.required__text(for='required') {{vm.taskId?'Обязательно':'Сделать задачу обязательной'}}
-                input.required__input(ng-disabled="vm.isCreator" type="checkbox" name="required" id="required" ng-model="vm.task.required")
-                br
+                    .require
+                        label.required__text(for='required') {{vm.taskId?'Обязательно':'Сделать задачу обязательной'}}
+                        input.required__input(ng-disabled="vm.notCreator" type="checkbox" name="required" id="required" ng-model="vm.task.required")
+                        br
 
-            .members.extra-section
+                    p.taskInfo-container-left__visitors(ng-show="vm.taskId") Просмотрели :
+                        span.taskInfo__user.taskInfo-container-left__visitors__visitor(ng-repeat="visited in vm.task.visited") {{" "+visited.name+" "}}
 
-                p.taskInfo-container-left__visitors(ng-show="vm.taskId") Просмотрели :
-                    span.taskInfo__user.taskInfo-container-left__visitors__visitor(ng-repeat="visited in vm.task.visited") {{" "+visited.name+" "}}
+                    div(ng-show="vm.task.status.length")
+                        p.taskInfo-container-left__accepteds    Приняли :
+                            span.taskInfo__user.taskInfo-container-left__accepteds__accepted(ng-repeat="status in vm.task.status") {{status | accepted:true}}
 
-                div(ng-show="vm.task.status.length")
-                    p.taskInfo-container-left__accepteds    Приняли :
-                        span.taskInfo__user.taskInfo-container-left__accepteds__accepted(ng-repeat="status in vm.task.status") {{status | accepted:true}}
+                        p.taskInfo-container-left__canceleds    Отклонили :
+                            span.taskInfo__user.taskInfo-container-left__canceleds__canceled(ng-repeat="status in vm.task.status") {{status | accepted:false}}
+                                span.taskInfo-container-left__canceleds__canceled__comment {{status.comment}}
 
-                    p.taskInfo-container-left__canceleds    Отклонили :
-                        span.taskInfo__user.taskInfo-container-left__canceleds__canceled(ng-repeat="status in vm.task.status") {{status | accepted:false}}
-                            span.taskInfo-container-left__canceleds__canceled__comment {{status.comment}}
+                    br
 
-                br
+                .members.extra-section(flex='45' flex-offset="10")
+                    .m-input-container
+                        label(for="performer") Соисполнитель(ли)
+                        input(id="performer" name="performer" type="text" ng-model="searchPerformer" bs-dropdown)
 
-                .m-input-container(flex=30)
-                    input.md-btn.newTask__btn(ng-show="!vm.taskId||!vm.isCreator" ng-model="searchPerformer" id="performer" bs-dropdown)
-                    ul.newTask__dropdown(class="dropdown-menu" role="menu")
-                        li.newTask__dropdown__item(ng-repeat="user in vm.users | orderBy:'name' | filter:searchPerformer" ng-click="vm.removeFromUsers(user,vm.task.performers)")
+                        ul.newTask__dropdown(class="dropdown-menu" role="menu")
+                            li.newTask__dropdown__item(ng-repeat="user in vm.users | orderBy:'name' | filter:searchPerformer track by $index" ng-click="vm.removeFromUsers(user,vm.task.performers)")
                                 img.user-photo(ng-src="../../assets/images/help_desk/user.jpg")
                                 span {{user.name}}
 
-
-                    .users(ng-show="vm.task.performers.length")
-                        .user(ng-repeat="performer in vm.task.performers")
-                            img.user-photo(ng-src="../../assets/images/help_desk/user.jpg")
-                            p(style="display:inline-block") {{performer.name}}
-                            span.user__btn-remove(ng-show="!vm.taskId||!vm.isCreator" ng-click="vm.addToUsers(performer,vm.task.performers)") Х
-
-
-                .m-input-container(flex=30)
-                    input.md-btn.newTask__btn(ng-show="!vm.taskId||!vm.isCreator" ng-model="searchAuditor" id="auditor" bs-dropdown)
-                    ul.newTask__dropdown(class="dropdown-menu" role="menu")
-                        li.newTask__dropdown__item(ng-repeat="user in vm.users | filter:searchAuditor | orderBy:'name'" ng-click="vm.removeFromUsers(user,vm.task.auditors)")
-                            img.user-photo(ng-src="../../assets/images/help_desk/user.jpg")
-                            span {{user.name}}
-
-                    .users(ng-show="vm.task.auditors.length")
-                        .user(ng-repeat="auditor in vm.task.auditors")
-                            img.user-photo(ng-src="../../assets/images/help_desk/user.jpg")
-                            p(style="display:inline-block") {{auditor.name}}
-                            span.user__btn-remove(ng-show="!vm.taskId||!vm.isCreator" ng-click="vm.addToUsers(auditor,vm.task.auditors)") Х
-
-                .m-input-container(flex=50)
-                    button.md-btn.newTask__btn(ng-disabled="vm.isCreator" id="customer" bs-dropdown) {{vm.task.customer.nameCompany || 'Заказчик'}}
-                        span.caret
-                    ul.newTask__dropdown(class="dropdown-menu" role="menu")
-                        li.newTask__dropdown__item(ng-click="vm.task.customer=''" ng-show="vm.task.customer")
-                            span.error Отменить выбор
-                        li.newTask__dropdown__item(ng-repeat="customer in vm.customers" ng-click="vm.task.customer=customer")
-                            span {{customer.nameCompany}}
+                        .users(ng-show="vm.task.performers.length")
+                            .user.clearfix(ng-repeat="performer in vm.task.performers")
+                                img.user-photo.pull-left(ng-src="../../assets/images/help_desk/user.jpg")
+                                p.pull-left(style="display:inline-block") {{performer.name}}
+                                span.user__btn-remove(ng-show="!vm.taskId||!vm.notCreator" ng-click="vm.addToUsers(performer,vm.task.performers)") &#10799;
 
 
-                .taskInfo-container__reqiure-btns(ng-show="vm.showRequireBtns")
-                    span.taskInfo-container__reqiure-btns__accept.btn.btn-success(ng-click="vm.accepted()") Принять
-                    span.taskInfo-container__reqiure-btns__cancel.btn.btn-danger(ng-click="vm.canceled($event)") Отклонить
+                    .m-input-container
+                        label(for="auditor") Аудитор(ы)
+                        input(id="auditor" name="auditor" type="text" ng-model="searchAuditor" bs-dropdown)
 
-                .taskInfo__comments(ng-show="vm.taskId")
-                    h3(ng-cloak) {{vm.comments.length?"Комментарии":"Пока нет комментариев"}}
-                    //коментарий(можно удалить если id текущего юзера равно id создателя)
-                    .taskInfo__comments__comment(ng-repeat="comment in vm.comments | limitTo:vm.limit track by $index")
-                        img.taskInfo__comments__comment__creator-photo(ng-src="../../assets/images/help_desk/user.jpg")
-                        .taskInfo__comments__comment__div
-                            h5.taskInfo__comments__comment__div__creator-name {{comment.user.name}}
-                            p.taskInfo__comments__comment__div__content {{comment.text}}
-                            span(ng-if="vm.userId==comment.user._id" ng-click="vm.removeComment(comment._id,$index)").taskInfo__comments__comment__div__remove  Удалить
-                            span(ng-if="vm.userId!=comment.user._id" ng-click="vm.writeAnswer(comment.user.name)").taskInfo__comments__comment__div__remove  Ответить
-                        span.taskInfo__comments__comment__date {{comment.createdDate | date:'d MMM HH:mm'}}
-                    //Show more-отображается когда больше 4 коментов и открывает по 5,так же можно скрыть комменты(до 4)
-                    .taskInfo__comments__showMore(ng-show="vm.comments.length>4")
-                        p(ng-click="vm.limit=vm.limit+10" ng-hide="vm.limit>=vm.comments.length") Показать остальные ({{vm.comments.length-vm.limit}})
-                        p(ng-click="vm.limit=4" ng-show="vm.limit>=vm.comments.length") Скрыть
-                    //Создание коментария
-                    .taskInfo__comments__create()
-                        img.taskInfo__comments__create__creator-photo(ng-src="../../assets/images/help_desk/user.jpg")
-                        textarea.taskInfo__comments__create__input(id="createTextArea" ng-enter placeholder="Написать ..." ng-model="vm.comment")
-                        div
-                            span.taskInfo__comments__create__send(ng-click="vm.sendComment()") Ответить
+                        ul.newTask__dropdown(class="dropdown-menu" role="menu")
+                            li.newTask__dropdown__item(ng-repeat="user in vm.users | orderBy:'name' | filter:searchAuditor track by $index" ng-click="vm.removeFromUsers(user,vm.task.auditors)")
+                                img.user-photo(ng-src="../../assets/images/help_desk/user.jpg")
+                                span {{user.name}}
+
+                        .users(ng-show="vm.task.auditors.length")
+                            .user.clearfix(ng-repeat="auditor in vm.task.auditors")
+                                img.user-photo.pull-left(ng-src="../../assets/images/help_desk/user.jpg")
+                                p.pull-left(style="display:inline-block") {{auditor.name}}
+                                span.user__btn-remove(ng-show="!vm.taskId||!vm.notCreator" ng-click="vm.addToUsers(auditor,vm.task.auditors)") &#10799;
+
+                    .m-input-container
+                            label(for="customer") Заказчик
+                            input(ng-disabled="vm.notCreator" id="customer" name="customer" type="text" ng-model="vm.searchCustomer" bs-dropdown)
+                            ul.newTask__dropdown(class="dropdown-menu" role="menu")
+                                li.newTask__dropdown__item(ng-repeat="customer in vm.customers | orderBy:'nameCompany' | filter:vm.searchCustomer track by $index" ng-click="vm.chooserCustomer(customer)")
+                                    img.user-photo(ng-src="../../assets/images/help_desk/user.jpg")
+                                    span {{customer.nameCompany}}
+                            p.error(ng-show="vm.customerError") Заказчик введен не корректно !
+
+                    .taskInfo-container__reqiure-btns(ng-show="vm.showRequireBtns")
+                        span.taskInfo-container__reqiure-btns__accept.btn.btn-success(ng-click="vm.accepted()") Принять
+                        span.taskInfo-container__reqiure-btns__cancel.btn.btn-danger(ng-click="vm.canceled($event)") Отклонить
 
             //Кнопка отправки disabled пока не заполнены поля имя и ответственный
-            .submit-btns
-                input.md-btn.submit(ng-show="!vm.taskId||!vm.isCreator" type="submit" value="{{vm.submitText}}" ng-disabled="form.$invalid||!vm.task.responsible")
+            input.md-btn.submit(ng-show="!vm.taskId||!vm.notCreator" type="submit" value="{{vm.submitText}}" ng-disabled="form.$invalid||!vm.task.responsible")
 
-        .main-container__footer
+        .taskInfo__comments(ng-show="vm.taskId")
+            h3(ng-cloak) {{vm.comments.length?"Комментарии":"Пока нет комментариев"}}
+            //коментарий(можно удалить если id текущего юзера равно id создателя)
+            .taskInfo__comments__comment(ng-repeat="comment in vm.comments | limitTo:vm.limit track by $index")
+                img.taskInfo__comments__comment__creator-photo(ng-src="../../assets/images/help_desk/user.jpg")
+                .taskInfo__comments__comment__div
+                    h5.taskInfo__comments__comment__div__creator-name {{comment.user.name}}
+                    p.taskInfo__comments__comment__div__content {{comment.text}}
+                    span(ng-if="vm.userId==comment.user._id" ng-click="vm.removeComment(comment._id,$index)").taskInfo__comments__comment__div__remove  Удалить
+                    span(ng-if="vm.userId!=comment.user._id" ng-click="vm.writeAnswer(comment.user.name)").taskInfo__comments__comment__div__remove  Ответить
+                span.taskInfo__comments__comment__date {{comment.createdDate | date:'d MMM HH:mm'}}
+            //Show more-отображается когда больше 4 коментов и открывает по 5,так же можно скрыть комменты(до 4)
+            .taskInfo__comments__showMore(ng-show="vm.comments.length>4")
+                p(ng-click="vm.limit=vm.limit+10" ng-hide="vm.limit>=vm.comments.length") Показать остальные ({{vm.comments.length-vm.limit}})
+                p(ng-click="vm.limit=4" ng-show="vm.limit>=vm.comments.length") Скрыть
+            //Создание коментария
+            .taskInfo__comments__create()
+                img.taskInfo__comments__create__creator-photo(ng-src="../../assets/images/help_desk/user.jpg")
+                textarea.taskInfo__comments__create__input(id="createTextArea",
+                placeholder="Написать ...",
+                ng-model="vm.comment",
+                dynamic-text-area,
+                msd-elastic,
+                ng-enter)
+                div
+                span.taskInfo__comments__create__send(ng-click="vm.sendComment()") Ответить
 
