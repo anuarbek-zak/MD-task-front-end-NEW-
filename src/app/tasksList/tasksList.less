@@ -10,10 +10,6 @@
   border-bottom:1px solid darken(#f2f2f2,5%);
   position: relative;
 
-  &__not-visited{
-    background: lighten(#e5e5e5,5%) !important;
-    font-weight: bold !important;
-  }
   &:hover{
     border-left:3px solid darken(@selling,3%);
   }
@@ -24,16 +20,18 @@
     position: absolute;
     top: 50%;
     left: 5px;
-
     border-radius:50%;
     &-active{
       background: @selling;
     }
   }
   &__star{
+    &-active{
+      color: @selling;
+    }
+    color: @gray;
     display: inline;
     font-size: 18px;
-    color: @selling;
     outline:none;
     margin-right: 10px;
   }

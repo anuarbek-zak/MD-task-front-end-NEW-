@@ -28,14 +28,18 @@ export class NewTaskController{
 
         //проверка:если пришел taskId то значит меняем task,если нет,то создаем новый
 
+        vm.ads = function () {
+            console.log("hello1");
+        };
+
         var ifTaskId = function () {
-                vm.submitText = "Внести изменения";
+                vm.submitText = "Изменить задачу";
                 vm.progressbar.start();
                 $http.get(envService.read('apiUrl')+"api/tasks/"+vm.taskId+"/"+userId)
                     .success(function (response) {
                          console.log(response);
                         vm.task = response;
-                        vm.currentHour = $filter('date')(vm.task.deadline,'H');
+                        vm.currentHour = $filter('date')(vm.task.deadline,'H')?$filter('date')(vm.task.deadline,'H'):0 ;
                         vm.task.customer = vm.task.customer?vm.task.customer:undefined;
                         vm.searchCustomer = vm.task.customer?vm.task.customer.nameCompany:"";
                         vm.notCreator = (vm.task.creator._id!=userId)?true:false;
@@ -115,9 +119,9 @@ export class NewTaskController{
 
                         //отправка комента,проверка на пустой комент,принимаю объект комента и добавлю в массив комментов
                         vm.sendComment = function () {
-                            vm.progressbar.start();
-                            if(!vm.comment) return;
 
+                            if(!vm.comment) return;
+                            vm.progressbar.start();
                             var commentObj = {taskId:vm.taskId,creatorId:userId,comment:vm.comment,createdDate:new Date()};
                             $http.post(envService.read('apiUrl')+"api/comment",commentObj)
                                 .success(function (res) {
@@ -183,15 +187,17 @@ export class NewTaskController{
 
         //Записываю ответсвенного в vm.task.responsible и удаляю его из массива всех юзеров
         vm.chooseResponsible = function (user) {
-                if(vm.task.responsible!="") vm.users.push(vm.task.responsible);
+                console.log("resp",vm.task.responsible);
+                if(vm.task.responsible) vm.users.push(vm.task.responsible);
+                console.log("users",vm.users);
                 vm.task.responsible = user;
                 vm.users.splice(vm.users.indexOf(user),1);
-                if(vm.users.indexOf(undefined)>-1) vm.users.splice(vm.users.indexOf(undefined));
-                vm.searchResponsible = user.name;
-                vm.responsibleError = false;
             };
 
-
+        vm.removeResonsible = function () {
+             vm.users.push(vm.task.responsible);
+             vm.task.responsible = undefined;
+         }
 
         //При нажатии на "удалить участников" возвращает их в массив всех юзеров
         // и очищает массивы аудиторов и перформеров а так же
@@ -204,17 +210,16 @@ export class NewTaskController{
         };
 
         //когда выбраз заказчика
-        vm.chooserCustomer = function (customer) {
+        vm.chooseCustomer = function (customer) {
             vm.task.customer=customer;
             vm.customerError = false;
-            vm.searchCustomer = customer.nameCompany;
         };
 
         //удаляет из массива юзеров выбраного юзера по айди
-        vm.removeFromUsers = function (user,arr) {
-            arr.push(vm.users[vm.users.indexOf(user)]);
-            vm.users.splice(vm.users.indexOf(user),1);
-            console.log(user);
+        vm.removeFromUsers = function (obj) {
+            var index = vm.users.indexOf(obj.user);
+            obj.arr.push(vm.users[index]);
+            vm.users.splice(index,1);
         };
 
         //добавляет в массив юзеров выбраного юзера
@@ -246,15 +251,10 @@ export class NewTaskController{
                     vm.task.deadline = new Date(timestamp);
                     vm.task.deadline.setHours(vm.currentHour);
                 }
-                if(vm.searchResponsible==""){
-                    vm.responsibleError = true;
-                    return;
-                }
-                if(vm.searchCustomer && typeof vm.task.customer!=="object"){
+                if(vm.task.customer && typeof vm.task.customer!=="object"){
                     vm.customerError = true;
                     return;
                 }
-                if(!vm.searchCustomer) vm.task.customer = undefined;
                 vm.progressbar.start();
                 vm.dateError = false;
                 //отправляю айдишки вместо объектов
@@ -270,8 +270,10 @@ export class NewTaskController{
                     $http.put(envService.read('apiUrl')+"api/tasks/"+vm.taskId,vm.task)
                         .success(function(response){
                             vm.task.deadline = $filter('date')(vm.task.deadline,'yyyy-MM-dd');
-                            // vm.task.performers = response.performers;
-                            // vm.task.auditors = response.auditors;
+                            console.log("audiotr perf",response);
+                            vm.task.responsible = response.responsible;
+                            vm.task.performers = response.performers;
+                            vm.task.auditors = response.auditors;
                             toastr.success("","Задача успешно изменена !");
                             vm.progressbar.complete();
                         })

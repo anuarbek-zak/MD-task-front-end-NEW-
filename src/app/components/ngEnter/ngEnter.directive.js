@@ -5,7 +5,6 @@ export function NgEnterDirective($compile) {
           console.log('LINK');
           var map = {13: false, 17: false};
           element.keydown(function(e) {
-
               if (e.keyCode in map) {
                   map[e.keyCode] = true;
                   if (map[13] && map[17]) {

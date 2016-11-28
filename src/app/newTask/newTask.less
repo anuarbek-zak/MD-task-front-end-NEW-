@@ -26,13 +26,14 @@ input:disabled{
   }
 
 .md-btn{
-  transition: .6s;
   outline: none;
   border:none;
-  padding: 10px;
+  border-radius:4px;
+  padding: 10px 15px;
   text-align: center;
   color: #ffffff;
   background: @selling;
+  text-transform: uppercase;
 }
 
 label{
@@ -159,7 +160,7 @@ label{
   }
   &__hours{
     display: inline-block;
-    margin-top: -25px;
+
   }
   &__btn{
     border:none;
@@ -218,37 +219,6 @@ label{
         color: limegreen;
       }
     }
-    &__canceleds{
-      &__canceled{
-        cursor: pointer;
-        color: red;
-        position: relative;
-        padding: 5px;
-        &:hover .taskInfo-container-left__canceleds__canceled__comment{
-          transform: scale(1);
-          &:hover{
-            transform: scale(1);
-          }
-        }
-        &__comment{
-          text-align: center;
-          transition: .2s;
-          transform: scale(0);
-          word-break: break-all;
-          background:#999;
-          width: 200px;
-          display: inline-block;
-          position: absolute;
-          top: 100%;
-          left: -30%;
-          padding: 10px;
-          border-radius:4px;
-          color: #ffffff;
-          z-index: 20;
-          letter-spacing: 1px;
-        }
-      }
-    }
     &__auditors{
       word-break: break-all;
     }
@@ -268,6 +238,9 @@ label{
       word-break: break-all;
     }
     &__deadline{
+      label{
+        margin-bottom: 10px;
+      }
       &__date{
         color: @selling;
         margin-left: 10px;
@@ -384,3 +357,34 @@ label{
   content: " , ";
 }
 
+.canceled{
+  position: relative;
+  &:hover .canceled-comment{
+    transform: scale(1);
+  }
+  &-text{
+    display: inline-block;
+    color: red;
+    margin-left: 10px;
+  }
+  &-comment{
+    &:hover{
+      transform: scale(1);
+    }
+      text-align: center;
+      transition: .2s;
+      transform: scale(0);
+      word-break: break-all;
+      background:#999;
+      width: 200px;
+      display: inline-block;
+      position: absolute;
+      top: 100%;
+      left: 0%;
+      padding: 10px;
+      border-radius:4px;
+      color: #ffffff;
+      z-index: 20;
+      letter-spacing: 1px;
+  }
+}
