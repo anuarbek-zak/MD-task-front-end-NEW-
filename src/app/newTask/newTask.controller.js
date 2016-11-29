@@ -74,12 +74,12 @@ export class NewTaskController{
                             });
 
                         //когда принял таск
-                        vm.accepted = function (taskId=vm.taskId,userId=vm.userId,comment="",accepted=true,statusText="Задача принята") {
+                        vm.accepted = function (taskId=vm.taskId,userId=vm.userId,comment="",accepted=true,statusText="Задача принята",arr=vm.acceptedUsers) {
                             $http.put(envService.read('apiUrl')+"api/tasks/"+vm.taskId,{case:"accept",userId:userId,comment:comment,accepted:accepted})
                                 .success(function(response){
                                     toastr.info("",statusText);
                                     vm.showRequireBtns= false;
-                                    vm.task.status.push({_id:taskId,user:$localStorage.user,comment:comment,accepted:accepted});
+                                    arr.push({_id:taskId,user:$localStorage.user,comment:comment,accepted:accepted});
                                 })
                                 .error(function(err){
                                     toastr.error("Ошибка подключения","Ошибка");
@@ -102,7 +102,7 @@ export class NewTaskController{
                                     return;
                                 }
                                 vm.reason = result;
-                                vm.accepted(vm.taskId,vm.userId,vm.reason,false,"Задача отклонена");
+                                vm.accepted(vm.taskId,vm.userId,vm.reason,false,"Задача отклонена",vm.canceledUsers);
 
                             }, function() {
                                 vm.reason = "";
