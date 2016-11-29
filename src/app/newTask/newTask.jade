@@ -91,7 +91,7 @@
 
                     div()
                         .accepted(ng-show="vm.acceptedUsers.length")  Приняли :
-                            span.accepted-text.taskInfo__user(ng-repeat="status in vm.acceptedUsers") {{status.fuser.name}}
+                            span.accepted-text.taskInfo__user(ng-repeat="status in vm.acceptedUsers") {{status.user.name}}
 
                         .canceled(ng-show="vm.canceledUsers.length")    Отклонили :
                             span.canceled-text.taskInfo__user(ng-repeat="status in vm.canceledUsers" ) {{status.user.name}}
