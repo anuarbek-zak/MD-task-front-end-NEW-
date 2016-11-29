@@ -5,17 +5,14 @@ export class TasksListController{
         let userId = $localStorage.user._id;
         vm._id = userId;
         vm.selector='my';
-         // посылается запрос через метод vm.getTasks(responsible,creator,favourite,urgent)
+        vm.progressbar = ngProgressFactory.createInstance();
+
+        // посылается запрос через метод vm.getTasks(responsible,creator,favourite,urgent)
         // и судя по значениям(true,false) выдает массив tasks по которому прохожусь ng-repeatom
         //отправляю входящие,исходящие,избранные,горящие и id юзера
-
-        console.log(userId);
-        console.log($localStorage.user);
-        vm.progressbar = ngProgressFactory.createInstance();
-        vm.progressbar.setHeight('4px');
-
-        vm.getTasks = function (responsible=true,creator=true,favourite=false,urgent=false,general=false,all=false,selector='my') {
+        vm.getTasks = function (responsible=true,creator=true,favourite=false,urgent=false,general=false,all=false,selector='my',sideSelector="") {
             vm.selector=selector;
+            vm.sideSelector = sideSelector;
             vm.progressbar.start();
             $http.post(envService.read('apiUrl')+"api/tasks/filter",{_id:userId,responsible:responsible,creator:creator,favourite:favourite,urgent:urgent,general:general,all:all})
                 .success(function(response){

@@ -11,13 +11,17 @@ export class NewTaskController{
         vm.acceptedUsers = [];
         vm.canceledUsers = [];
         vm.hours = [];
-        vm.currentHour = 0;
+        // vm.currentHour = 0;
         vm.taskId = $stateParams.taskId=="new"?undefined:$stateParams.taskId;
         console.log('taskId ',vm.taskId);
         vm.submitText ="Поставить задачу" ;
         vm.progressbar = ngProgressFactory.createInstance();
         vm.limit =  4;
         vm.userAccepted=false;
+
+        vm.cl = function () {
+         alert("hello!");
+        };
 
         //создаю массив часов
         (function () {
@@ -37,7 +41,6 @@ export class NewTaskController{
                         vm.currentHour = $filter('date')(vm.task.deadline,'H')?$filter('date')(vm.task.deadline,'H'):0 ;
                         vm.notCreator = (vm.task.creator._id!=userId)?true:false;
                         vm.task.deadline = $filter('date')(vm.task.deadline,'yyyy-MM-dd');
-                        vm.searchResponsible = vm.task.responsible.name;
                         vm.task.status.forEach(function (obj) {
                             if(vm.userId==obj.user._id) vm.userAccepted=true;
                         });
@@ -185,13 +188,14 @@ export class NewTaskController{
 
         //Записываю ответсвенного в vm.task.responsible и удаляю его из массива всех юзеров
         vm.chooseResponsible = function (user) {
-                console.log("resp",vm.task.responsible);
-                if(vm.task.responsible) vm.users.push(vm.task.responsible);
-                console.log("users",vm.users);
-                vm.task.responsible = user;
-                vm.users.splice(vm.users.indexOf(user),1);
+            console.log("users",vm.users);
 
-            };
+            vm.task.responsible = user;
+                vm.users.splice(vm.users.indexOf(user),1);
+                console.log("users",vm.users);
+                console.log("resp",vm.task.responsible);
+
+        };
 
         vm.removeResonsible = function () {
              vm.users.push(vm.task.responsible);

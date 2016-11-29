@@ -8,6 +8,7 @@ export function NgEnterDirective($compile) {
               if (e.keyCode in map) {
                   map[e.keyCode] = true;
                   if (map[13] && map[17]) {
+                      console.log(element.val());
                       $scope.vm.sendComment(element.val());
                       element.val("");
                       $scope.$apply();

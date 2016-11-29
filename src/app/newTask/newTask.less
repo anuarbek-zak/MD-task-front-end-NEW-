@@ -1,3 +1,4 @@
+@border_color:rgb(230, 231, 232);
 button{
   outline: none;
 }
@@ -21,6 +22,7 @@ input:disabled{
 
       &-left{
         padding: 15px;
+        border-right:1px dashed @border_color ;
       }
     }
   }
@@ -85,6 +87,7 @@ label{
 
 .extra-section{
   padding: 20px;
+  border-left:1px dashed @border_color;
   &__delete{
     margin-top: 20px;
     float: right;
@@ -95,7 +98,12 @@ label{
   &__text{
     font-weight: lighter;
     color: #929292;
-    margin-right: 15px;
+    margin-right: 20px;
+  }
+  &__input{
+    &:checked,&:active,:focus{
+      outline: none !important;
+    }
   }
 }
 
@@ -247,6 +255,8 @@ label{
   }
 
   &__comments{
+    margin-top: 20px;
+    border: 1px dashed @border_color;
     background: darken(#fff,1%);
     padding: 15px;
     &__showMore{
