@@ -11,7 +11,7 @@ export class NewTaskController{
         vm.acceptedUsers = [];
         vm.canceledUsers = [];
         vm.hours = [];
-        // vm.currentHour = 0;
+        vm.currentHour = 0;
         vm.taskId = $stateParams.taskId=="new"?undefined:$stateParams.taskId;
         console.log('taskId ',vm.taskId);
         vm.submitText ="Поставить задачу" ;

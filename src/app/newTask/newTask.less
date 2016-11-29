@@ -367,13 +367,13 @@ label{
 
 .canceled{
   position: relative;
-  &:hover .canceled-comment{
-    transform: scale(1);
-  }
   &-text{
     display: inline-block;
     color: red;
     margin-left: 10px;
+    &:hover .canceled-comment{
+      transform: scale(1);
+    }
   }
   &-comment{
     &:hover{
