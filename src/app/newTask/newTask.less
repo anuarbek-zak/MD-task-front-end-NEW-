@@ -10,6 +10,7 @@ input:disabled{
   color: red;
   font-weight: normal;
   font-size: 17px;
+  margin-top: 10px;
 }
 
 .main-container{
@@ -19,7 +20,6 @@ input:disabled{
       padding: 15px;
 
       &-left{
-        border:1px dotted #ccc;
         padding: 15px;
       }
     }
@@ -48,17 +48,17 @@ label{
   text-align: center;
   position: relative;
   padding: 5px 0;
+  width: 60%;
   &__btn-remove{
     color: @selling;
-    background: transparent;
-    border:none;
     font-weight: normal;
     position: absolute;
     font-size: 20px;
-    padding: 0;
-    border-radius:50px;
     top: 20%;
     right: 3px;
+    &:hover{
+      color: darken(@selling,10%);
+    }
   }
 }
 
@@ -85,7 +85,6 @@ label{
 
 .extra-section{
   padding: 20px;
-  border: 1px dotted #ccc;
   &__delete{
     margin-top: 20px;
     float: right;
@@ -108,8 +107,7 @@ label{
   color: rgb(211, 34, 34);
   filter: grayscale(100%);
   display: inline-block;
-  outline: none;
-  margin-top: -10px;
+
   &-text{
     cursor: pointer;
     background:url("../../assets/images/burn.png") no-repeat;

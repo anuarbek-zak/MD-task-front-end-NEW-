@@ -1,24 +1,24 @@
 export class NewTaskController{
-    constructor($http, toastr, $localStorage,$state, CheckAuthService, envService,$stateParams,$anchorScroll, $location,$mdDialog ,$filter,ngProgressFactory){
+    constructor($http, toastr, $localStorage,$state, envService,$stateParams,$anchorScroll, $location,$mdDialog ,$filter,ngProgressFactory){
         'ngInject';
         var vm = this;
         let userId = $localStorage.user._id;
         vm.userId = userId;
+        vm.showContent = false;
         vm.task = {};
-        vm.task.urgent = false;
         vm.task.performers = [];
-       vm.task.auditors = [];
-        vm.members = false;
+        vm.task.auditors = [];
+        vm.acceptedUsers = [];
+        vm.canceledUsers = [];
         vm.hours = [];
         vm.currentHour = 0;
-        vm.showHours=false;
         vm.taskId = $stateParams.taskId=="new"?undefined:$stateParams.taskId;
-        console.log(vm.taskId);
+        console.log('taskId ',vm.taskId);
         vm.submitText ="Поставить задачу" ;
         vm.progressbar = ngProgressFactory.createInstance();
-        vm.progressbar.setHeight('4px');
         vm.limit =  4;
         vm.userAccepted=false;
+
         //создаю массив часов
         (function () {
             for(var i=0;i<24;i++){
@@ -27,30 +27,23 @@ export class NewTaskController{
         })();
 
         //проверка:если пришел taskId то значит меняем task,если нет,то создаем новый
-
-        vm.ads = function () {
-            console.log("hello1");
-        };
-
-        var ifTaskId = function () {
+        //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\
+        var getTaskById = function () {
                 vm.submitText = "Изменить задачу";
                 vm.progressbar.start();
                 $http.get(envService.read('apiUrl')+"api/tasks/"+vm.taskId+"/"+userId)
                     .success(function (response) {
-                         console.log(response);
                         vm.task = response;
                         vm.currentHour = $filter('date')(vm.task.deadline,'H')?$filter('date')(vm.task.deadline,'H'):0 ;
-                        vm.task.customer = vm.task.customer?vm.task.customer:undefined;
-                        vm.searchCustomer = vm.task.customer?vm.task.customer.nameCompany:"";
                         vm.notCreator = (vm.task.creator._id!=userId)?true:false;
                         vm.task.deadline = $filter('date')(vm.task.deadline,'yyyy-MM-dd');
-
                         vm.searchResponsible = vm.task.responsible.name;
                         vm.task.status.forEach(function (obj) {
                             if(vm.userId==obj.user._id) vm.userAccepted=true;
                         });
                         vm.showRequireBtns = (vm.task.creator._id!=vm.userId&&vm.task.required==false&&!vm.userAccepted)?true:false;
-                        //удаляю из массива юзеров всех аудиторов,соисполнителей и ответсвенных
+
+                        // /удаляю из массива юзеров всех аудиторов,соисполнителей и ответсвенных
                         //что бы не дублировались
                         var arr = vm.task.performers.concat(vm.task.auditors);
                         arr.push(vm.task.responsible);
@@ -59,11 +52,18 @@ export class NewTaskController{
                                 if (arr[i]._id == vm.users[j]._id) vm.users.splice(j, 1);
                             }
                         }
-                        vm.progressbar.complete();
+
+                        //создание массивов тех кто принял задачу и те кто нет
+                        vm.task.status.forEach(function (status) {
+                            if(status.accepted===true) vm.acceptedUsers.push(status);
+                            else vm.canceledUsers.push(status);
+                        });
+
                         //беру все коменты
                         $http.get(envService.read('apiUrl')+"api/comment/"+vm.taskId)
                             .success(function(response){
-
+                                vm.progressbar.complete();
+                                vm.showContent = true;
                                 vm.comments = response.reverse();
                             })
                             .error(function(err){
@@ -85,13 +85,11 @@ export class NewTaskController{
                         };
 
                         //когда отклонил таск
-                        vm.canceled = function (ev) {
+                        vm.canceled = function () {
                             // создаю модалку
                             var confirm = $mdDialog.prompt()
                                 .title('Опишите причину отказа')
                                 .placeholder('Написать ...')
-                                .ariaLabel('Dog name')
-                                .targetEvent(ev)
                                 .cancel('Отмена')
                                 .ok('Отправить');
 
@@ -149,8 +147,6 @@ export class NewTaskController{
                                     toastr.error("Ошибка подключения","Ошибка");
                                 });
                         };
-
-
                     })
                     .error(function (err) {
                         console.log(err);
@@ -158,29 +154,31 @@ export class NewTaskController{
                     });
 
         };
+        // конец ifTaskId
+        //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\\
+
 
         //Запрос на всех клиентов(Заказчиков)
         $http.get(envService.read('apiUrl')+"api/clients")
             .success(function(response){
                 vm.customers = response;
-                console.log("customers",vm.customers);
             })
             .error(function(err){
                 console.log(err);
+                toastr.error("Ошибка","Ошибка подключения!");
             });
 
         //Запрос на всех юзеров
         $http.get(envService.read('apiUrl')+"api/users")
             .success(function(response){
                 vm.users = response;
-                //проверка:если пришел taskId то значит меняем task,если нет,то создаем новый
-                if(vm.taskId)  {
-                    ifTaskId();
-                }
-
+                //проверка:если пришел taskId вызываем ifTaskId
+                if(vm.taskId) getTaskById();
+                vm.showContent = true;
             })
             .error(function(err){
                 console.log(err);
+                toastr.error("Ошибка","Ошибка подключения!");
             });
 
 
@@ -192,12 +190,14 @@ export class NewTaskController{
                 console.log("users",vm.users);
                 vm.task.responsible = user;
                 vm.users.splice(vm.users.indexOf(user),1);
+
             };
 
         vm.removeResonsible = function () {
              vm.users.push(vm.task.responsible);
              vm.task.responsible = undefined;
-         }
+             vm.responsibleText = "";
+         };
 
         //При нажатии на "удалить участников" возвращает их в массив всех юзеров
         // и очищает массивы аудиторов и перформеров а так же
@@ -236,12 +236,14 @@ export class NewTaskController{
             });
         };
 
-        //отправляю созданный таск на сервер
-
-        //проверка на дату(если есть,то правильно ли введена)
+        //отправляю созданный таск на сервер либо меняю
         vm.createTask = function () {
             if(vm.task){
-
+                if(vm.task.customer && typeof vm.task.customer!=="object"){
+                    vm.customerError = true;
+                    return;
+                }
+                //проверка на дату(если есть,то правильно ли введена)
                 if(vm.task.deadline!==undefined && vm.task.deadline!=null&&vm.task.deadline!=""){
                     var timestamp=Date.parse(vm.task.deadline );
                     if (isNaN(timestamp)==true) {
@@ -251,12 +253,8 @@ export class NewTaskController{
                     vm.task.deadline = new Date(timestamp);
                     vm.task.deadline.setHours(vm.currentHour);
                 }
-                if(vm.task.customer && typeof vm.task.customer!=="object"){
-                    vm.customerError = true;
-                    return;
-                }
+
                 vm.progressbar.start();
-                vm.dateError = false;
                 //отправляю айдишки вместо объектов
                 vm.task.creator = userId;
                 vm.task.responsible = vm.task.responsible._id;
@@ -282,7 +280,6 @@ export class NewTaskController{
                             console.log(err);
                         });
                 }else{
-
                     $http.post(envService.read('apiUrl')+"api/tasks",vm.task)
                         .success(function(response){
                             console.log(response);
@@ -295,9 +292,8 @@ export class NewTaskController{
                             console.log(err);
                         });
                 }
-
             }else{
-               console.log("OTMENA");
+                toastr.error("ID Задачи не найдено","Ошибка");
             }
         };
     }

@@ -12,7 +12,6 @@ import { FooterDirective } from '../app/components/footer/footer.directive';
 import { MenuDocumentsDirective } from '../app/components/menuDocuments/menuDocuments.directive';
 import { DynamicTextArea } from '../app/components/dynamicTextArea/dynamicTextArea.directive';
 import { NgEnterDirective } from '../app/components/ngEnter/ngEnter.directive';
-import { AcceptedFilter } from '../app/components/acceptedFilter/accepted.filter';
 import { MenuService } from '../app/components/menuService/menuService.service';
 import { CheckAuthService } from '../app/components/checkAuth/checkAuth.service';
 import { NewTaskController } from './newTask/newTask.controller';
@@ -33,7 +32,6 @@ angular.module('ticketMirusDesk', ['ngAnimate', 'ngCookies', 'ngSanitize', 'ngMe
     .controller('NewTaskController', NewTaskController)
     .controller('TasksListController',  TasksListController)
 
-  .filter('accepted',AcceptedFilter)
   .directive('acmeNavbar', NavbarDirective)
   .directive('mFooter', FooterDirective)
   .directive('mMenuDocuments', MenuDocumentsDirective)
