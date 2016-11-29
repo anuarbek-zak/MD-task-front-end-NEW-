@@ -65,8 +65,8 @@ export class NewTaskController{
                         //беру все коменты
                         $http.get(envService.read('apiUrl')+"api/comment/"+vm.taskId)
                             .success(function(response){
-                                vm.progressbar.complete();
                                 vm.showContent = true;
+                                vm.progressbar.complete();
                                 vm.comments = response.reverse();
                             })
                             .error(function(err){

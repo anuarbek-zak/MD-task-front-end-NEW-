@@ -18,6 +18,7 @@
                     .m-input-container(ng-hide="vm.notCreator && !vm.task.description")
                         label(for="descriptrion") Суть задачи
                         textarea.taskInfo__comments__create__input(
+                        ng-disabled="vm.notCreator",
                         id="descriptrion",
                         dynamic-text-area,
                         msd-elastic,
@@ -90,7 +91,7 @@
 
                     div()
                         .accepted(ng-show="vm.acceptedUsers.length")  Приняли :
-                            span.accepted-text.taskInfo__user(ng-repeat="status in vm.acceptedUsers") {{status.user.name}}
+                            span.accepted-text.taskInfo__user(ng-repeat="status in vm.acceptedUsers") {{status.fuser.name}}
 
                         .canceled(ng-show="vm.canceledUsers.length")    Отклонили :
                             span.canceled-text.taskInfo__user(ng-repeat="status in vm.canceledUsers" ) {{status.user.name}}
