@@ -104,8 +104,8 @@ div.m-row.m-document.m-flex
                 ng-class="{'task__star-active':task.favourite.indexOf(vm._id)>-1}") {{(task.favourite.indexOf(vm._id)>-1)? '&#9733;' : '&#9734;'}}
                     md-tooltip.task__star__hint(md-direction="bottom") Добавить в избранные
 
-                a.task__name(ui-sref="newTask({taskId:task._id})") {{task.name | limitTo:25}}
-                        span(ng-show="task.name.length>25") ...
+                a.task__name(ui-sref="newTask({taskId:task._id})") {{task.name | limitTo:15}}
+                        span(ng-show="task.name.length>15") ...
                         span.task__circle(ng-hide="vm.selector=='all'||task.creator._id==vm._id" ng-class="{'task__circle-active':!(task.visited.indexOf(vm._id)>-1)}")
 
                 .task__right-div
@@ -114,7 +114,7 @@ div.m-row.m-document.m-flex
                         span.task__creator-responsible__responsible Ответсвенный: {{task.responsible.name}}
                     span(ng-show="task.deadline").task__deadline дедлайн:
                         span.task__deadline__date(ng-if="!task.finished") {{task.deadline | date : "dd MMMM | H:00"}}
-                        span.task__deadline__date(ng-if="task.finished") Просрочено
+                        span.task__deadline__finished(ng-if="task.finished") Просрочено
 
                 //|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 

@@ -4,7 +4,6 @@ export class NewTaskController{
         var vm = this;
         let userId = $localStorage.user._id;
         vm.userId = userId;
-        vm.showContent = false;
         vm.task = {};
         vm.task.performers = [];
         vm.task.auditors = [];
@@ -19,16 +18,16 @@ export class NewTaskController{
         vm.limit =  4;
         vm.userAccepted=false;
 
-        vm.cl = function () {
-         alert("hello!");
-        };
-
         //создаю массив часов
         (function () {
             for(var i=0;i<24;i++){
                 vm.hours[i] = i;
             }
         })();
+
+        var cl = function (a="",b) {
+            console.log(a,b);
+        };
 
         //проверка:если пришел taskId то значит меняем task,если нет,то создаем новый
         //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\
@@ -65,7 +64,6 @@ export class NewTaskController{
                         //беру все коменты
                         $http.get(envService.read('apiUrl')+"api/comment/"+vm.taskId)
                             .success(function(response){
-                                vm.showContent = true;
                                 vm.progressbar.complete();
                                 vm.comments = response.reverse();
                             })
@@ -168,6 +166,7 @@ export class NewTaskController{
             })
             .error(function(err){
                 console.log(err);
+
                 toastr.error("Ошибка","Ошибка подключения!");
             });
 
@@ -177,7 +176,6 @@ export class NewTaskController{
                 vm.users = response;
                 //проверка:если пришел taskId вызываем ifTaskId
                 if(vm.taskId) getTaskById();
-                vm.showContent = true;
             })
             .error(function(err){
                 console.log(err);
@@ -188,20 +186,11 @@ export class NewTaskController{
 
         //Записываю ответсвенного в vm.task.responsible и удаляю его из массива всех юзеров
         vm.chooseResponsible = function (user) {
-            console.log("users",vm.users);
-
+            if(vm.task.responsible) vm.users.push(vm.task.responsible);
             vm.task.responsible = user;
-                vm.users.splice(vm.users.indexOf(user),1);
-                console.log("users",vm.users);
-                console.log("resp",vm.task.responsible);
-
+            if(user!==undefined)  vm.users.splice(vm.users.indexOf(user),1);
+            vm.responsibleText = "";
         };
-
-        vm.removeResonsible = function () {
-             vm.users.push(vm.task.responsible);
-             vm.task.responsible = undefined;
-             vm.responsibleText = "";
-         };
 
         //При нажатии на "удалить участников" возвращает их в массив всех юзеров
         // и очищает массивы аудиторов и перформеров а так же

@@ -1,4 +1,8 @@
-.main-container(ng-show="vm.showContent")
+div performers {{vm.task.performers}}
+div auditors {{vm.task.auditors}}
+div responsible {{vm.task.responsible}}
+div customer {{vm.task.customer}}
+.main-container()
         div.m-menu-documents.m-menu-documents-right(data-offset-top="100", bs-affix)
             div.m-menu-documents-item(
                 ui-sref="tasksList",
@@ -28,22 +32,25 @@
                     .m-input-container
                             h4.creator(ng-show="vm.taskId") Постановщик: {{vm.task.creator.name}}
                             label(for="responsible") Ответственный
+                            br
+                            button.btn.newTask__btn(ng-hide="vm.notCreator" bs-dropdown flex="5")
+                                span.caret
+                            ul.newTask__dropdown(class="dropdown-menu" role="menu")
+                                li.newTask__dropdown__item(ng-repeat="user in vm.users | orderBy:'name'" ng-click="vm.chooseResponsible(user)") {{user.name}}
                             input(class="md-input-container",
+                            ng-hide="vm.notCreator",
                             id="responsible",
-                            type="text",
-                            ng-model="vm.responsibleText",
-                            data-html="1",
-                            data-auto-select="true",
-                            bs-options="user as user.name for user in vm.users",
                             bs-typeahead,
-                            ng-hide="vm.notCreator"
-                            bs-on-select="vm.chooseResponsible"
-                            )
+                            bs-options="user as user.name for user in vm.users",
+                            ng-model="vm.responsibleText",
+                            bs-on-select="vm.chooseResponsible",
+                            flex="90")
+
                             .users(ng-show="vm.task.responsible")
                                 .user.clearfix
                                     img.user-photo.pull-left(ng-src="../../assets/images/help_desk/user.jpg")
                                     p.pull-left(style="display:inline-block") {{vm.task.responsible.name}}
-                                    span.user__btn-remove(ng-hide="vm.notCreator" ng-click="vm.removeResonsible()") &#10799;
+                                    span.user__btn-remove(ng-hide="vm.notCreator" ng-click="vm.chooseResponsible(undefined)") &#10799;
 
                     .m-input-container(flex='80' ng-hide="vm.notCreator&&!vm.task.deadline")
                         label.newTask__deadline-label(for="deadline") Дедлайн
@@ -68,7 +75,7 @@
 
                     br
 
-                    .require(ng-hide="vm.notCreator&&!vm.task.description")
+                    .require(ng-hide="vm.notCreator&&!vm.task.required")
                         label.required__text(for='required') {{vm.taskId?'Обязательно':'Сделать задачу обязательной'}}
                         input.required__input(ng-disabled="vm.notCreator",
                         type="checkbox",
@@ -100,6 +107,11 @@
                 .members.extra-section(flex='45' flex-offset="5")
                     .m-input-container
                         label(for="performer" ng-hide="vm.notCreator&&!vm.task.performers.length") Соисполнитель(ли)
+                        br
+                        button.btn.newTask__btn(ng-hide="vm.notCreator" bs-dropdown flex="5")
+                            span.caret
+                        ul.newTask__dropdown(class="dropdown-menu" role="menu")
+                            li.newTask__dropdown__item(ng-repeat="user in vm.users | orderBy:'name'" ng-click="vm.removeFromUsers({user:user,arr:vm.task.performers})") {{user.name}}
                         input(id="performer",
                         ng-hide="vm.notCreator",
                         class="md-input-container",
@@ -107,8 +119,8 @@
                         ng-model="performer",
                         bs-options="{user:user,arr:vm.task.performers} as user.name for user in vm.users",
                         bs-typeahead,
-                        bs-on-select="vm.removeFromUsers")
-
+                        bs-on-select="vm.removeFromUsers",
+                        flex="90")
                         .users(ng-show="vm.task.performers.length")
                             .user.clearfix(ng-repeat="performer in vm.task.performers")
                                 img.user-photo.pull-left(ng-src="../../assets/images/help_desk/user.jpg")
@@ -118,6 +130,11 @@
 
                     .m-input-container
                         label(for="auditor" ng-hide="vm.notCreator&&!vm.task.auditors.length") Аудитор(ы)
+                        br
+                        button.btn.newTask__btn(ng-hide="vm.notCreator" bs-dropdown flex="5")
+                            span.caret
+                        ul.newTask__dropdown(class="dropdown-menu" role="menu")
+                            li.newTask__dropdown__item(ng-repeat="user in vm.users | orderBy:'name'" ng-click="vm.removeFromUsers({user:user,arr:vm.task.auditors})") {{user.name}}
                         input(class="md-input-container",
                         ng-hide="vm.notCreator",
                         id="auditor",
@@ -125,8 +142,8 @@
                         ng-model="auditor",
                         bs-options="{user:user,arr:vm.task.auditors} as user.name for user in vm.users",
                         bs-typeahead,
-                        bs-on-select="vm.removeFromUsers")
-
+                        bs-on-select="vm.removeFromUsers",
+                        flex="90")
                         .users(ng-show="vm.task.auditors.length")
                             .user.clearfix(ng-repeat="auditor in vm.task.auditors")
                                 img.user-photo.pull-left(ng-src="../../assets/images/help_desk/user.jpg")
@@ -135,6 +152,11 @@
 
                     .m-input-container
                             label(for="customer" ng-hide="vm.notCreator&&!vm.task.customer") Заказчик
+                            br
+                            button.btn.newTask__btn(ng-hide="vm.notCreator" bs-dropdown flex="5")
+                                span.caret
+                            ul.newTask__dropdown(class="dropdown-menu" role="menu")
+                                li.newTask__dropdown__item(ng-repeat="customer in vm.customers | orderBy:'nameCompany'" ng-click="vm.chooseCustomer(customer)") {{customer.nameCompany}}
                             input(class="md-input-container",
                             id="customer",
                             type="text",
@@ -142,7 +164,8 @@
                             ng-model="vm.task.customer",
                             bs-options="customer as customer.nameCompany for customer in vm.customers",
                             bs-typeahead,
-                            bs-on-select="vm.chooseCustomer")
+                            bs-on-select="vm.chooseCustomer",
+                            flex="90")
                             p.error(ng-show="vm.customerError") Заказчик введен не корректно !
 
             .reqiure-btns(ng-show="vm.showRequireBtns")

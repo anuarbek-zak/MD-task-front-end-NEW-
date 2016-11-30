@@ -50,7 +50,7 @@ label{
   text-align: center;
   position: relative;
   padding: 5px 0;
-  width: 60%;
+  width: 80%;
   &__btn-remove{
     color: @selling;
     font-weight: normal;
@@ -115,7 +115,7 @@ label{
   color: rgb(211, 34, 34);
   filter: grayscale(100%);
   display: inline-block;
-
+  margin-top: -20px;
   &-text{
     cursor: pointer;
     background:url("../../assets/images/burn.png") no-repeat;
@@ -140,14 +140,6 @@ label{
   }
 }
 
-.newTask__link{
-  &:hover,&:visited,&:active,&:focus{
-    color: darken(@selling,15%);
-    text-decoration: none;
-
-  }
-}
-
 .user-photo{
   width: 30px;
   height: 30px;
@@ -164,25 +156,44 @@ label{
     border: none;
     color: @selling;
   }
+  &__link{
+    &:hover,&:visited,&:active,&:focus{
+      color: darken(@selling,15%);
+      text-decoration: none;
+
+    }
+  }
   &__hours{
     display: inline-block;
-
+    .btn-hours{
+      background: transparent;
+      &:focus,&:active{
+        outline:none;
+      }
+    }
+    .list-hours{
+      width: 50px;
+      margin-left: -90px;
+    }
   }
   &__btn{
     border:none;
     outline:none;
-    padding:5px 10px;
-    .caret{
-      margin-left: 5px;
+    padding:5px;
+    color: @gray;
+    background: transparent;
+    &:active,&:focus{
+      outline: none;
     }
   }
   &__dropdown{
     max-height: 190px;
     overflow: auto;
-    width: 38%;
+    width: 200px;
     &__item{
+      font-weight: normal;
       padding: 3px;
-      border-bottom:1px solid #eee;
+      padding-left: 10px;
       &:hover{
         background: #eee;
       }
@@ -190,19 +201,6 @@ label{
   }
 }
 
-.newTask__hours{
-
-  .btn-hours{
-    background: transparent;
-    &:focus,&:active{
-      outline:none;
-    }
-  }
-  .list-hours{
-    width: 50px;
-    margin-left: -90px;
-  }
-}
 
 .reqiure-btns{
   margin: 30px 0;
