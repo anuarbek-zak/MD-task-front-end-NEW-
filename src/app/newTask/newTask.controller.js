@@ -190,6 +190,7 @@ export class NewTaskController{
             vm.task.responsible = user;
             if(user!==undefined)  vm.users.splice(vm.users.indexOf(user),1);
             vm.responsibleText = "";
+            document.getElementById("responsible").blur();
         };
 
         //При нажатии на "удалить участников" возвращает их в массив всех юзеров
@@ -210,9 +211,9 @@ export class NewTaskController{
 
         //удаляет из массива юзеров выбраного юзера по айди
         vm.removeFromUsers = function (obj) {
-            var index = vm.users.indexOf(obj.user);
-            obj.arr.push(vm.users[index]);
-            vm.users.splice(index,1);
+            obj.arr.push(obj.user);
+            vm.users.splice(vm.users.indexOf(obj.user),1);
+            document.getElementById(obj.id).blur();
         };
 
         //добавляет в массив юзеров выбраного юзера

@@ -111,13 +111,13 @@ div customer {{vm.task.customer}}
                         button.btn.newTask__btn(ng-hide="vm.notCreator" bs-dropdown flex="5")
                             span.caret
                         ul.newTask__dropdown(class="dropdown-menu" role="menu")
-                            li.newTask__dropdown__item(ng-repeat="user in vm.users | orderBy:'name'" ng-click="vm.removeFromUsers({user:user,arr:vm.task.performers})") {{user.name}}
+                            li.newTask__dropdown__item(ng-repeat="user in vm.users | orderBy:'name'" ng-click="vm.removeFromUsers({user:user,arr:vm.task.performers,id:'performer'})") {{user.name}}
                         input(id="performer",
                         ng-hide="vm.notCreator",
                         class="md-input-container",
                         type="text",
                         ng-model="performer",
-                        bs-options="{user:user,arr:vm.task.performers} as user.name for user in vm.users",
+                        bs-options="{user:user,arr:vm.task.performers,id:'performer'} as user.name for user in vm.users",
                         bs-typeahead,
                         bs-on-select="vm.removeFromUsers",
                         flex="90")
@@ -134,13 +134,13 @@ div customer {{vm.task.customer}}
                         button.btn.newTask__btn(ng-hide="vm.notCreator" bs-dropdown flex="5")
                             span.caret
                         ul.newTask__dropdown(class="dropdown-menu" role="menu")
-                            li.newTask__dropdown__item(ng-repeat="user in vm.users | orderBy:'name'" ng-click="vm.removeFromUsers({user:user,arr:vm.task.auditors})") {{user.name}}
+                            li.newTask__dropdown__item(ng-repeat="user in vm.users | orderBy:'name'" ng-click="vm.removeFromUsers({user:user,arr:vm.task.auditors,id:'auditor'})") {{user.name}}
                         input(class="md-input-container",
                         ng-hide="vm.notCreator",
                         id="auditor",
                         type="text",
                         ng-model="auditor",
-                        bs-options="{user:user,arr:vm.task.auditors} as user.name for user in vm.users",
+                        bs-options="{user:user,arr:vm.task.auditors,id:'auditor'} as user.name for user in vm.users",
                         bs-typeahead,
                         bs-on-select="vm.removeFromUsers",
                         flex="90")
