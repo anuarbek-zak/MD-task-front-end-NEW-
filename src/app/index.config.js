@@ -14,7 +14,7 @@ export function config ($logProvider, toastrConfig, $mdThemingProvider, tmhDynam
   // toastrConfig.progressBar = true;
 
   //tmhDynamicLocaleProvider.set('ru');
-  tmhDynamicLocaleProvider.localeLocationPattern('https://cdnjs.cloudflare.com/ajax/libs/angular-i18n/1.5.8/angular-locale_ru-ru.js');
+  // tmhDynamicLocaleProvider.localeLocationPattern('https://cdnjs.cloudflare.com/ajax/libs/angular-i18n/1.5.8/angular-locale_ru-ru.js');
   $mdThemingProvider.theme('default')
     .primaryPalette('blue')
 

@@ -20,15 +20,15 @@ export function routerConfig ($stateProvider, $urlRouterProvider) {
       controllerAs: 'vm',
       parent : 'home'
     })
-      .state('tasksList', {
-        url: '/tasksList',
+      .state('tasks', {
+        url: '/tasks',
         templateUrl: 'app/tasksList/tasksList.html',
         controller: 'TasksListController',
         controllerAs: 'vm',
         parent : 'documents'
       })
       .state('newTask', {
-        url: '/tasksList/:taskId',
+        url: '/tasks/:taskId',
         templateUrl: 'app/newTask/newTask.html',
         controller: 'NewTaskController',
         controllerAs: 'vm',

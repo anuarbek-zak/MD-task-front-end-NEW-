@@ -12,13 +12,14 @@ export class TasksListController{
         //отправляю входящие,исходящие,избранные,горящие и id юзера
         vm.getTasks = function (responsible=true,creator=true,favourite=false,urgent=false,general=false,all=false,selector='my',sideSelector="") {
             vm.selector=selector;
+            $localStorage.selector = "selector";
             vm.sideSelector = sideSelector;
             vm.progressbar.start();
             $http.post(envService.read('apiUrl')+"api/tasks/filter",{_id:userId,responsible:responsible,creator:creator,favourite:favourite,urgent:urgent,general:general,all:all})
                 .success(function(response){
                     console.log(response);
                     vm.progressbar.complete();
-                    vm.tasks = response.reverse();
+                    vm.tasks = response;
                     vm.emptyTasks = vm.tasks.length?"":"Нет задач, удовлятворяющиx этой категории";
                 })
                 .error(function(err){

@@ -5,7 +5,7 @@
 .main-container()
         div.m-menu-documents.m-menu-documents-right(data-offset-top="100", bs-affix)
             div.m-menu-documents-item(
-                ui-sref="tasksList",
+                ui-sref="tasks",
                 ng-class='{"m-menu-document-item-active": false}'
             )
                 img.disabled(ng-src='../assets/images/menu_icons/realisation6.svg')
@@ -93,7 +93,7 @@
                     p.taskInfo-container-left__visitors(ng-show="vm.taskId") Просмотрели :
                         span.taskInfo__user.taskInfo-container-left__visitors__visitor(ng-repeat="visited in vm.task.visited") {{" "+visited.name+" "}}
 
-                    div()
+                    div
                         .accepted(ng-show="vm.acceptedUsers.length")  Приняли :
                             span.accepted-text.taskInfo__user(ng-repeat="status in vm.acceptedUsers") {{status.user.name}}
 

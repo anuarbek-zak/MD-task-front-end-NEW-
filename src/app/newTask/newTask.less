@@ -218,6 +218,9 @@ label{
     }
   }
   &-container-left{
+    &__visitors{
+      margin-top: 20px;
+    }
     &__accepteds{
       &__accepted{
         color: limegreen;
@@ -364,11 +367,12 @@ label{
 }
 
 .canceled{
-  position: relative;
+
   &-text{
     display: inline-block;
     color: red;
     margin-left: 10px;
+    position: relative;
     &:hover .canceled-comment{
       transform: scale(1);
     }
@@ -386,7 +390,7 @@ label{
       display: inline-block;
       position: absolute;
       top: 100%;
-      left: 0%;
+      left: -100%;
       padding: 10px;
       border-radius:4px;
       color: #ffffff;
