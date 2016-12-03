@@ -13,6 +13,7 @@ export class NewTaskController{
         vm.currentHour = 0;
         vm.taskId = $stateParams.taskId=="new"?undefined:$stateParams.taskId;
         console.log('taskId ',vm.taskId);
+        vm.task.deadline = $filter('date')(new Date(),'yyyy-MM-dd');
         vm.submitText ="Поставить задачу" ;
         vm.progressbar = ngProgressFactory.createInstance();
         vm.limit =  4;

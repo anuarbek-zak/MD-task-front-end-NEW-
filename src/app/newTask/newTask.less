@@ -15,14 +15,12 @@ input:disabled{
 }
 
 .main-container{
-
     &__form{
       background: #f7f7f7;
       padding: 15px;
-
+      border:1px dashed @border_color;
       &-left{
         padding: 15px;
-        border-right:1px dashed @border_color ;
       }
     }
   }
@@ -95,10 +93,12 @@ label{
 }
 
 .required{
+
   &__text{
     font-weight: lighter;
     color: #929292;
     margin-right: 20px;
+
   }
   &__input{
     &:checked,&:active,:focus{
@@ -115,7 +115,7 @@ label{
   color: rgb(211, 34, 34);
   filter: grayscale(100%);
   display: inline-block;
-  margin-top: -20px;
+  margin-top: 10px;
   &-text{
     cursor: pointer;
     background:url("../../assets/images/burn.png") no-repeat;
@@ -393,4 +393,19 @@ label{
       z-index: 20;
       letter-spacing: 1px;
   }
+}
+
+.user.ng-enter{
+  transform:translate(200px); ;
+  opacity: 0;
+  transition: 450ms cubic-bezier(0.390, 0.575, 0.565, 1.000) all;
+}
+
+.user.ng-enter-stagger{
+  transition-delay: .2s;
+}
+
+.user.ng-enter-active{
+  opacity: 1;
+  transform:translate(0px); ;
 }

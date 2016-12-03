@@ -32,7 +32,7 @@ export class TasksListController{
 
         //метод для добавления в избранные(при нажатии на звездочку)
         vm.addToFavourites = function (task) {
-            if(task.favourite.indexOf(userId)>-1) task.favourite.splice(task.favourite.indexOf(userId),1);
+            if(task.favourite.includes(vm._id)) task.favourite.splice(task.favourite.indexOf(userId),1);
             else task.favourite.push(userId);
             $http.put(envService.read('apiUrl')+"api/tasks/"+task._id,{userId:userId,case:"favourite"})
                 .success(function (res) {
