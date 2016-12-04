@@ -17,7 +17,7 @@ export  class CheckAuthService{
           if ($localStorage.user!=undefined) {
             if (toState.name == 'auth') {
               event.preventDefault();
-              $state.go('tasksList');
+              $state.go('tasks');
             }
           }
 

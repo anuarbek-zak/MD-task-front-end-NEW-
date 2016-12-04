@@ -18,7 +18,7 @@ export class NewTaskController{
         vm.progressbar = ngProgressFactory.createInstance();
         vm.limit =  4;
         vm.userAccepted=false;
-
+        vm.selector = $localStorage.selector;
         //создаю массив часов
         (function () {
             for(var i=0;i<24;i++){
@@ -44,7 +44,7 @@ export class NewTaskController{
                         vm.task.status.forEach(function (obj) {
                             if(vm.userId==obj.user._id) vm.userAccepted=true;
                         });
-                        vm.showRequireBtns = (vm.task.creator._id!=vm.userId&&vm.task.required==false&&!vm.userAccepted)?true:false;
+                        vm.showRequireBtns = (vm.notCreator&&vm.task.required==false&&!vm.userAccepted&&vm.selector!="all")?true:false;
 
                         // /удаляю из массива юзеров всех аудиторов,соисполнителей и ответсвенных
                         //что бы не дублировались

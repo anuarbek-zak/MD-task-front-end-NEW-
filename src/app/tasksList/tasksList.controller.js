@@ -12,8 +12,9 @@ export class TasksListController{
         //отправляю входящие,исходящие,избранные,горящие и id юзера
         vm.getTasks = function (responsible=true,creator=true,favourite=false,urgent=false,general=false,all=false,selector='my',sideSelector="") {
             vm.selector=selector;
-            $localStorage.selector = "selector";
+            $localStorage.selector = selector;
             vm.sideSelector = sideSelector;
+            console.log($localStorage.selector);
             vm.progressbar.start();
             $http.post(envService.read('apiUrl')+"api/tasks/filter",{_id:userId,responsible:responsible,creator:creator,favourite:favourite,urgent:urgent,general:general,all:all})
                 .success(function(response){
