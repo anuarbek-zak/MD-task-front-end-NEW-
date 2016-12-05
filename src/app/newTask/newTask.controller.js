@@ -12,13 +12,14 @@ export class NewTaskController{
         vm.hours = [];
         vm.currentHour = 0;
         vm.taskId = $stateParams.taskId=="new"?undefined:$stateParams.taskId;
-        console.log('taskId ',vm.taskId);
         vm.task.deadline = $filter('date')(new Date(),'yyyy-MM-dd');
         vm.submitText ="Поставить задачу" ;
         vm.progressbar = ngProgressFactory.createInstance();
+        vm.progressbar.start();
         vm.limit =  4;
         vm.userAccepted=false;
         vm.selector = $localStorage.selector;
+        vm.isMember=true;
         //создаю массив часов
         (function () {
             for(var i=0;i<24;i++){
@@ -26,15 +27,11 @@ export class NewTaskController{
             }
         })();
 
-        var cl = function (a="",b) {
-            console.log(a,b);
-        };
-
         //проверка:если пришел taskId то значит меняем task,если нет,то создаем новый
         //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\
         var getTaskById = function () {
                 vm.submitText = "Изменить задачу";
-                vm.progressbar.start();
+
                 $http.get(envService.read('apiUrl')+"api/tasks/"+vm.taskId+"/"+userId)
                     .success(function (response) {
                         vm.task = response;
@@ -56,21 +53,61 @@ export class NewTaskController{
                             }
                         }
 
+                        //проверяю, является ли текущий юзер
+                        //участником данного таска, выбранного из всех тасков
+                        if($localStorage.selector=="all"){
+                            arr.push(vm.task.creator);
+                            vm.isMember=false;
+                            arr.forEach(function (user) {
+                                if(user._id==vm.userId){
+                                    vm.isMember = true;
+                                    return;
+                                }
+                            });
+                        }
+
+
                         //создание массивов тех кто принял задачу и те кто нет
                         vm.task.status.forEach(function (status) {
                             if(status.accepted===true) vm.acceptedUsers.push(status);
                             else vm.canceledUsers.push(status);
                         });
-
+                        vm.progressbar.complete();
                         //беру все коменты
                         $http.get(envService.read('apiUrl')+"api/comment/"+vm.taskId)
                             .success(function(response){
-                                vm.progressbar.complete();
                                 vm.comments = response.reverse();
                             })
                             .error(function(err){
+                                toastr.error("Ошибка подключения","Ошибка");
                                 console.log(err);
                             });
+
+                        vm.closeTask = function () {
+                            console.log("lala");
+                            var confirm = $mdDialog.confirm()
+                                .title('Закрыть задачу ?')
+                                .ariaLabel('Lucky day')
+                                .cancel('Отмена')
+                                .ok('Да');
+
+                            $mdDialog.show(confirm).then(function() {
+                                toastr.info("","Задача закрыта");
+                                $state.go('tasks');
+                                // $http.delete(envService.read('apiUrl')+"api/tasks/"+vm.taskId)
+                                //     .success(function (res) {
+                                //         toastr.info("","Задача закрыта");
+                                //         $state.go('tasks');
+                                //     })
+                                //     .error(function (err) {
+                                //         toastr.error("Ошибка подключения","Ошибка");
+                                //         console.log(err);
+                                //     })
+                            }, function() {
+
+                            });
+                        };
+
 
                         //когда принял таск
                         vm.accepted = function (taskId=vm.taskId,userId=vm.userId,comment="",accepted=true,statusText="Задача принята",arr=vm.acceptedUsers) {
@@ -89,13 +126,13 @@ export class NewTaskController{
                         //когда отклонил таск
                         vm.canceled = function () {
                             // создаю модалку
-                            var confirm = $mdDialog.prompt()
+
+                            var prompt = $mdDialog.prompt()
                                 .title('Опишите причину отказа')
                                 .placeholder('Написать ...')
                                 .cancel('Отмена')
                                 .ok('Отправить');
-
-                            $mdDialog.show(confirm).then(function(result) {
+                            $mdDialog.show(prompt).then(function(result) {
                                 if(!result){
                                     toastr.error("","Заполните причину отказа");
                                     return;
@@ -122,7 +159,7 @@ export class NewTaskController{
 
                             if(!vm.comment) return;
                             vm.progressbar.start();
-                            var commentObj = {taskId:vm.taskId,creatorId:userId,comment:vm.comment,createdDate:new Date()};
+                            var commentObj = {taskId:vm.taskId,creatorId:userId,comment:vm.comment};
                             $http.post(envService.read('apiUrl')+"api/comment",commentObj)
                                 .success(function (res) {
                                     vm.comment = "";
@@ -138,7 +175,6 @@ export class NewTaskController{
                         };
                         //удаление коммента
                         vm.removeComment = function (commentId,i) {
-                            console.log(commentId,i);
                             $http.delete(envService.read('apiUrl')+"api/comment/"+commentId)
                                 .success(function (res) {
                                     console.log(res);
@@ -177,6 +213,7 @@ export class NewTaskController{
                 vm.users = response;
                 //проверка:если пришел taskId вызываем ifTaskId
                 if(vm.taskId) getTaskById();
+                else vm.progressbar.complete();
             })
             .error(function(err){
                 console.log(err);
@@ -277,10 +314,9 @@ export class NewTaskController{
                 }else{
                     $http.post(envService.read('apiUrl')+"api/tasks",vm.task)
                         .success(function(response){
-                            console.log(response);
                             toastr.success("","Задача успешно поставлена !");
                             vm.progressbar.complete();
-                            $state.go('tasksList');
+                            $state.go('tasks');
                         })
                         .error(function(err){
                             toastr.error("Ошибка подключения","Ошибка");

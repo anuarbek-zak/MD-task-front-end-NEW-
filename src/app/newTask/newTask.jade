@@ -1,7 +1,3 @@
-//div performers {{vm.task.performers}}
-//div auditors {{vm.task.auditors}}
-//div responsible {{vm.task.responsible}}
-//div customer {{vm.task.customer}}
 .main-container()
         div.m-menu-documents.m-menu-documents-right(data-offset-top="100", bs-affix)
             div.m-menu-documents-item(
@@ -11,6 +7,14 @@
                 img.disabled(ng-src='../assets/images/menu_icons/realisation6.svg')
                 img.active(ng-src='../assets/images/menu_icons/realisation6-reverse.svg',)
                 md-tooltip(md-direction="bottom") Назад
+            div.m-menu-documents-item(
+                ng-click="vm.closeTask()",
+                ng-class='{"m-menu-document-item-active": false}',
+                ng-show="!vm.notCreator&&vm.taskId"
+                )
+                    img.disabled(ng-src='../assets/images/help_desk/close.svg')
+                    img.active(ng-src='../assets/images/help_desk/close-reverse.svg',)
+                    md-tooltip(md-direction="bottom") Закрыть задачу
 
         form(name="form" ng-submit="vm.createTask()")
             .main-container__form(layout="row")
@@ -114,7 +118,7 @@
                             class="md-input-container",
                             type="text",
                             ng-model="performer",
-                            bs-options="{user:user,arr:vm.task.performers,id:'performer'} as user.name for user in vm.users",
+                            bs-options="{user:user,arr:vm.task.performers,id:'performer+'} as user.name for user in vm.users",
                             bs-typeahead,
                             bs-on-select="vm.removeFromUsers")
                         .users(ng-show="vm.task.performers.length")
@@ -162,13 +166,13 @@
                                 bs-on-select="vm.chooseCustomer")
                             p.error(ng-show="vm.customerError") Заказчик введен не корректно !
 
-            .reqiure-btns(ng-show="vm.showRequireBtns")
+            .reqiure-btns(ng-show="vm.showRequireBtns&&vm.isMember")
                 span.reqiure-btn.btn.btn-success(ng-click="vm.accepted()") Принять
                 span.reqiure-btn.btn.btn-danger(ng-click="vm.canceled()") Отклонить
             //Кнопка отправки disabled пока не заполнены поля имя и ответственный
             input.md-btn.submit(ng-if="!vm.notCreator" type="submit" value="{{vm.submitText}}" ng-disabled="form.$invalid||!vm.task.responsible")
 
-        .taskInfo__comments(ng-show="vm.taskId&&vm.selector!='all'")
+        .taskInfo__comments(ng-show="vm.taskId")
             h3 {{vm.comments.length?"Комментарии":"Пока нет комментариев"}}
             //коментарий(можно удалить если id текущего юзера равно id создателя)
             .taskInfo__comments__comment(ng-repeat="comment in vm.comments | limitTo:vm.limit track by $index")
@@ -177,14 +181,14 @@
                     h5.taskInfo__comments__comment__div__creator-name {{comment.user.name}}
                     p.taskInfo__comments__comment__div__content {{comment.text}}
                     span(ng-if="vm.userId==comment.user._id" ng-click="vm.removeComment(comment._id,$index)").taskInfo__comments__comment__div__remove  Удалить
-                    span(ng-if="vm.userId!=comment.user._id" ng-click="vm.writeAnswer(comment.user.name)").taskInfo__comments__comment__div__remove  Ответить
+                    span(ng-if="vm.userId!=comment.user._id&&vm.isMember" ng-click="vm.writeAnswer(comment.user.name)").taskInfo__comments__comment__div__remove  Ответить
                 span.taskInfo__comments__comment__date {{comment.createdDate | date:'d MMM HH:mm'}}
             //Show more-отображается когда больше 4 коментов и открывает по 10,так же можно скрыть комменты(до 4)
             .taskInfo__comments__showMore(ng-show="vm.comments.length>4")
                 p(ng-click="vm.limit=vm.limit+10" ng-hide="vm.limit>=vm.comments.length") Показать остальные ({{vm.comments.length-vm.limit}})
                 p(ng-click="vm.limit=4" ng-show="vm.limit>=vm.comments.length") Скрыть
             //Создание коментария
-            .taskInfo__comments__create
+            .taskInfo__comments__create(ng-show='vm.isMember')
                 img.taskInfo__comments__create__creator-photo(ng-src="../../assets/images/help_desk/user.jpg")
                 .taskInfo__comments__create__div
                     textarea.taskInfo__comments__create__input(id="createTextArea",

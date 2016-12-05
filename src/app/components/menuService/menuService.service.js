@@ -11,7 +11,7 @@ export  class MenuService{
       },
       {
         title : 'Задачи',
-        state : 'tasksList',
+        state : 'tasks',
         src : '../assets/images/menu_icons/letter.svg',
         srcRevers : '../assets/images/menu_icons/letter-revers.svg'
       },

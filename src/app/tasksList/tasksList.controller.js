@@ -4,7 +4,6 @@ export class TasksListController{
         var vm = this;
         let userId = $localStorage.user._id;
         vm._id = userId;
-        vm.selector='my';
         vm.progressbar = ngProgressFactory.createInstance();
 
         // посылается запрос через метод vm.getTasks(responsible,creator,favourite,urgent)
@@ -14,12 +13,11 @@ export class TasksListController{
             vm.selector=selector;
             $localStorage.selector = selector;
             vm.sideSelector = sideSelector;
-            console.log($localStorage.selector);
             vm.progressbar.start();
             $http.post(envService.read('apiUrl')+"api/tasks/filter",{_id:userId,responsible:responsible,creator:creator,favourite:favourite,urgent:urgent,general:general,all:all})
                 .success(function(response){
-                    console.log(response);
                     vm.progressbar.complete();
+                    console.log(response);
                     vm.tasks = response;
                     vm.emptyTasks = vm.tasks.length?"":"Нет задач, удовлятворяющиx этой категории";
                 })
@@ -40,9 +38,9 @@ export class TasksListController{
                 .success(function (res) {
                     console.log(res);
                 })
-                .error(function (res) {
+                .error(function (err) {
                     toastr.error("Ошибка подключения","Ошибка");
-                    console.log(res);
+                    console.log(err);
                 });
 
         };
