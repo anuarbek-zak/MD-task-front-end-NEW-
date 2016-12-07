@@ -15,12 +15,12 @@ import { NgEnterDirective } from '../app/components/ngEnter/ngEnter.directive';
 import { MenuService } from '../app/components/menuService/menuService.service';
 import { CheckAuthService } from '../app/components/checkAuth/checkAuth.service';
 import { NewTaskController } from './newTask/newTask.controller';
-import {  TasksListController } from './tasksList/tasksList.controller';
+import {  TasksController } from './tasks/tasks.controller';
 
 
 angular.module('ticketMirusDesk', ['ngAnimate', 'ngCookies', 'ngSanitize', 'ngMessages', 'ngAria', 'ngResource',
   'ui.router', 'ngMaterial','ngMdIcons', 'toastr', 'lfNgMdFileInput', 'ui.mask','mgcrea.ngStrap','monospaced.elastic',
-  '720kb.datepicker', 'tmh.dynamicLocale', 'ngStorage', 'naif.base64', 'environment', 'base64','ui.bootstrap','ngProgress'])
+  '720kb.datepicker', 'tmh.dynamicLocale', 'ngStorage', 'naif.base64', 'environment', 'base64','ui.bootstrap','ngProgress','ngFileUpload'])
   .constant('malarkey', malarkey)
   .constant('moment', moment)
   .config(config)
@@ -30,7 +30,7 @@ angular.module('ticketMirusDesk', ['ngAnimate', 'ngCookies', 'ngSanitize', 'ngMe
   .controller('AuthController', AuthController)
   .controller('DocumentsController', DocumentsController)
     .controller('NewTaskController', NewTaskController)
-    .controller('TasksListController',  TasksListController)
+    .controller('TasksController',  TasksController)
 
   .directive('acmeNavbar', NavbarDirective)
   .directive('mFooter', FooterDirective)

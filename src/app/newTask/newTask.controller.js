@@ -1,5 +1,6 @@
 export class NewTaskController{
-    constructor($http, toastr, $localStorage,$state, envService,$stateParams,$anchorScroll, $location,$mdDialog ,$filter,ngProgressFactory){
+    constructor($http, toastr, $localStorage,$state, envService,$stateParams,$anchorScroll,
+                $location,$mdDialog ,$filter,ngProgressFactory,Upload){
         'ngInject';
         var vm = this;
         let userId = $localStorage.user._id;
@@ -27,6 +28,26 @@ export class NewTaskController{
             }
         })();
 
+        vm.fun = function () {
+            vm.upload(vm.file);
+            console.log("hello");
+            console.log(vm.file);
+        };
+
+        vm.upload = function (file) {
+            Upload.upload({
+                url: envService.read('apiUrl')+'api/upload',
+                data: {file: file}
+            }).then(function (resp) {
+                console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
+            }, function (resp) {
+                console.log('Error status: ' + resp.status);
+            }, function (evt) {
+                var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+            });
+        };
+
         //проверка:если пришел taskId то значит меняем task,если нет,то создаем новый
         //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\
         var getTaskById = function () {
@@ -35,13 +56,14 @@ export class NewTaskController{
                 $http.get(envService.read('apiUrl')+"api/tasks/"+vm.taskId+"/"+userId)
                     .success(function (response) {
                         vm.task = response;
+                        console.log(response);
                         vm.currentHour = $filter('date')(vm.task.deadline,'H')?$filter('date')(vm.task.deadline,'H'):0 ;
                         vm.notCreator = (vm.task.creator._id!=userId)?true:false;
                         vm.task.deadline = $filter('date')(vm.task.deadline,'yyyy-MM-dd');
                         vm.task.status.forEach(function (obj) {
                             if(vm.userId==obj.user._id) vm.userAccepted=true;
                         });
-                        vm.showRequireBtns = (vm.notCreator&&vm.task.required==false&&!vm.userAccepted&&vm.selector!="all")?true:false;
+                        vm.showRequireBtns = (vm.notCreator&&vm.task.required==false&&!vm.userAccepted)?true:false;
 
                         // /удаляю из массива юзеров всех аудиторов,соисполнителей и ответсвенных
                         //что бы не дублировались

@@ -1,3 +1,4 @@
+.div {{vm.myFile}}
 .main-container()
         div.m-menu-documents.m-menu-documents-right(data-offset-top="100", bs-affix)
             div.m-menu-documents-item(
@@ -21,7 +22,7 @@
                 .main-container__form-left(flex='50' layout="column")
                     .m-input-container
                         label(for="name") Название задачи
-                        input(ng-disabled="vm.notCreator" required class="md-input-container"  name="name" id="name" ng-model="vm.task.name")
+                        input(ng-disabled="vm.notCreator" class="md-input-container"  name="name" id="name" ng-model="vm.task.name")
 
                     .m-input-container(ng-hide="vm.notCreator && !vm.task.description")
                         label(for="description") Суть задачи
@@ -165,6 +166,14 @@
                                 bs-typeahead,
                                 bs-on-select="vm.chooseCustomer")
                             p.error(ng-show="vm.customerError") Заказчик введен не корректно !
+
+                    div(class="button" ngf-select ng-model="vm.file" ngf-allow-dir="false"
+                    ngf-max-size="20MB" ngf-min-height="200"
+                    ngf-resize="{width: 100, height: 100}") Select
+                    span(ng-click="vm.fun()") Upload
+                    p {{vm.file.name}}
+
+
 
             .reqiure-btns(ng-show="vm.showRequireBtns&&vm.isMember")
                 span.reqiure-btn.btn.btn-success(ng-click="vm.accepted()") Принять

@@ -1,4 +1,4 @@
-export class TasksListController{
+export class TasksController{
     constructor($http, $localStorage, CheckAuthService, envService,toastr,ngProgressFactory){
         'ngInject';
         var vm = this;
