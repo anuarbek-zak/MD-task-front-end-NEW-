@@ -290,6 +290,18 @@ export class NewTaskController{
             });
         };
 
+        //проверка на оффлайн,если юзер оффлайн
+        //то не может отправить задачу
+        window.addEventListener('offline', function () {
+            vm.isOffline = true;
+           toastr.error("Пожалйуста подлючитесь к интернету","Вы сейчас оффлайн");
+        });
+
+        //если переподключился то может отправить задачу
+        window.addEventListener('online', function () {
+            vm.isOffline = false;
+        });
+
         //отправляю созданный таск на сервер либо меняю
         vm.createTask = function () {
             if(vm.task){
@@ -331,6 +343,7 @@ export class NewTaskController{
                         })
                         .error(function(err){
                             toastr.error("Ошибка подключения","Ошибка");
+                            $state.go('tasks');
                             console.log(err);
                         });
                 }else{

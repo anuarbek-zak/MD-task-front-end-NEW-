@@ -22,7 +22,7 @@
                 .main-container__form-left(flex='50' layout="column")
                     .m-input-container
                         label(for="name") Название задачи
-                        input(ng-disabled="vm.notCreator" class="md-input-container"  name="name" id="name" ng-model="vm.task.name")
+                        input(ng-disabled="vm.notCreator" required class="md-input-container"  name="name" id="name" ng-model="vm.task.name")
 
                     .m-input-container(ng-hide="vm.notCreator && !vm.task.description")
                         label(for="description") Суть задачи
@@ -179,7 +179,7 @@
                 span.reqiure-btn.btn.btn-success(ng-click="vm.accepted()") Принять
                 span.reqiure-btn.btn.btn-danger(ng-click="vm.canceled()") Отклонить
             //Кнопка отправки disabled пока не заполнены поля имя и ответственный
-            input.md-btn.submit(ng-if="!vm.notCreator" type="submit" value="{{vm.submitText}}" ng-disabled="form.$invalid||!vm.task.responsible")
+            input.md-btn.submit(ng-if="!vm.notCreator" type="submit" value="{{vm.submitText}}" ng-disabled="form.$invalid||!vm.task.responsible||vm.isOffline")
 
         .taskInfo__comments(ng-show="vm.taskId")
             h3 {{vm.comments.length?"Комментарии":"Пока нет комментариев"}}
