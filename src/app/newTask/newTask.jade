@@ -109,18 +109,18 @@
                     .m-input-container
                         label(for="performer" ng-hide="vm.notCreator&&!vm.task.performers.length") Соисполнитель(ли)
                         div(layout="row")
-                            button.btn.newTask__btn.pull-left(ng-hide="vm.notCreator" bs-dropdown)
-                                span.caret
-                            ul.newTask__dropdown(class="dropdown-menu" role="menu")
-                                li.newTask__dropdown__item(ng-repeat="user in vm.users | orderBy:'name'" ng-click="vm.removeFromUsers({user:user,arr:vm.task.performers,id:'performer'})") {{user.name}}
-                            input(id="performer",
-                            ng-hide="vm.notCreator",
-                            class="md-input-container",
-                            type="text",
-                            ng-model="performer",
-                            bs-options="{user:user,arr:vm.task.performers,id:'performer+'} as user.name for user in vm.users",
-                            bs-typeahead,
-                            bs-on-select="vm.removeFromUsers")
+                                button.btn.newTask__btn.pull-left(ng-hide="vm.notCreator" bs-dropdown)
+                                    span.caret
+                                ul.newTask__dropdown(class="dropdown-menu" role="menu")
+                                    li.newTask__dropdown__item(ng-repeat="user in vm.users | orderBy:'name'" ng-click="vm.removeFromUsers({user:user,arr:vm.task.performers,id:'performer'})") {{user.name}}
+                                input(class="md-input-container",
+                                ng-hide="vm.notCreator",
+                                id="performer",
+                                type="text",
+                                ng-model="performer",
+                                bs-options="{user:user,arr:vm.task.performers,id:'performer'} as user.name for user in vm.users",
+                                bs-typeahead,
+                                bs-on-select="vm.removeFromUsers")
                         .users(ng-show="vm.task.performers.length")
                             .user.clearfix(ng-repeat="performer in vm.task.performers")
                                 img.user-photo.pull-left(ng-src="../../assets/images/help_desk/user.jpg")
