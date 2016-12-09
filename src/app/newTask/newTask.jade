@@ -1,4 +1,4 @@
-.div {{vm.myFile}}
+.div {{vm.file}}
 .main-container()
         div.m-menu-documents.m-menu-documents-right(data-offset-top="100", bs-affix)
             div.m-menu-documents-item(
@@ -26,11 +26,9 @@
 
                     .m-input-container(ng-hide="vm.notCreator && !vm.task.description")
                         label(for="description") Суть задачи
-                        textarea.taskInfo__comments__create__input(
-                        ng-disabled="vm.notCreator",
+                        text-angular.text-angular(
+                        ta-disabled="vm.notCreator",
                         id="description",
-                        dynamic-text-area,
-                        msd-elastic,
                         name="description",
                         ng-model="vm.task.description")
 
@@ -50,6 +48,7 @@
                                 ng-model="vm.responsibleText",
                                 bs-on-select="vm.chooseResponsible"
                                 )
+
 
                             .users(ng-show="vm.task.responsible")
                                 .user.clearfix
@@ -167,17 +166,12 @@
                                 bs-on-select="vm.chooseCustomer")
                             p.error(ng-show="vm.customerError") Заказчик введен не корректно !
 
-                    div(class="button" ngf-select ng-model="vm.file" ngf-allow-dir="false"
-                    ngf-max-size="20MB" ngf-min-height="200"
-                    ngf-resize="{width: 100, height: 100}") Select
-                    span(ng-click="vm.fun()") Upload
-                    p {{vm.file.name}}
-
 
 
             .reqiure-btns(ng-show="vm.showRequireBtns&&vm.isMember")
                 span.reqiure-btn.btn.btn-success(ng-click="vm.accepted()") Принять
                 span.reqiure-btn.btn.btn-danger(ng-click="vm.canceled()") Отклонить
+
             //Кнопка отправки disabled пока не заполнены поля имя и ответственный
             input.md-btn.submit(ng-if="!vm.notCreator" type="submit" value="{{vm.submitText}}" ng-disabled="form.$invalid||!vm.task.responsible||vm.isOffline")
 

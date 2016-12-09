@@ -1,6 +1,6 @@
 export class NewTaskController{
     constructor($http, toastr, $localStorage,$state, envService,$stateParams,$anchorScroll,
-                $location,$mdDialog ,$filter,ngProgressFactory,Upload){
+                $location,$mdDialog ,$filter,ngProgressFactory,taOptions){
         'ngInject';
         var vm = this;
         let userId = $localStorage.user._id;
@@ -21,32 +21,21 @@ export class NewTaskController{
         vm.userAccepted=false;
         vm.selector = $localStorage.selector;
         vm.isMember=true;
+
+        //настройки text-angular
+        taOptions.toolbar = [
+            ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'pre', 'quote'],
+            ['bold', 'italics', 'underline', 'ul', 'ol','clear']
+        ];
+
         //создаю массив часов
         (function () {
+
             for(var i=0;i<24;i++){
                 vm.hours[i] = i;
             }
         })();
 
-        vm.fun = function () {
-            vm.upload(vm.file);
-            console.log("hello");
-            console.log(vm.file);
-        };
-
-        vm.upload = function (file) {
-            Upload.upload({
-                url: envService.read('apiUrl')+'api/upload',
-                data: {file: file}
-            }).then(function (resp) {
-                console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
-            }, function (resp) {
-                console.log('Error status: ' + resp.status);
-            }, function (evt) {
-                var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-                console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
-            });
-        };
 
         //проверка:если пришел taskId то значит меняем task,если нет,то создаем новый
         //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\
@@ -56,10 +45,10 @@ export class NewTaskController{
                 $http.get(envService.read('apiUrl')+"api/tasks/"+vm.taskId+"/"+userId)
                     .success(function (response) {
                         vm.task = response;
-                        console.log(response);
                         vm.currentHour = $filter('date')(vm.task.deadline,'H')?$filter('date')(vm.task.deadline,'H'):0 ;
                         vm.notCreator = (vm.task.creator._id!=userId)?true:false;
                         vm.task.deadline = $filter('date')(vm.task.deadline,'yyyy-MM-dd');
+                        vm.description = vm.task.description ;
                         vm.task.status.forEach(function (obj) {
                             if(vm.userId==obj.user._id) vm.userAccepted=true;
                         });
@@ -106,7 +95,6 @@ export class NewTaskController{
                             });
 
                         vm.closeTask = function () {
-                            console.log("lala");
                             var confirm = $mdDialog.confirm()
                                 .title('Закрыть задачу ?')
                                 .ariaLabel('Lucky day')
@@ -114,17 +102,15 @@ export class NewTaskController{
                                 .ok('Да');
 
                             $mdDialog.show(confirm).then(function() {
-                                toastr.info("","Задача закрыта");
-                                $state.go('tasks');
-                                // $http.delete(envService.read('apiUrl')+"api/tasks/"+vm.taskId)
-                                //     .success(function (res) {
-                                //         toastr.info("","Задача закрыта");
-                                //         $state.go('tasks');
-                                //     })
-                                //     .error(function (err) {
-                                //         toastr.error("Ошибка подключения","Ошибка");
-                                //         console.log(err);
-                                //     })
+                                $http.delete(envService.read('apiUrl')+"api/tasks/"+vm.taskId)
+                                    .success(function (res) {
+                                        toastr.info("","Задача закрыта");
+                                        $state.go('tasks');
+                                    })
+                                    .error(function (err) {
+                                        toastr.error("Ошибка подключения","Ошибка");
+                                        console.log(err);
+                                    })
                             }, function() {
 
                             });
@@ -133,10 +119,11 @@ export class NewTaskController{
 
                         //когда принял таск
                         vm.accepted = function (taskId=vm.taskId,userId=vm.userId,comment="",accepted=true,statusText="Задача принята",arr=vm.acceptedUsers) {
+                            vm.showRequireBtns= false;
                             $http.put(envService.read('apiUrl')+"api/tasks/"+vm.taskId,{case:"accept",userId:userId,comment:comment,accepted:accepted})
                                 .success(function(response){
                                     toastr.info("",statusText);
-                                    vm.showRequireBtns= false;
+
                                     arr.push({_id:taskId,user:$localStorage.user,comment:comment,accepted:accepted});
                                 })
                                 .error(function(err){
@@ -148,7 +135,6 @@ export class NewTaskController{
                         //когда отклонил таск
                         vm.canceled = function () {
                             // создаю модалку
-
                             var prompt = $mdDialog.prompt()
                                 .title('Опишите причину отказа')
                                 .placeholder('Написать ...')
@@ -173,7 +159,6 @@ export class NewTaskController{
                             document.getElementById("createTextArea").focus();
                             $location.hash("createTextArea");
                             $anchorScroll(1000);
-
                         };
 
                         //отправка комента,проверка на пустой комент,принимаю объект комента и добавлю в массив комментов
@@ -199,7 +184,6 @@ export class NewTaskController{
                         vm.removeComment = function (commentId,i) {
                             $http.delete(envService.read('apiUrl')+"api/comment/"+commentId)
                                 .success(function (res) {
-                                    console.log(res);
                                     vm.comments.splice(i,1);
                                 })
                                 .error(function(err){
@@ -233,7 +217,7 @@ export class NewTaskController{
         $http.get(envService.read('apiUrl')+"api/users")
             .success(function(response){
                 vm.users = response;
-                //проверка:если пришел taskId вызываем ifTaskId
+                //проверка:если пришел taskId вызываем getTaskById
                 if(vm.taskId) getTaskById();
                 else vm.progressbar.complete();
             })
@@ -300,6 +284,7 @@ export class NewTaskController{
         //если переподключился то может отправить задачу
         window.addEventListener('online', function () {
             vm.isOffline = false;
+            console.log(vm.isOffline);
         });
 
         //отправляю созданный таск на сервер либо меняю
@@ -334,7 +319,6 @@ export class NewTaskController{
                     $http.put(envService.read('apiUrl')+"api/tasks/"+vm.taskId,vm.task)
                         .success(function(response){
                             vm.task.deadline = $filter('date')(vm.task.deadline,'yyyy-MM-dd');
-                            console.log("audiotr perf",response);
                             vm.task.responsible = response.responsible;
                             vm.task.performers = response.performers;
                             vm.task.auditors = response.auditors;

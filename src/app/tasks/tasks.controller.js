@@ -17,7 +17,6 @@ export class TasksController{
             $http.post(envService.read('apiUrl')+"api/tasks/filter",{_id:userId,responsible:responsible,creator:creator,favourite:favourite,urgent:urgent,general:general,all:all})
                 .success(function(response){
                     vm.progressbar.complete();
-                    console.log(response);
                     vm.tasks = response;
                     vm.emptyTasks = vm.tasks.length?"":"Нет задач, удовлятворяющиx этой категории";
                 })
@@ -36,7 +35,7 @@ export class TasksController{
             else task.favourite.push(userId);
             $http.put(envService.read('apiUrl')+"api/tasks/"+task._id,{userId:userId,case:"favourite"})
                 .success(function (res) {
-                    console.log(res);
+
                 })
                 .error(function (err) {
                     toastr.error("Ошибка подключения","Ошибка");

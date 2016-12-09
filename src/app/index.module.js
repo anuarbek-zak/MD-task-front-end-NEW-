@@ -20,7 +20,7 @@ import {  TasksController } from './tasks/tasks.controller';
 
 angular.module('ticketMirusDesk', ['ngAnimate', 'ngCookies', 'ngSanitize', 'ngMessages', 'ngAria', 'ngResource',
   'ui.router', 'ngMaterial','ngMdIcons', 'toastr', 'lfNgMdFileInput', 'ui.mask','mgcrea.ngStrap','monospaced.elastic',
-  '720kb.datepicker', 'tmh.dynamicLocale', 'ngStorage', 'naif.base64', 'environment', 'base64','ui.bootstrap','ngProgress','ngFileUpload'])
+  '720kb.datepicker', 'tmh.dynamicLocale', 'ngStorage', 'naif.base64', 'environment', 'base64','ui.bootstrap','ngProgress','textAngular'])
   .constant('malarkey', malarkey)
   .constant('moment', moment)
   .config(config)

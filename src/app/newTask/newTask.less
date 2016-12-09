@@ -415,3 +415,34 @@ label{
   opacity: 1;
   transform:translate(0px); ;
 }
+
+.text-angular{
+  margin-top: 10px;
+}
+.ta-toolbar{
+  display: none;
+  margin-top: 10px;
+  &.focussed{
+    display: block;
+  }
+  .btn{
+    margin: 2px;
+    background: transparent;
+  }
+}
+
+.ta-scroll-window.form-control {
+  height: 120px;
+  min-height: 120px !important;
+  overflow: auto;
+  font-family: inherit;
+  font-size: 100%;
+  background: transparent;
+  border: 1px solid @border_color;
+  box-shadow: none !important;
+  outline:none !important;
+  margin:20px 0;
+}
+.ta-scroll-window.form-control::-webkit-scrollbar {
+  display: none;
+}

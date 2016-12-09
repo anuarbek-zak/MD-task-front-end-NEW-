@@ -8,20 +8,7 @@ div.m-menu-documents(data-offset-top="100", bs-affix)
         img.disabled(ng-src='../assets/images/help_desk/ticket.svg')
         img.active(ng-src='../assets/images/help_desk/ticket-reverse.svg')
         md-tooltip(md-direction="bottom") Поставить задачу
-    //div.m-menu-documents-item(
-    //ng-click='vm.document.docType = item.value; vm.getNumberDocument()',
-    //ng-class='{"m-menu-document-item-active": false}'
-    //)
-    //    img.disabled(ng-src='../assets/images/help_desk/ticket.svg')
-    //    img.active(ng-src='../assets/images/help_desk/ticket-reverse.svg')
-    //    md-tooltip(md-direction="bottom") В процессе
-    //div.m-menu-documents-item(
-    //ng-click='vm.document.docType = item.value; vm.getNumberDocument()',
-    //ng-class='{"m-menu-document-item-active": false}'
-    //)
-    //    img.disabled(ng-src='../assets/images/help_desk/ticket.svg')
-    //    img.active(ng-src='../assets/images/help_desk/ticket-reverse.svg')
-    //    md-tooltip(md-direction="bottom") Закрытые
+
     div.m-menu-documents-item(
     ng-click='vm.getTasks(true,false,false,false,false,false,"my","income")',
     ng-class='{"m-menu-document-item-active": vm.sideSelector=="income"}')
@@ -69,27 +56,6 @@ div.m-row.m-document.m-flex
         div
         .m-table.like-invoice-body-clear-left-top-padding
             .m-row(layout='row')
-
-                //.m-col(flex=5)
-                //    input.m-checkbox.m-checkbox-normal(ng-click='$event.stopPropagation();', type="checkbox", ng-model='vm.allChecked', value="")
-                //.m-col(flex=5)
-                //    .m-checkbox-start.m-checkbox-start-normal(
-                //    ng-class="{'m-checkbox-checked-start':vm.allStar}",
-                //    ng-click="$event.stopPropagation(); vm.allStar = !vm.allStar;")
-                //.m-col(flex)
-                //    // employers
-                //    button.m-select(  type='button', ng-model='vm.selectedEmployer', placeholder='', data-html='1', data-toggle='true', bs-options='item.value as item.label for item in vm.employers', bs-select='')
-                //        span.m-selected-span.m-selected-face
-                //        span.caret
-                //
-                //    // statuses
-                //    button.m-select(  type='button', ng-model='vm.selectedStatus', placeholder='', data-html='1', data-toggle='true', bs-options='item.value as item.label for item in vm.statuses', bs-select='')
-                //        span.caret
-                //    // delete
-                //    button.m-select(  type='button', placeholder='')
-                //        span.m-select.m-selected-bucket
-
-
                 .m-col(flex=5)
                 .m-col(flex=5)
             //-|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
