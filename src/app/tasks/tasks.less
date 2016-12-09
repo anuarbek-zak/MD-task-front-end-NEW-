@@ -27,7 +27,7 @@
   }
   &__star{
     &-active{
-      color: @selling;
+      color:@selling;
     }
     color: @gray;
     display: inline;
@@ -62,7 +62,8 @@
     }
     &__finished{
       margin-left: 10px;
-      color:red;
+      color: darken(@selling,5%);
+      font-weight: bold;
     }
   }
   &__creator-responsible{
@@ -108,16 +109,6 @@
 .emptyTasks{
   margin: 20px;
   color: @gray;
-}
-
-.preloader{
-  width: 9%;
-  margin: 0 auto;
-  color: @gray;
-  &__img{
-    width: 70px;
-    height: 70px;
-  }
 }
 
 .task.ng-enter{

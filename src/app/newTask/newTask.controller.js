@@ -25,12 +25,11 @@ export class NewTaskController{
         //настройки text-angular
         taOptions.toolbar = [
             ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'pre', 'quote'],
-            ['bold', 'italics', 'underline', 'ul', 'ol','clear']
+            ['bold', 'italics', 'underline', 'ul', 'ol']
         ];
 
         //создаю массив часов
         (function () {
-
             for(var i=0;i<24;i++){
                 vm.hours[i] = i;
             }
@@ -48,7 +47,6 @@ export class NewTaskController{
                         vm.currentHour = $filter('date')(vm.task.deadline,'H')?$filter('date')(vm.task.deadline,'H'):0 ;
                         vm.notCreator = (vm.task.creator._id!=userId)?true:false;
                         vm.task.deadline = $filter('date')(vm.task.deadline,'yyyy-MM-dd');
-                        vm.description = vm.task.description ;
                         vm.task.status.forEach(function (obj) {
                             if(vm.userId==obj.user._id) vm.userAccepted=true;
                         });
@@ -284,7 +282,7 @@ export class NewTaskController{
         //если переподключился то может отправить задачу
         window.addEventListener('online', function () {
             vm.isOffline = false;
-            console.log(vm.isOffline);
+            console.log("offline",vm.isOffline);
         });
 
         //отправляю созданный таск на сервер либо меняю
@@ -315,6 +313,7 @@ export class NewTaskController{
 
 
                 if(vm.taskId){
+                    vm.sending = true;
                     vm.task.case = "edit";
                     $http.put(envService.read('apiUrl')+"api/tasks/"+vm.taskId,vm.task)
                         .success(function(response){
@@ -331,6 +330,7 @@ export class NewTaskController{
                             console.log(err);
                         });
                 }else{
+                    vm.sending = true;
                     $http.post(envService.read('apiUrl')+"api/tasks",vm.task)
                         .success(function(response){
                             toastr.success("","Задача успешно поставлена !");

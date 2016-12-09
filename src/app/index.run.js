@@ -12,5 +12,5 @@ export function runBlock ($log, tmhDynamicLocale, CheckAuthService,$rootScope, e
   );
   // development
   // production
-  envService.set('development');
+  envService.set('production');
 }

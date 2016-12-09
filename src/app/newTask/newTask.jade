@@ -173,7 +173,7 @@
                 span.reqiure-btn.btn.btn-danger(ng-click="vm.canceled()") Отклонить
 
             //Кнопка отправки disabled пока не заполнены поля имя и ответственный
-            input.md-btn.submit(ng-if="!vm.notCreator" type="submit" value="{{vm.submitText}}" ng-disabled="form.$invalid||!vm.task.responsible||vm.isOffline")
+            input.md-btn.submit(ng-if="!vm.notCreator" type="submit" value="{{vm.submitText}}" ng-disabled="form.$invalid||!vm.task.responsible||vm.isOffline||vm.sending")
 
         .taskInfo__comments(ng-show="vm.taskId")
             h3 {{vm.comments.length?"Комментарии":"Пока нет комментариев"}}
